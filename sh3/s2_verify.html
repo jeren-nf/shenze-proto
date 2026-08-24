@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 商家认证</title>
+<link rel="stylesheet" href="./tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:#fff; border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+
+  /* 状态栏 */
+  .vstatus { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+
+  /* 顶部标题栏 */
+  .vheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .vback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .vback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .vtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+
+  /* 表单滚动区（白色背景） */
+  .vscroll { flex:1; overflow-y:auto; overflow-x:hidden; background:#fff; padding-bottom:8px; }
+
+  .vfield { margin:16px; }
+  .vlabel { font-size:14px; font-weight:600; color:var(--ink-primary); margin-bottom:10px; display:block; }
+  .vlabel .req { color:var(--color-error); margin-left:2px; }
+
+  .vinp { width:100%; height:44px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:0 12px; font-size:14px; color:var(--ink-primary); background:#fff; outline:none; transition:border-color .15s, box-shadow .15s; }
+  .vinp::placeholder { color:var(--ink-tertiary); }
+  .vinp:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+
+  .vrow { display:flex; gap:10px; align-items:stretch; }
+  .vrow .vinp { flex:1; min-width:0; }
+  .ocr-btn { flex:none; height:44px; padding:0 12px; border:1px solid var(--border-strong); border-radius:var(--r-md); background:#fff; color:var(--ink-secondary); font-size:13px; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; }
+  .ocr-btn:active { background:var(--bg-hover); }
+
+  /* 工商信息只读卡 */
+  .bizinfo { margin:12px 0 0; padding:12px; background:var(--color-primary-bg); border:1px solid var(--color-primary-border); border-radius:var(--r-md); }
+  .bi-row { display:flex; justify-content:space-between; align-items:center; font-size:13px; padding:7px 0; }
+  .bi-row + .bi-row { border-top:1px dashed var(--color-primary-border); }
+  .bi-row span { color:var(--ink-tertiary); }
+  .bi-row b { color:var(--ink-primary); font-weight:600; }
+  .bi-note { font-size:11px; color:var(--ink-tertiary); margin-top:8px; line-height:1.4; }
+
+  /* 经营品类标签 */
+  .cat-hint { font-size:13px; color:var(--ink-secondary); margin-bottom:4px; }
+  .cat-tags { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+  .cat-tag { padding:8px 14px; border:1px solid var(--border-strong); border-radius:var(--r-pill); font-size:14px; color:var(--ink-secondary); background:#fff; cursor:pointer; transition:all .15s ease; user-select:none; }
+  .cat-tag.on { background:var(--color-primary); border-color:var(--color-primary); color:#fff; }
+  .cat-count { margin-top:12px; font-size:12px; color:var(--ink-tertiary); }
+
+  /* 营业执照上传 */
+  .upload { border:1.5px dashed var(--border-strong); border-radius:var(--r-md); min-height:120px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:#FAFAFA; overflow:hidden; position:relative; }
+  .upload:active { border-color:var(--color-primary); }
+  .up-placeholder { display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--ink-tertiary); font-size:13px; }
+  .up-placeholder svg { width:30px; height:30px; stroke:var(--ink-tertiary); }
+  .up-thumb { width:100%; height:100%; object-fit:cover; display:block; }
+
+  .varea { width:100%; min-height:86px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:10px 12px; font-size:14px; color:var(--ink-primary); resize:none; outline:none; font-family:inherit; transition:border-color .15s, box-shadow .15s; }
+  .varea::placeholder { color:var(--ink-tertiary); }
+  .varea:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+
+  /* 固定提交 */
+  .vsubmit-wrap { flex:none; padding:12px 16px; background:#fff; border-top:1px solid var(--border-weak); }
+  .vsubmit { width:100%; height:48px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-md); font-size:16px; font-weight:600; }
+  .vsubmit:active { background:var(--color-primary-active); }
+
+  /* Toast */
+  .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'6b3bf596688b4bcab7cc3e396a0e7056'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+<div class="phone">
+  <div class="vstatus"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <!-- 标题栏：返回 + 商家认证 -->
+  <div class="vheader">
+    <div class="vback" id="vback">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="vtitle">商家认证</div>
+  </div>
+
+  <div class="vscroll">
+    <!-- 第一项：公司名称 -->
+    <div class="vfield">
+      <label class="vlabel">公司名称<span class="req">*</span></label>
+      <div class="vrow">
+        <input class="vinp" id="company" placeholder="请输入公司名称" />
+        <button class="ocr-btn" id="ocrBtn" type="button">📷 识别名片</button>
+      </div>
+    </div>
+
+    <!-- 第二项：工商信息（自动拉取，只读展示） -->
+    <div class="bizinfo" id="bizinfo" style="display:none">
+      <div class="bi-row"><span>统一社会信用代码</span><b id="biCode"></b></div>
+      <div class="bi-row"><span>法定代表人</span><b id="biLegal"></b></div>
+      <div class="bi-row"><span>注册资本</span><b id="biCapital"></b></div>
+      <div class="bi-note">工商信息由系统自动核验并关联，仅供后台审核参考，您只需确认公司名称填写正确即可。</div>
+    </div>
+
+    <!-- 第三项：经营品类（必填，可多选） -->
+    <div class="vfield">
+      <label class="vlabel">经营品类<span class="req">*</span></label>
+      <div class="cat-hint">请选择经营品类（可多选）</div>
+      <div class="cat-tags" id="catTags">
+        <div class="cat-tag">男鞋</div>
+        <div class="cat-tag">女鞋</div>
+        <div class="cat-tag">童鞋</div>
+        <div class="cat-tag">运动鞋</div>
+        <div class="cat-tag">皮鞋</div>
+        <div class="cat-tag">拖鞋</div>
+        <div class="cat-tag">箱包</div>
+        <div class="cat-tag">服装</div>
+        <div class="cat-tag">配件</div>
+        <div class="cat-tag">纺织品</div>
+      </div>
+      <div class="cat-count" id="catCount">已选 0 项</div>
+    </div>
+
+    <!-- 第四项：营业执照 -->
+    <div class="vfield">
+      <label class="vlabel">营业执照</label>
+      <div class="upload" id="uploadBox" onclick="document.getElementById('licenseFile').click()">
+        <div class="up-placeholder" id="upPlaceholder">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.6A1 1 0 0 1 11 4h2a1 1 0 0 1 .8.4L15 6h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>
+          <span>上传营业执照</span>
+        </div>
+        <img class="up-thumb" id="upThumb" style="display:none" alt="营业执照" />
+        <input type="file" accept="image/*" id="licenseFile" hidden />
+      </div>
+    </div>
+
+    <!-- 第五项：补充说明（可选） -->
+    <div class="vfield">
+      <label class="vlabel">补充说明（选填）</label>
+      <textarea class="varea" placeholder="请补充其他认证材料说明（选填）"></textarea>
+    </div>
+  </div>
+
+  <!-- 固定提交按钮 -->
+  <div class="vsubmit-wrap">
+    <button class="vsubmit" id="vsubmit">提交认证</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var company = document.getElementById('company');
+  var bizinfo = document.getElementById('bizinfo');
+  var catCount = document.getElementById('catCount');
+  var selectedCount = 0;
+
+  document.getElementById('vback').onclick = function(){ location.href="./s2_mine.html"; };
+
+  function pullBizInfo(){
+    var name = company.value.trim();
+    if(!name){ bizinfo.style.display = 'none'; return; }
+    // 模拟接口：公司名称输入后自动拉取匹配工商信息（只读展示）
+    document.getElementById('biCode').textContent = '91350503MA8U*****X';
+    document.getElementById('biLegal').textContent = '陈志远';
+    document.getElementById('biCapital').textContent = '500 万人民币';
+    bizinfo.style.display = 'block';
+  }
+  company.addEventListener('input', pullBizInfo);
+
+  document.getElementById('ocrBtn').onclick = function(){
+    // 模拟名片识别：调用相机拍照识别名片，自动抓取公司名称填入
+    company.value = '泉州鸿星鞋业有限公司';
+    pullBizInfo();
+    toast('已识别名片，已自动填入公司名称');
+  };
+
+  // 经营品类多选
+  var tags = document.querySelectorAll('.cat-tag');
+  tags.forEach(function(t){
+    t.addEventListener('click', function(){
+      t.classList.toggle('on');
+      selectedCount = document.querySelectorAll('.cat-tag.on').length;
+      catCount.textContent = '已选 ' + selectedCount + ' 项';
+    });
+  });
+
+  // 营业执照上传
+  document.getElementById('licenseFile').addEventListener('change', function(){
+    var f = this.files && this.files[0];
+    if(!f) return;
+    var r = new FileReader();
+    r.onload = function(e){
+      var thumb = document.getElementById('upThumb');
+      thumb.src = e.target.result; thumb.style.display = 'block';
+      document.getElementById('upPlaceholder').style.display = 'none';
+    };
+    r.readAsDataURL(f);
+  });
+
+  // 提交认证
+  document.getElementById('vsubmit').onclick = function(){
+    if(!company.value.trim()){ toast('请先填写公司名称'); company.focus(); return; }
+    if(selectedCount === 0){ toast('请至少选择一个经营品类'); return; }
+    toast('认证提交成功，审核中…');
+    localStorage.setItem('s2_verified', '1');
+    setTimeout(function(){ location.href="./s2_mine.html"; }, 1200);
+  };
+
+  function toast(msg){
+    var t = document.getElementById('toast');
+    if(!t){ t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+})();
+</script>
+</body>
+</html>

@@ -3,15 +3,16 @@
 本仓库为跨境贸易服务平台的 UI 原型静态站点，可直接部署到 EdgeOne Pages / GitHub Pages / 任意静态托管。
 
 ## 目录结构
-- `index.html` —— 门户导航页，跳转到下面两套原型
+- `index.html` —— 门户导航页，跳转到下面三套原型
 - `bj6/` —— 扁平总览版（32 页同级目录，来源 ui-prototype）
-- `bj10/` —— 嵌套 FR 编号版（seller / buyer / admin 三目录，带功能编号，来源 prototype-bridge）
+- `bj10/` —— 嵌套 FR 编号版（seller / buyer / admin 三目录，带功能编号，**线上真实内容镜像**）
+- `sh3/` —— UI 细化版（扁平原型，含 tokens.css / logo.png / img 资源图，**线上真实内容镜像**）
+
+> bj10 与 sh3 均为从 CloudStudio 分享链接原样镜像，保留原路径结构与相对链接，部署到子目录（/bj10/、/sh3/）后内部跳转不破。
 
 ## 内容
-- 管理后台 Web：12 页
-- 卖家端小程序：14 页
-- 买家端小程序（默认英文）：6 页
-共 32 页。
+- bj10：管理后台 12 + 卖家端 14 + 买家端 6 = 32 页
+- sh3：卖家端 / 买家端 / 管理后台扁平「UI 细化」原型（部分页已细化）
 
 ## 部署（EdgeOne Pages 示例）
 1. 腾讯云控制台 → EdgeOne Pages → 通过 Git 部署 → 连接本仓库

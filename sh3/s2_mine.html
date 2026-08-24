@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 我的</title>
+<link rel="stylesheet" href="./tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+
+  /* ===== 顶部科技蓝大色块（页面顶部） ===== */
+  .topblue { position:relative; flex:none; background:linear-gradient(135deg,var(--gradient-brand-start) 0%,var(--gradient-brand-end) 100%); padding:4px 0 60px; overflow:hidden; }
+  /* 底纹 / 渐变装饰 */
+  .topblue::before { content:""; position:absolute; right:-34px; top:-34px; width:170px; height:170px; border-radius:50%; background:rgba(255,255,255,.13); }
+  .topblue::after  { content:""; position:absolute; right:64px; bottom:-58px; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,.10); }
+  /* 下边缘弧度 */
+  .arc { position:absolute; left:0; bottom:0; width:100%; height:38px; display:block; z-index:1; }
+
+  .statusbar { position:relative; z-index:2; height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:#fff; }
+  .statusbar .right { display:flex; gap:6px; align-items:center; }
+
+  /* ===== 用户资料（位于蓝色块上） ===== */
+  .profile { position:relative; z-index:2; display:flex; align-items:center; gap:14px; padding:16px 18px 0; }
+  .avatar { width:54px; height:54px; border-radius:50%; background:rgba(255,255,255,.92); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden; cursor:pointer; border:2px solid rgba(255,255,255,.55); }
+  .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+  .avatar .cam { color:#BFBFBF; }
+  .pinfo { min-width:0; flex:1; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; }
+  .login-row { display:flex; align-items:center; gap:6px; cursor:pointer; }
+  .login-row .lt { font-size:17px; font-weight:700; color:#fff; }
+  .login-row .arrow { color:#fff; stroke:#fff; margin-left:0; }
+  .pname { display:inline-block; font-size:17px; font-weight:700; color:#fff; outline:none; max-width:100%; }
+  .pname:focus { text-decoration:underline dotted rgba(255,255,255,.7); }
+  .pauth { margin-top:9px; display:inline-flex; align-items:center; height:21px; padding:0 11px; border-radius:999px; background:rgba(255,255,255,.22); color:#fff; font-size:11px; font-weight:600; }
+  .pauth .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--color-accent); margin-right:5px; vertical-align:middle; }
+  .pauth.verified .dot { background:var(--color-success); }
+
+  /* ===== 滚动内容 ===== */
+  .scroll { flex:1; overflow-y:auto; overflow-x:hidden; background:var(--bg-page); padding-bottom:24px; }
+
+  /* 我的商机 */
+  .bizcard { position:relative; z-index:3; margin:12px 16px 0; background:#fff; border-radius:var(--r-lg); box-shadow:0 6px 24px rgba(0,0,0,.08); padding:16px 12px 14px; }
+  .biz-title { font-size:15px; font-weight:700; color:var(--color-primary); padding:0 0 14px; }
+  .biz-grid { display:flex; justify-content:space-between; }
+  .biz-item { display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; }
+  .biz-ic { width:46px; height:46px; box-sizing:border-box; border-radius:12px; background:var(--color-primary-bg); display:flex; align-items:center; justify-content:center; position:relative; transition:background .2s, border-color .2s; }
+  .biz-ic .ic { stroke:var(--color-primary); width:24px; height:24px; }
+  .biz-item .t { font-size:12px; color:var(--ink-secondary); }
+  /* 未认证态：商机入口以「待解锁」灰态 + 虚线环呈现（不放小锁、不只用颜色区分，满足无障碍） */
+  body:not(.verified) .biz-ic { background:#EEF0F3; border:1px dashed #C9CED6; }
+  body:not(.verified) .biz-ic .ic { stroke:#9AA1AC; }
+
+  /* ===== 未认证引导区（仅未认证状态下显示） ===== */
+  .verify-banner { position:relative; z-index:5; margin:-40px 16px 0; background:#E8F3FF; border-radius:var(--r-md); padding:12px; display:flex; align-items:center; gap:10px; cursor:pointer; box-shadow:0 6px 18px rgba(22,119,255,.12); border:1px solid var(--color-primary-border); }
+  .vb-text { flex:1; min-width:0; font-size:13px; line-height:1.45; color:#0B4FA0; font-weight:500; white-space:nowrap; }
+  .vb-action { flex:none; margin-left:auto; display:flex; align-items:center; gap:2px; color:var(--color-primary); font-size:13px; font-weight:700; }
+  .vb-arrow { width:18px; height:18px; stroke:var(--color-primary); margin-right:-6px; }
+  .verify-banner:active { background:#D9EBFF; }
+  /* 引导区交互动效：首次加载 2-3 次轻微抖动 + 光晕闪烁（仅首次出现，不干扰操作） */
+  @keyframes vbShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-2px)} 50%{transform:translateX(2px)} 75%{transform:translateX(-2px)} }
+  @keyframes vbGlow  { 0%,100%{box-shadow:0 6px 18px rgba(22,119,255,.12)} 50%{box-shadow:0 0 0 4px rgba(22,119,255,.18),0 6px 18px rgba(22,119,255,.12)} }
+  .verify-banner.shake { animation:vbShake .42s ease-in-out 3, vbGlow .84s ease-in-out 2; }
+
+  /* 通用菜单行 */
+  .menu { margin:12px 16px 0; background:#fff; border-radius:var(--r-lg); border:1px solid var(--border-weak); overflow:hidden; }
+  .menu-item { display:flex; align-items:center; gap:12px; padding:14px 12px; border-bottom:1px solid var(--border-weak); }
+  .menu-item:last-child { border-bottom:none; }
+  .mi-ic { width:34px; height:34px; border-radius:9px; background:var(--bg-hover); display:flex; align-items:center; justify-content:center; flex:none; }
+  .mi-ic .ic { stroke:var(--ink-tertiary); width:20px; height:20px; }
+  .mi-ic.wx { background:#E8F8EF; }
+  .mi-ic.wx svg { fill:#07C160; stroke:none; }
+  .mi-text { flex:1; min-width:0; font-size:14px; color:var(--ink-primary); line-height:1.45; }
+  .cell-arrow { flex:none; margin-left:auto; display:flex; align-items:center; }
+  .arrow { stroke:var(--ink-tertiary); width:20px; height:20px; }
+  .logout .menu-item { justify-content:center; }
+  .logout .lt { color:var(--color-error); font-size:14px; font-weight:600; }
+
+  /* 分组分隔标题（如：物流服务） */
+  .sec-divider { margin:18px 16px 0; }
+  .sec-divider .sec-title { font-size:15px; font-weight:700; display:flex; align-items:center; gap:6px; color:var(--ink-primary); }
+  .sec-divider .sec-title::before { content:""; width:4px; height:15px; background:var(--color-primary); border-radius:2px; }
+  .sec-divider + .menu { margin-top:8px; }
+
+  /* Toast 轻提示 */
+  .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
+  .toast.show { opacity:1; }
+
+  /* ===== 底部 Tab ===== */
+  .tabbar { height:56px; flex:none; background:#fff; border-top:1px solid var(--border-weak); display:flex; padding-bottom:6px; }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:var(--ink-tertiary); font-size:10.5px; cursor:pointer; }
+  .tab.active { color:var(--color-primary); }
+  .tab .ic { width:22px; height:22px; }
+  .tab.active .ic { stroke:var(--color-primary); background:var(--tab-active-bg); border-radius:50%; padding:3px; }
+</style>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'6b3bf596688b4bcab7cc3e396a0e7056'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+<div class="phone">
+  <!-- 滚动容器：蓝块与卡片同处其中，卡片负 margin 上移盖住蓝块时不会被裁切 -->
+  <div class="scroll">
+    <!-- 顶部科技蓝大色块 -->
+    <div class="topblue">
+      <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+      <!-- 用户资料（蓝色块上） -->
+      <div class="profile">
+        <div class="avatar" id="avatar"></div>
+        <div class="pinfo" id="pinfo"></div>
+      </div>
+
+      <!-- 下边缘弧度 -->
+      <svg class="arc" viewBox="0 0 390 38" preserveAspectRatio="none"><path d="M0,38 L0,8 Q195,40 390,8 L390,38 Z" fill="#EDF7FF"/></svg>
+    </div>
+
+    <!-- 未认证引导区（仅未认证状态显示；点击跳转商家认证页） -->
+    <div class="verify-banner" id="verifyBanner" onclick="goVerify()">
+      <div class="vb-text">认证后解锁商机，快人一步对接海外采购商</div>
+      <div class="vb-action"><span>认证</span><svg class="vb-arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+    </div>
+
+    <!-- 我的商机（模块标题：我的商机；卡片上 1/3 盖在蓝块上） -->
+    <div class="bizcard">
+      <div class="biz-title">我的商机</div>
+      <div class="biz-grid">
+        <div class="biz-item" data-label="感兴趣的" onclick="onBiz(this)">
+          <div class="biz-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.3-8.2C1 9.9 2.4 6.5 5.6 6.5c1.9 0 3.2 1.1 4.4 2.6 1.2-1.5 2.5-2.6 4.4-2.6 3.2 0 4.6 3.4 2.9 6.3C19 16.6 12 21 12 21Z"/></svg></div>
+          <div class="t">感兴趣的</div>
+        </div>
+        <div class="biz-item" data-label="我收藏的" onclick="onBiz(this)">
+          <div class="biz-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M6 4h12a1 1 0 0 1 1 1v15l-7-4-7 4V5a1 1 0 0 1 1-1Z"/></svg></div>
+          <div class="t">我收藏的</div>
+        </div>
+        <div class="biz-item" data-label="我的供应" onclick="onBiz(this)">
+          <div class="biz-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="M3.3 8 12 13l8.7-5"/><path d="M12 13v8"/></svg></div>
+          <div class="t">我的供应</div>
+        </div>
+        <div class="biz-item" data-label="我的主页" onclick="onBiz(this)">
+          <div class="biz-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg></div>
+          <div class="t">我的主页</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 关注微信服务号 -->
+    <div class="menu">
+      <div class="menu-item">
+        <div class="mi-ic wx">
+          <svg viewBox="0 0 24 24" style="width:22px;height:22px"><path d="M9 3.2C5.1 3.2 2 5.9 2 9.2c0 1.9 1.1 3.6 2.8 4.8L3.7 16.5l2.8-1.4c.8.2 1.6.3 2.5.3h.5a5.4 5.4 0 0 1-.6-2.4C9 11 11.5 8.8 14.6 8.8c.3 0 .6 0 .9.1C14.7 5.6 12.1 3.2 9 3.2Z"/><path d="M22 13.9c0-2.9-2.7-5.2-6-5.2s-6 2.3-6 5.2 2.7 5.2 6 5.2c.8 0 1.5-.1 2.2-.3l2.4 1.2-.7-2a5 5 0 0 0 2.1-3.9Z" opacity=".82"/></svg>
+        </div>
+        <div class="mi-text">关注微信，更快接收商机信息</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+    </div>
+
+    <!-- 物流服务（分隔标题 + 两行图标入口） -->
+    <div class="sec-divider"><div class="sec-title">物流服务</div></div>
+    <div class="menu">
+      <div class="menu-item" onclick="location.href="./s2_waybill.html"">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 8 12 13l8.7-5"/><path d="M12 13v8"/></svg></div>
+        <div class="mi-text">我的运单</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+      <div class="menu-item" onclick="location.href="./s2_address.html"">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-10a7 7 0 0 1 14 0c0 4.8-7 10-7 10Z"/><circle cx="12" cy="11" r="2.6"/></svg></div>
+        <div class="mi-text">地址管理</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+    </div>
+
+    <!-- 浏览记录 / 客户服务 / 语言 -->
+    <div class="menu">
+      <div class="menu-item">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="mi-text">浏览记录</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="7" rx="2"/><rect x="17" y="13" width="4" height="7" rx="2"/></svg></div>
+        <div class="mi-text">客户服务</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.5 3.8 5.8 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.8-3.8-9S9.5 5.5 12 3Z"/></svg></div>
+        <div class="mi-text">语言</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+    </div>
+
+    <!-- 退出登录 -->
+    <div class="menu logout" id="logoutMenu">
+      <div class="menu-item" id="logoutBtn"><span class="lt">退出登录</span></div>
+    </div>
+  </div>
+
+  <input type="file" accept="image/*" id="avatarFile" style="display:none" />
+
+  <!-- 底部 Tab：首页 / 商机 / 我的 -->
+  <div class="tabbar">
+    <div class="tab" onclick="location.href="./s2_home.html"">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>首页
+    </div>
+    <div class="tab" onclick="location.href="./s2_business.html"">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>商机
+    </div>
+    <div class="tab active">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var loggedIn = false;
+  var verified = localStorage.getItem('s2_verified') === '1';
+  // 从 wx_auth.html 授权成功后写入了 loggedIn=1，恢复登录态
+  try { if(localStorage.getItem('loggedIn') === '1') loggedIn = true; } catch(e){}
+  var avatarEl = document.getElementById('avatar');
+  var pinfoEl  = document.getElementById('pinfo');
+  var fileInput = document.getElementById('avatarFile');
+
+  function wechatAvatarSVG(){
+    return '<svg viewBox="0 0 66 66" width="100%" height="100%">'+
+      '<defs><linearGradient id="wg" x1="0" y1="0" x2="1" y2="1">'+
+      '<stop offset="0" stop-color="#36CFC9"/><stop offset="1" stop-color="#1677FF"/></linearGradient></defs>'+
+      '<rect width="66" height="66" fill="url(#wg)"/>'+
+      '<circle cx="33" cy="26" r="12.5" fill="#fff"/>'+
+      '<path d="M14 56c0-10.5 8.5-17 19-17s19 6.5 19 17Z" fill="#fff"/></svg>';
+  }
+
+  function pauthHTML(){
+    return verified
+      ? '<div class="pauth verified"><i class="dot"></i>已认证</div>'
+      : '<div class="pauth"><i class="dot"></i>未认证</div>';
+  }
+
+  function render(){
+    if(!loggedIn){
+      avatarEl.removeAttribute('data-img');
+      avatarEl.innerHTML = '<svg class="cam" viewBox="0 0 24 24" style="width:24px;height:24px" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.6A1 1 0 0 1 11 4h2a1 1 0 0 1 .8.4L15 6h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>';
+      pinfoEl.innerHTML = '<div class="login-row" id="loginRow"><span class="lt">登录</span>'+
+        '<svg class="arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="m9 18 6-6-6-6"/></svg></div>'+
+        pauthHTML();
+      document.getElementById('loginRow').onclick = doLogin;
+    } else {
+      if(!avatarEl.getAttribute('data-img')){
+        avatarEl.innerHTML = wechatAvatarSVG();
+      }
+      pinfoEl.innerHTML = '<div class="pname" id="pname" contenteditable="true" spellcheck="false">微信用户</div>'+
+        pauthHTML();
+      var pn = document.getElementById('pname');
+      pn.addEventListener('blur', function(){ if(!pn.textContent.trim()) pn.textContent = '微信用户'; });
+      pn.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); pn.blur(); } });
+    }
+    document.getElementById('logoutMenu').style.display = loggedIn ? '' : 'none';
+  }
+
+  function doLogin(){
+    // 跳转到登录中间页（传递来源页，授权完成后回到这里）
+    location.href="./login.html" + encodeURIComponent('s2_mine.html');
+  }
+  function doLogout(){
+    loggedIn = false;
+    avatarEl.removeAttribute('data-img');
+    fileInput.value = '';
+    try { localStorage.removeItem('loggedIn'); } catch(e){}
+    try { localStorage.removeItem('loggedPhone'); } catch(e){}
+    render();
+  }
+
+  function goVerify(){ location.href="./s2_verify.html"; }
+  window.goVerify = goVerify;
+
+  // 商机入口：未认证时引导至认证页（暗示需认证后使用）；已认证则提示功能开发中
+  function onBiz(el){
+    if(verified){ toast('「' + (el.dataset.label || '该') + '」功能开发中'); }
+    else { goVerify(); }
+  }
+  window.onBiz = onBiz;
+
+  function toast(msg){
+    var t = document.getElementById('toast');
+    if(!t){ t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+
+  avatarEl.onclick = function(){
+    if(!loggedIn){ doLogin(); }
+    else { fileInput.click(); }
+  };
+  fileInput.onchange = function(){
+    var f = this.files && this.files[0];
+    if(!f) return;
+    var r = new FileReader();
+    r.onload = function(e){
+      avatarEl.setAttribute('data-img','1');
+      avatarEl.innerHTML = '<img src="'+e.target.result+'" alt="头像">';
+    };
+    r.readAsDataURL(f);
+  };
+  document.getElementById('logoutBtn').onclick = doLogout;
+
+  render();
+
+  // 认证状态联动：已认证则隐藏引导区与锁定徽标
+  if(verified){
+    var vb = document.getElementById('verifyBanner'); if(vb) vb.style.display = 'none';
+    document.body.classList.add('verified');
+  } else {
+    // 仅首次加载播放 2-3 次轻微抖动 + 光晕，吸引注意但不干扰操作
+    var banner = document.getElementById('verifyBanner');
+    if(banner){ banner.classList.add('shake'); }
+  }
+})();
+</script>
+</body>
+</html>

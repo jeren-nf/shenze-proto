@@ -11,8 +11,6 @@
   h1{font-size:26px;font-weight:800;color:#fff;}
   .sub{color:#94a3b8;margin-top:8px;font-size:14px;line-height:1.6;}
   .legend{margin:18px 0 6px;font-size:12px;color:#94a3b8;background:#1e293b;padding:10px 14px;border-radius:10px;border:1px solid #334155;}
-  .bridge-tip{margin:14px 0 4px;font-size:13px;line-height:1.6;color:#0F172A;background:#E6F4FF;border:1px solid #1677FF;border-left:4px solid #1677FF;padding:10px 14px;border-radius:10px;}
-  .bridge-tip b{color:#1677FF;}
   .grp{margin-top:30px;}
   .grp h2{font-size:17px;color:#5eead4;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:14px;}
   .grp h2 .cnt{font-size:12px;color:#64748b;background:#1e293b;padding:2px 9px;border-radius:10px;}
@@ -24,61 +22,81 @@
   a.card .tag{display:inline-block;font-size:10.5px;color:#5eead4;background:#0d3b36;padding:1px 7px;border-radius:6px;margin-top:8px;}
   .foot{margin-top:40px;font-size:12px;color:#64748b;text-align:center;}
 </style>
-</head>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'464588589b1f42e6874bcf7e6cb67ad6'
+    });
+  }catch(e){}
+})();
+</script></head>
 <body>
 <div class="wrap">
   <h1>跨境贸易服务平台 · 原型总览</h1>
   <div class="sub">基于 PRD（V1.0 一期）生成 · 每个页面：左侧原型（iPhone 手机框 / Web 控制台）+ 右侧原型说明（功能描述·字段·规则·异常·验收）+ 蓝色连接线<br>基调：贸易蓝/青色 · 共 32 页</div>
-  <div class="bridge-tip">📌 本页为 PRD 自动生成的<b>原始原型总览</b>。点击下方卡片可进入对应的<b>高保真还原版</b>（基于《UI 设计规范 V1.1》生成，科技蓝主色 + Logo 橙辅色、全端浅色）。</div>
   <div class="legend">说明：页面内右侧编号说明项通过<b style="color:#60a5fa;">蓝色虚线</b>连接至左侧对应 UI 元素；未登录/敏感词等交互以 alert 模拟。PRD 中【待确认】项已在说明中标注。</div>
 
   <div class="grp">
     <h2>📱 卖家端小程序 <span class="cnt">14 页</span></h2>
     <div class="grid">
-      <a class="card" href="seller/s1_login_auth.html"><div class="t">登录与商家认证</div><div class="d">微信登录 · 认证资料提交 · 状态</div><span class="tag">FR-LOGIN-01</span></a>
-      <a class="card" href="seller/s2_home.html"><div class="t">首页</div><div class="d">金刚区 · 热门求购 · 信息流</div><span class="tag">FR-FEED-01</span></a>
-      <a class="card" href="seller/s3_publish_supply.html"><div class="t">发布供应</div><div class="d">品类 · 图片≤9 · 必填校验</div><span class="tag">FR-SUPPLY-01</span></a>
-      <a class="card" href="seller/s4_detail.html"><div class="t">供求详情</div><div class="d">留言沟通 · 联系方式脱敏</div><span class="tag">FR-MSG-01</span></a>
-      <a class="card" href="seller/s5_my_supply.html"><div class="t">我的供应</div><div class="d">状态筛选 · 编辑/下架/删除</div><span class="tag">FR-MY-01</span></a>
-      <a class="card" href="seller/s6_logi_order.html"><div class="t">物流下单</div><div class="d">实时运费 · 渠道 · 境外地址</div><span class="tag">FR-LOGI-01</span></a>
-      <a class="card" href="seller/s7_waybill_list.html"><div class="t">运单列表</div><div class="d">状态分类筛选</div><span class="tag">FR-LOGI-02</span></a>
-      <a class="card" href="seller/s8_tracking.html"><div class="t">物流跟踪</div><div class="d">轨迹时间轴 · 异常展示</div><span class="tag">FR-LOGI-02/03</span></a>
-      <a class="card" href="seller/s9_address.html"><div class="t">地址管理</div><div class="d">默认地址 · 增删改</div><span class="tag">FR-LOGI-04</span></a>
-      <a class="card" href="seller/s10_school_list.html"><div class="t">小学堂列表</div><div class="d">图文/视频内容</div><span class="tag">FR-EDU-01</span></a>
-      <a class="card" href="seller/s11_school_detail.html"><div class="t">小学堂详情</div><div class="d">富媒体渲染</div><span class="tag">FR-EDU-01</span></a>
-      <a class="card" href="seller/s12_profile.html"><div class="t">资料与认证</div><div class="d">认证状态查看</div><span class="tag">FR-LOGIN-01</span></a>
-      <a class="card" href="seller/s13_msg_settings.html"><div class="t">消息/客服/设置</div><div class="d">消息分类 · 通知</div><span class="tag">FR-NOTIFY-01</span></a>
-      <a class="card" href="seller/s14_mine.html"><div class="t">我的（聚合）</div><div class="d">功能入口聚合</div><span class="tag">FR-I18N-01</span></a>
+      <a class="card" href="./seller/s1_login_auth.html"><div class="t">登录与商家认证</div><div class="d">微信登录 · 认证资料提交 · 状态</div><span class="tag">FR-LOGIN-01</span></a>
+      <a class="card" href="./seller/s2_home.html"><div class="t">首页</div><div class="d">金刚区 · 热门求购 · 信息流</div><span class="tag">FR-FEED-01</span></a>
+      <a class="card" href="./seller/s3_publish_supply.html"><div class="t">发布供应</div><div class="d">品类 · 图片≤9 · 必填校验</div><span class="tag">FR-SUPPLY-01</span></a>
+      <a class="card" href="./seller/s4_detail.html"><div class="t">供求详情</div><div class="d">留言沟通 · 联系方式脱敏</div><span class="tag">FR-MSG-01</span></a>
+      <a class="card" href="./seller/s5_my_supply.html"><div class="t">我的供应</div><div class="d">状态筛选 · 编辑/下架/删除</div><span class="tag">FR-MY-01</span></a>
+      <a class="card" href="./seller/s6_logi_order.html"><div class="t">物流下单</div><div class="d">实时运费 · 渠道 · 境外地址</div><span class="tag">FR-LOGI-01</span></a>
+      <a class="card" href="./seller/s7_waybill_list.html"><div class="t">运单列表</div><div class="d">状态分类筛选</div><span class="tag">FR-LOGI-02</span></a>
+      <a class="card" href="./seller/s8_tracking.html"><div class="t">物流跟踪</div><div class="d">轨迹时间轴 · 异常展示</div><span class="tag">FR-LOGI-02/03</span></a>
+      <a class="card" href="./seller/s9_address.html"><div class="t">地址管理</div><div class="d">默认地址 · 增删改</div><span class="tag">FR-LOGI-04</span></a>
+      <a class="card" href="./seller/s10_school_list.html"><div class="t">小学堂列表</div><div class="d">图文/视频内容</div><span class="tag">FR-EDU-01</span></a>
+      <a class="card" href="./seller/s11_school_detail.html"><div class="t">小学堂详情</div><div class="d">富媒体渲染</div><span class="tag">FR-EDU-01</span></a>
+      <a class="card" href="./seller/s12_profile.html"><div class="t">资料与认证</div><div class="d">认证状态查看</div><span class="tag">FR-LOGIN-01</span></a>
+      <a class="card" href="./seller/s13_msg_settings.html"><div class="t">消息/客服/设置</div><div class="d">消息分类 · 通知</div><span class="tag">FR-NOTIFY-01</span></a>
+      <a class="card" href="./seller/s14_mine.html"><div class="t">我的（聚合）</div><div class="d">功能入口聚合</div><span class="tag">FR-I18N-01</span></a>
     </div>
   </div>
 
   <div class="grp">
     <h2>🌐 买家端小程序（默认英文） <span class="cnt">6 页</span></h2>
     <div class="grid">
-      <a class="card" href="buyer/b1_login.html"><div class="t">登录</div><div class="d">微信登录 · 无需认证</div><span class="tag">FR-LOGIN-02</span></a>
-      <a class="card" href="buyer/b2_home.html"><div class="t">首页</div><div class="d">发布询盘入口 · 热门供应</div><span class="tag">FR-FEED-01</span></a>
-      <a class="card" href="buyer/b3_publish_inquiry.html"><div class="t">发布询盘</div><div class="d">表单 · 目标价格可选</div><span class="tag">FR-INQUIRY-01</span></a>
-      <a class="card" href="buyer/b4_detail.html"><div class="t">供应详情</div><div class="d">留言 · 联系方式脱敏</div><span class="tag">FR-MSG-01</span></a>
-      <a class="card" href="buyer/b5_my_inquiry.html"><div class="t">我的询盘</div><div class="d">状态筛选 · 编辑/下架</div><span class="tag">FR-MY-01</span></a>
-      <a class="card" href="buyer/b6_mine.html"><div class="t">我的（聚合）</div><div class="d">功能入口聚合</div><span class="tag">FR-I18N-01</span></a>
+      <a class="card" href="./buyer/b1_login.html"><div class="t">登录</div><div class="d">微信登录 · 无需认证</div><span class="tag">FR-LOGIN-02</span></a>
+      <a class="card" href="./buyer/b2_home.html"><div class="t">首页</div><div class="d">发布询盘入口 · 热门供应</div><span class="tag">FR-FEED-01</span></a>
+      <a class="card" href="./buyer/b3_publish_inquiry.html"><div class="t">发布询盘</div><div class="d">表单 · 目标价格可选</div><span class="tag">FR-INQUIRY-01</span></a>
+      <a class="card" href="./buyer/b4_detail.html"><div class="t">供应详情</div><div class="d">留言 · 联系方式脱敏</div><span class="tag">FR-MSG-01</span></a>
+      <a class="card" href="./buyer/b5_my_inquiry.html"><div class="t">我的询盘</div><div class="d">状态筛选 · 编辑/下架</div><span class="tag">FR-MY-01</span></a>
+      <a class="card" href="./buyer/b6_mine.html"><div class="t">我的（聚合）</div><div class="d">功能入口聚合</div><span class="tag">FR-I18N-01</span></a>
     </div>
   </div>
 
   <div class="grp">
     <h2>🖥️ 管理后台 Web <span class="cnt">12 页</span></h2>
     <div class="grid">
-      <a class="card" href="admin/a1_dashboard.html"><div class="t">仪表盘</div><div class="d">核心指标 · Top5</div><span class="tag">FR-ADMIN-01</span></a>
-      <a class="card" href="admin/a2_user.html"><div class="t">用户管理</div><div class="d">授权用户列表</div><span class="tag">FR-ADMIN</span></a>
-      <a class="card" href="admin/a3_merchant.html"><div class="t">商家认证列表</div><div class="d">认证状态筛选</div><span class="tag">FR-ADMIN-02</span></a>
-      <a class="card" href="admin/a3b_cert_review.html"><div class="t">认证审核详情</div><div class="d">通过/驳回(必填原因)</div><span class="tag">FR-ADMIN-02</span></a>
-      <a class="card" href="admin/a4_supply.html"><div class="t">供求管理</div><div class="d">筛选 · 下架 · 置顶</div><span class="tag">FR-ADMIN-SUPPLY-01</span></a>
-      <a class="card" href="admin/a4b_category.html"><div class="t">品类管理</div><div class="d">三级品类树</div><span class="tag">FR-ADMIN-SUPPLY-01</span></a>
-      <a class="card" href="admin/a4c_sensitive.html"><div class="t">敏感词管理</div><div class="d">词库 · 启用停用</div><span class="tag">FR-ADMIN-SUPPLY-01</span></a>
-      <a class="card" href="admin/a5_logistics.html"><div class="t">物流管理</div><div class="d">订单筛选 · 详情</div><span class="tag">FR-ADMIN-LOGI-01</span></a>
-      <a class="card" href="admin/a6_content.html"><div class="t">内容管理</div><div class="d">图文/视频列表</div><span class="tag">FR-EDU-01</span></a>
-      <a class="card" href="admin/a6b_content_edit.html"><div class="t">内容编辑</div><div class="d">富文本编辑</div><span class="tag">FR-EDU-01</span></a>
-      <a class="card" href="admin/a7_system.html"><div class="t">系统设置</div><div class="d">消息/Banner/日志</div><span class="tag">FR-ADMIN-04</span></a>
-      <a class="card" href="admin/a8_permission.html"><div class="t">权限管理</div><div class="d">角色 · 权限矩阵</div><span class="tag">FR-ADMIN-03</span></a>
+      <a class="card" href="./admin/a1_dashboard.html"><div class="t">仪表盘</div><div class="d">核心指标 · Top5</div><span class="tag">FR-ADMIN-01</span></a>
+      <a class="card" href="./admin/a2_user.html"><div class="t">用户管理</div><div class="d">授权用户列表</div><span class="tag">FR-ADMIN</span></a>
+      <a class="card" href="./admin/a3_merchant.html"><div class="t">商家认证列表</div><div class="d">认证状态筛选</div><span class="tag">FR-ADMIN-02</span></a>
+      <a class="card" href="./admin/a3b_cert_review.html"><div class="t">认证审核详情</div><div class="d">通过/驳回(必填原因)</div><span class="tag">FR-ADMIN-02</span></a>
+      <a class="card" href="./admin/a4_supply.html"><div class="t">供求管理</div><div class="d">筛选 · 下架 · 置顶</div><span class="tag">FR-ADMIN-SUPPLY-01</span></a>
+      <a class="card" href="./admin/a4b_category.html"><div class="t">品类管理</div><div class="d">三级品类树</div><span class="tag">FR-ADMIN-SUPPLY-01</span></a>
+      <a class="card" href="./admin/a4c_sensitive.html"><div class="t">敏感词管理</div><div class="d">词库 · 启用停用</div><span class="tag">FR-ADMIN-SUPPLY-01</span></a>
+      <a class="card" href="./admin/a5_logistics.html"><div class="t">物流管理</div><div class="d">订单筛选 · 详情</div><span class="tag">FR-ADMIN-LOGI-01</span></a>
+      <a class="card" href="./admin/a6_content.html"><div class="t">内容管理</div><div class="d">图文/视频列表</div><span class="tag">FR-EDU-01</span></a>
+      <a class="card" href="./admin/a6b_content_edit.html"><div class="t">内容编辑</div><div class="d">富文本编辑</div><span class="tag">FR-EDU-01</span></a>
+      <a class="card" href="./admin/a7_system.html"><div class="t">系统设置</div><div class="d">消息/Banner/日志</div><span class="tag">FR-ADMIN-04</span></a>
+      <a class="card" href="./admin/a8_permission.html"><div class="t">权限管理</div><div class="d">角色 · 权限矩阵</div><span class="tag">FR-ADMIN-03</span></a>
     </div>
   </div>
 

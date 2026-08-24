@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 卖家端小程序首页</title>
+<link rel="stylesheet" href="./tokens.css" />
+<style>
+  body { background: #E9EDF2; display: flex; justify-content: center; padding: 32px 0; }
+  /* iPhone 390×844 设备框 */
+  .phone {
+    width: 390px; height: 844px; background: var(--bg-page);
+    border-radius: 44px; box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+    overflow: hidden; position: relative; border: 10px solid #111;
+    display: flex; flex-direction: column;
+  }
+  /* 状态栏 */
+  .statusbar { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 13px; font-weight: 600; color: var(--ink-primary); }
+  .statusbar .right { display: flex; gap: 6px; align-items: center; }
+  /* 顶部标题栏 */
+  .topbar { height: 48px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #fff; }
+  .topbar .loc { display: flex; align-items: center; gap: 2px; font-size: 15px; font-weight: 700; }
+  .topbar .search-mini { flex: 1; height: 34px; background: var(--bg-page); border-radius: var(--r-pill); display: flex; align-items: center; gap: 6px; padding: 0 12px; color: var(--ink-tertiary); font-size: 12px; }
+  .icon-circle { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-page); display: flex; align-items: center; justify-content: center; position: relative; }
+
+  /* 品牌区（logo + 名称） */
+  .brand { display: flex; align-items: center; gap: 8px; flex: none; }
+  .brand-logo { height: 30px; width: auto; max-width: 120px; object-fit: contain; border-radius: 4px; }
+  .brand-logo-fallback { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg,#F5A623,#FFB340); color: #fff; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none; }
+  .brand-name { font-size: 16px; font-weight: 700; color: var(--ink-primary); white-space: nowrap; }
+
+  /* 滚动内容 */
+  .scroll { flex: 1; overflow-y: auto; padding-bottom: 8px; }
+  /* Banner - 双行：第一行弱化，第二行凸显 */
+  .banner { margin: 12px 16px; height: 100px; border-radius: var(--r-lg); background: linear-gradient(135deg, var(--gradient-brand-start), var(--gradient-brand-end)); color: #fff; padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .banner .b-sub { margin: 0; font-size: 14px; font-weight: 500; opacity: .82; letter-spacing: .4px; }
+  .banner .b-main { margin: 5px 0 0; font-size: 21px; font-weight: 800; line-height: 1.25; text-shadow: 0 1px 8px rgba(0,0,0,.18); }
+  .banner .deco { position: absolute; right: -20px; top: -20px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,.12); }
+  .banner .deco2 { position: absolute; right: 40px; bottom: -40px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.1); }
+
+  /* 金刚区 */
+  .grid-card { margin: 0 16px 12px; background: #fff; border-radius: var(--r-lg); padding: 16px 8px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 0; }
+  .grid-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .grid-ic { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+  .gi-blue { background: var(--color-primary-bg); }
+  .gi-orange { background: var(--color-accent-bg); }
+  .gi-green { background: var(--color-success-bg); }
+  .gi-red { background: var(--color-error-bg); }
+  .grid-item span { font-size: 11px; color: var(--ink-secondary); }
+
+  /* 区块标题 */
+  .sec-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 16px; margin-top: 4px; }
+  .sec-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .sec-title::before { content: ""; width: 4px; height: 15px; background: var(--color-primary); border-radius: 2px; }
+  .sec-more { font-size: 12px; color: var(--ink-tertiary); }
+
+  /* 热门求购 - 横向滑动 */
+  .hot-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 0 16px 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .hot-scroll::-webkit-scrollbar { display: none; }
+  .buy-card { flex: 0 0 236px; scroll-snap-align: start; background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 12px; display: flex; gap: 10px; align-items: stretch; }
+  .buy-card .thumb { width: 88px; border-radius: 8px; background: #E6F0FF; flex: none; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .buy-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .buy-card .body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px; }
+  .buy-card h4 { margin: 0; font-size: 13px; font-weight: 700; line-height: 1.3; }
+  .buy-card .region { flex: none; display: flex; align-items: center; gap: 3px; font-size: 10px; color: var(--ink-secondary); }
+  .buy-card .region .flag { font-size: 13px; line-height: 1; }
+  .buy-card .cat { display: inline-block; font-size: 10px; color: var(--color-primary); background: var(--color-primary-bg); border-radius: 4px; padding: 1px 5px; margin-bottom: 4px; width: fit-content; }
+  .buy-card .desc { font-size: 10px; color: var(--ink-secondary); line-height: 1.3; margin: 0 0 3px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .buy-card .qty { font-size: 10px; color: var(--color-accent-active); font-weight: 600; margin-top: auto; }
+  .buy-card .buy-time { flex: none; font-size: 10px; color: var(--ink-tertiary); white-space: nowrap; }
+
+  /* 全部求购 - 一卡一行 */
+  .waterfall { padding: 0 16px 8px; }
+  .wf-card { background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 12px; margin-bottom: 10px; display: flex; gap: 12px; align-items: stretch; }
+  .wf-card .thumb { width: 96px; height: 96px; border-radius: 8px; background: #EAF3FF; flex: none; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .wf-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .wf-card .body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .wf-card .card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+  .wf-card h4 { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.3; }
+  .wf-card .region { flex: none; display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--ink-secondary); }
+  .wf-card .region .flag { font-size: 15px; line-height: 1; }
+  .wf-card .cat { display: inline-block; font-size: 11px; color: var(--color-primary); background: var(--color-primary-bg); border-radius: 4px; padding: 1px 6px; margin-bottom: 5px; width: fit-content; }
+  .wf-card .desc { font-size: 12px; color: var(--ink-secondary); line-height: 1.4; margin: 0 0 5px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .wf-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: auto; }
+  .wf-card .qty { font-size: 12px; color: var(--color-accent-active); font-weight: 600; }
+  .wf-card .wf-time { font-size: 11px; color: var(--ink-tertiary); text-align: right; flex: none; white-space: nowrap; }
+
+  /* 悬浮发布按钮（发供应） */
+  .fab { position: absolute; right: 16px; bottom: 140px; z-index: 30; }
+  .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: var(--color-accent); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; box-shadow: 0 6px 16px rgba(245,166,35,.42); transition: transform .15s ease; cursor: pointer; }
+  .fab-btn:active { transform: scale(.95); }
+  .fab-btn svg { width: 16px; height: 16px; flex: none; }
+  .fab-text { font-size: 9px; font-weight: 700; line-height: 1; letter-spacing: .5px; }
+
+  /* 首页 Tab 滚动回顶箭头 */
+  .tab-ic-wrap { position: relative; width: 22px; height: 22px; }
+  .tab .ic-home, .tab .ic-arrow { position: absolute; inset: 0; width: 22px; height: 22px; transition: opacity .25s ease, transform .25s ease; }
+  .tab .ic-arrow { opacity: 0; transform: scale(.5); }
+  .tab.arrow-mode .ic-home { opacity: 0; transform: scale(.5); }
+  .tab.arrow-mode .ic-arrow { opacity: 1; transform: scale(1); }
+
+  /* 底部 Tab Bar */
+  .tabbar { height: 56px; flex: none; background: #fff; border-top: 1px solid var(--border-weak); display: flex; padding-bottom: 6px; }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink-tertiary); font-size: 10.5px; }
+  .tab.active { color: var(--color-primary); }
+  .tab .ic { width: 22px; height: 22px; }
+  .tab.active .ic { stroke: var(--color-primary); }
+  .tab.active .tab-ic-wrap { background: var(--tab-active-bg); border-radius: 50%; padding: 3px; }
+  .tab .badge-dot { top: 2px; right: 50%; transform: translateX(14px); }
+</style>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'c605e9c56c584d32ba06aac042bba710'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+<div class="phone">
+  <!-- 状态栏 -->
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div>
+  </div>
+
+  <!-- 顶部标题栏 -->
+  <div class="topbar">
+    <div class="brand">
+      <img class="brand-logo" src="./logo.png" alt="鞋贸汇" onerror="this.style.display='none';document.getElementById('blf').style.display='flex';" />
+      <span id="blf" class="brand-logo-fallback" style="display:none">鞋</span>
+      <span class="brand-name">鞋贸汇</span>
+    </div>
+    <div class="search-mini"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>搜询盘 / 找买家</div>
+    <div class="icon-circle"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge-dot">2</span></div>
+  </div>
+
+  <!-- 滚动内容 -->
+  <div class="scroll">
+    <!-- Banner - 双行 -->
+    <div class="banner">
+      <div class="deco"></div><div class="deco2"></div>
+      <p class="b-sub">申泽优品.精选奥莱</p>
+      <div class="b-main">9月专属，全城最底价</div>
+    </div>
+
+    <!-- 金刚区 -->
+    <div class="grid-card">
+      <div class="grid">
+        <div class="grid-item"><div class="grid-ic gi-orange"><svg class="ic" viewBox="0 0 24 24" style="stroke:var(--color-accent-active)"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg></div><span>外贸结汇</span></div>
+        <div class="grid-item" style="cursor:pointer" onclick="location.href="./s2_logistics_order.html""><div class="grid-ic gi-blue"><svg class="ic" viewBox="0 0 24 24" style="stroke:var(--color-primary)"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div><span>出海物流</span></div>
+        <div class="grid-item"><div class="grid-ic gi-green"><svg class="ic" viewBox="0 0 24 24" style="stroke:var(--color-success-text)"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2-1.5Z"/></svg></div><span>跨境学堂</span></div>
+        <div class="grid-item"><div class="grid-ic gi-red"><svg class="ic" viewBox="0 0 24 24" style="stroke:var(--color-error-text)"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 4-5"/></svg></div><span>数智测品</span></div>
+      </div>
+    </div>
+
+    <!-- 热门求购（新增） -->
+    <div class="sec-head">
+      <div class="sec-title">热门求购</div>
+      <div class="sec-more">更多 ›</div>
+    </div>
+
+    <div class="hot-scroll">
+      <div class="buy-card">
+        <div class="thumb"><img src="./img/sneakers.jpg" alt="运动鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>运动鞋</h4>
+            <div class="buy-time">8-17</div>
+          </div>
+          <span class="cat">运动鞋</span>
+          <div class="desc">透气网面运动鞋，适合南非及非洲电商渠道。</div>
+          <div class="wf-meta"><div class="qty">30,000 双</div><div class="region"><span class="flag">🇿🇦</span>南非</div></div>
+        </div>
+      </div>
+      <div class="buy-card">
+        <div class="thumb"><img src="./img/suitcase.jpg" alt="旅行箱" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>旅行箱</h4>
+            <div class="buy-time">8-16</div>
+          </div>
+          <span class="cat">箱包</span>
+          <div class="desc">硬壳 ABS+PC 旅行箱，静音万向轮，销往西非。</div>
+          <div class="wf-meta"><div class="qty">8,000 件</div><div class="region"><span class="flag">🇳🇬</span>尼日利亚</div></div>
+        </div>
+      </div>
+      <div class="buy-card">
+        <div class="thumb"><img src="./img/belt.jpg" alt="男士正装皮带" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>男士正装皮带</h4>
+            <div class="buy-time">8-15</div>
+          </div>
+          <span class="cat">皮具配饰</span>
+          <div class="desc">头层牛皮自动扣皮带，支持礼盒包装。</div>
+          <div class="wf-meta"><div class="qty">15,000 条</div><div class="region"><span class="flag">🇪🇬</span>埃及</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 全部求购（新增） -->
+    <div class="sec-head">
+      <div class="sec-title">全部求购</div>
+    </div>
+
+    <div class="waterfall">
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/sandals.jpg" alt="凉鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>地中海风凉鞋</h4>
+            <div class="wf-time">刚刚</div>
+          </div>
+          <span class="cat">凉鞋</span>
+          <div class="desc">轻量化 EVA，多色混批，适合旅游零售。</div>
+          <div class="wf-meta"><div class="qty">采购数量：40,000 双</div><div class="region"><span class="flag">🇹🇳</span>突尼斯</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/sneakers.jpg" alt="运动鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>沙漠徒步运动鞋</h4>
+            <div class="wf-time">刚刚</div>
+          </div>
+          <span class="cat">运动鞋</span>
+          <div class="desc">防沙透气，适合户外探险渠道。</div>
+          <div class="wf-meta"><div class="qty">采购数量：25,000 双</div><div class="region"><span class="flag">🇳🇦</span>纳米比亚</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/canvas.jpg" alt="帆布鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>帆布鞋出口订单</h4>
+            <div class="wf-time">刚刚</div>
+          </div>
+          <span class="cat">帆布鞋</span>
+          <div class="desc">东非市场，需环保印染工艺，可接长期框架协议。</div>
+          <div class="wf-meta"><div class="qty">采购数量：50,000 双</div><div class="region"><span class="flag">🇰🇪</span>肯尼亚</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/boots.jpg" alt="工装安全鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>工装安全鞋</h4>
+            <div class="wf-time">8-16</div>
+          </div>
+          <span class="cat">劳保鞋</span>
+          <div class="desc">钢头防砸，符合 CE EN20345，可贴牌生产。</div>
+          <div class="wf-meta"><div class="qty">采购数量：15,000 双</div><div class="region"><span class="flag">🇹🇿</span>坦桑尼亚</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/boots.jpg" alt="工装靴" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>基建项目工装靴</h4>
+            <div class="wf-time">8-16</div>
+          </div>
+          <span class="cat">劳保鞋</span>
+          <div class="desc">钢头防砸，可贴牌生产，月产能稳定。</div>
+          <div class="wf-meta"><div class="qty">采购数量：14,000 双</div><div class="region"><span class="flag">🇷🇼</span>卢旺达</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/hiking.jpg" alt="登山徒步鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>登山徒步鞋</h4>
+            <div class="wf-time">8-15</div>
+          </div>
+          <span class="cat">户外鞋</span>
+          <div class="desc">防滑大底，Vibram 同级，要求提供耐磨测试数据。</div>
+          <div class="wf-meta"><div class="qty">采购数量：8,000 双</div><div class="region"><span class="flag">🇪🇹</span>埃塞俄比亚</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/canvas.jpg" alt="帆布鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>校园帆布鞋</h4>
+            <div class="wf-time">8-15</div>
+          </div>
+          <span class="cat">帆布鞋</span>
+          <div class="desc">团购订单，环保印染，可接长期框架。</div>
+          <div class="wf-meta"><div class="qty">采购数量：55,000 双</div><div class="region"><span class="flag">🇧🇼</span>博茨瓦纳</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/ski.jpg" alt="滑雪靴配件" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>滑雪靴配件</h4>
+            <div class="wf-time">8-14</div>
+          </div>
+          <span class="cat">雪靴</span>
+          <div class="desc">寻找注塑厂商，长期合作，月产能稳定。</div>
+          <div class="wf-meta"><div class="qty">采购数量：10,000 套</div><div class="region"><span class="flag">🇸🇳</span>塞内加尔</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/belt.jpg" alt="皮带" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>头层牛皮皮带</h4>
+            <div class="wf-time">8-14</div>
+          </div>
+          <span class="cat">皮具配饰</span>
+          <div class="desc">自动扣，支持礼盒包装与贴牌。</div>
+          <div class="wf-meta"><div class="qty">采购数量：20,000 条</div><div class="region"><span class="flag">🇦🇴</span>安哥拉</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/sneakers.jpg" alt="运动鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>运动休闲鞋</h4>
+            <div class="wf-time">8-13</div>
+          </div>
+          <span class="cat">运动鞋</span>
+          <div class="desc">中非电商热销款，透气网面，可混码。</div>
+          <div class="wf-meta"><div class="qty">采购数量：35,000 双</div><div class="region"><span class="flag">🇨🇲</span>喀麦隆</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/sandals.jpg" alt="拖鞋凉鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>拖鞋凉鞋夏季款</h4>
+            <div class="wf-time">8-12</div>
+          </div>
+          <span class="cat">凉鞋</span>
+          <div class="desc">轻量化 EVA，反倾销合规，支持多色混批。</div>
+          <div class="wf-meta"><div class="qty">采购数量：120,000 双</div><div class="region"><span class="flag">🇲🇦</span>摩洛哥</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/ballet.jpg" alt="芭蕾鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>舞蹈练功鞋</h4>
+            <div class="wf-time">8-12</div>
+          </div>
+          <span class="cat">舞蹈鞋</span>
+          <div class="desc">弹性面料，支持定制尺码表与 LOGO。</div>
+          <div class="wf-meta"><div class="qty">采购数量：4,000 双</div><div class="region"><span class="flag">🇿🇲</span>赞比亚</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/sandals.jpg" alt="拖鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>日常防滑拖鞋</h4>
+            <div class="wf-time">8-11</div>
+          </div>
+          <span class="cat">凉鞋</span>
+          <div class="desc">西非日常款，多色混批，支持小单试单。</div>
+          <div class="wf-meta"><div class="qty">采购数量：90,000 双</div><div class="region"><span class="flag">🇨🇮</span>科特迪瓦</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/ballet.jpg" alt="芭蕾舞练功鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>芭蕾舞练功鞋</h4>
+            <div class="wf-time">8-10</div>
+          </div>
+          <span class="cat">舞蹈鞋</span>
+          <div class="desc">弹性面料，支持定制 LOGO 与尺码表。</div>
+          <div class="wf-meta"><div class="qty">采购数量：3,000 双</div><div class="region"><span class="flag">🇬🇭</span>加纳</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/canvas.jpg" alt="帆布鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>帆布鞋校园采购</h4>
+            <div class="wf-time">8-09</div>
+          </div>
+          <span class="cat">帆布鞋</span>
+          <div class="desc">北非连锁渠道，支持贴牌与尺码定制。</div>
+          <div class="wf-meta"><div class="qty">采购数量：60,000 双</div><div class="region"><span class="flag">🇩🇿</span>阿尔及利亚</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/hiking.jpg" alt="登山鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>高原徒步鞋</h4>
+            <div class="wf-time">8-09</div>
+          </div>
+          <span class="cat">户外鞋</span>
+          <div class="desc">防水透气，寻找长期合作框架厂商。</div>
+          <div class="wf-meta"><div class="qty">采购数量：7,500 双</div><div class="region"><span class="flag">🇲🇬</span>马达加斯加</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/suitcase.jpg" alt="箱包" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>商务拉杆箱</h4>
+            <div class="wf-time">8-08</div>
+          </div>
+          <span class="cat">箱包</span>
+          <div class="desc">静音万向轮，可定制 LOGO 与内衬。</div>
+          <div class="wf-meta"><div class="qty">采购数量：6,000 件</div><div class="region"><span class="flag">🇬🇦</span>加蓬</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/hiking.jpg" alt="登山鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>户外登山鞋</h4>
+            <div class="wf-time">8-07</div>
+          </div>
+          <span class="cat">户外鞋</span>
+          <div class="desc">防滑大底，Vibram 同级，需耐磨测试数据。</div>
+          <div class="wf-meta"><div class="qty">采购数量：9,000 双</div><div class="region"><span class="flag">🇲🇿</span>莫桑比克</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/ski.jpg" alt="滑雪配件" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>滑雪靴配件</h4>
+            <div class="wf-time">8-06</div>
+          </div>
+          <span class="cat">雪靴</span>
+          <div class="desc">出口转口贸易，寻找稳定注塑厂商。</div>
+          <div class="wf-meta"><div class="qty">采购数量：8,000 套</div><div class="region"><span class="flag">🇿🇼</span>津巴布韦</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/boots.jpg" alt="工装靴" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>油田劳保工装靴</h4>
+            <div class="wf-time">8-05</div>
+          </div>
+          <span class="cat">劳保鞋</span>
+          <div class="desc">钢头防砸防穿刺，符合出口认证。</div>
+          <div class="wf-meta"><div class="qty">采购数量：12,000 双</div><div class="region"><span class="flag">🇱🇾</span>利比亚</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/sandals.jpg" alt="凉鞋" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>雨季防滑凉鞋</h4>
+            <div class="wf-time">8-04</div>
+          </div>
+          <span class="cat">凉鞋</span>
+          <div class="desc">深纹大底，轻量 EVA，支持多色混批。</div>
+          <div class="wf-meta"><div class="qty">采购数量：70,000 双</div><div class="region"><span class="flag">🇺🇬</span>乌干达</div></div>
+        </div>
+      </div>
+      <div class="wf-card">
+        <div class="thumb"><img src="./img/belt.jpg" alt="皮带" /></div>
+        <div class="body">
+          <div class="card-head">
+            <h4>矿区分销皮带</h4>
+            <div class="wf-time">8-03</div>
+          </div>
+          <span class="cat">皮具配饰</span>
+          <div class="desc">耐磨头层牛皮，支持小批量试单。</div>
+          <div class="wf-meta"><div class="qty">采购数量：18,000 条</div><div class="region"><span class="flag">🇨🇩</span>刚果（金）</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部 Tab Bar -->
+  <div class="tabbar">
+    <div class="tab active" id="tabHome">
+      <span class="tab-ic-wrap">
+        <svg class="ic ic-home" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>
+        <svg class="ic ic-arrow" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </span>首页
+    </div>
+    <div class="tab" onclick="location.href="./s2_business.html"">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>商机
+    </div>
+    <div class="tab" onclick="location.href="./s2_mine.html"">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的
+    </div>
+  </div>
+
+  <!-- 悬浮发布按钮 -->
+  <div class="fab" id="fab">
+    <div class="fab-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span class="fab-text">发供应</span>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var scroller = document.querySelector('.scroll');
+  var tabHome = document.getElementById('tabHome');
+  if (scroller && tabHome) {
+    var animating = false;
+    var onScroll = function(){
+      if (animating) return;
+      if (scroller.scrollTop > scroller.clientHeight) {
+        tabHome.classList.add('arrow-mode');
+      } else {
+        tabHome.classList.remove('arrow-mode');
+      }
+    };
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    tabHome.addEventListener('click', function(){
+      if (tabHome.classList.contains('arrow-mode')) {
+        animating = true;
+        var start = scroller.scrollTop, to = 0, dur = 360, t0 = performance.now();
+        (function step(now){
+          var p = Math.min(1, (now - t0) / dur);
+          var e = 1 - Math.pow(1 - p, 3);
+          scroller.scrollTop = start + (to - start) * e;
+          if (p < 1) requestAnimationFrame(step);
+          else { animating = false; onScroll(); }
+        })(performance.now());
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

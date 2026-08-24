@@ -1,78 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>申泽跨境贸易 · 买家登录（EN）</title>
-<link rel="stylesheet" href="tokens.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>买家端·登录 · 跨境贸易服务平台原型</title>
 <style>
-  body { background: #E9EDF2; display: flex; justify-content: center; padding: 32px 0; }
-  .phone { width: 390px; height: 844px; background: var(--bg-page); border-radius: 44px; box-shadow: 0 24px 60px rgba(0,0,0,0.18); overflow: hidden; position: relative; border: 10px solid #111; display: flex; flex-direction: column; }
-  .statusbar { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 13px; font-weight: 600; }
-  .topbar { height: 48px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #fff; }
-  .topbar .brand { font-size: 15px; font-weight: 700; font-family: var(--font-en); }
-  .lang-toggle { margin-left: auto; display: inline-flex; background: var(--bg-page); border-radius: var(--r-pill); padding: 2px; font-size: 11px; font-weight: 600; }
-  .lang-toggle span { padding: 4px 8px; border-radius: var(--r-pill); cursor: pointer; color: var(--ink-tertiary); }
-  .lang-toggle span.on { background: #fff; color: var(--color-primary); box-shadow: var(--shadow-hover); }
-
-  .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 32px; text-align: center; }
-  .logo { width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover)); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(22,119,255,.28); }
-  .logo svg { width: 38px; height: 38px; stroke: #fff; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-  .hero h1 { margin: 0; font-size: 22px; font-weight: 800; font-family: var(--font-en); }
-  .hero p { margin: 10px 0 0; font-size: 13px; color: var(--ink-secondary); line-height: 1.6; font-family: var(--font-en); }
-
-  .actions { padding: 0 24px 40px; }
-  .btn-wechat { width: 100%; height: 48px; border-radius: var(--r-md); background: #07C160; color: #fff; border: none; font-size: 15px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--font-en); }
-  .btn-wechat svg { width: 22px; height: 22px; fill: #fff; }
-  .note { margin: 16px 0 0; font-size: 11.5px; color: var(--ink-tertiary); text-align: center; line-height: 1.6; font-family: var(--font-en); }
-  .note b { color: var(--color-accent-active); font-weight: 600; }
-  .terms { margin-top: 12px; text-align: center; font-size: 11px; color: var(--ink-tertiary); font-family: var(--font-en); }
-  .terms a { color: var(--color-primary); }
+  :root{
+    --brand:#0D9488; --brand-d:#0F766E; --brand-l:#CCFBF1; --brand-xl:#ECFDF9;
+    --blue:#2563EB; --blue-l:#EFF4FF;
+    --ink:#1F2937; --muted:#6B7280; --faint:#9CA3AF;
+    --line:#E5E7EB; --bg:#EEF2F5; --warn:#D97706; --warn-l:#FEF3C7;
+    --danger:#DC2626; --ok:#059669; --gold:#CA8A04;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
+  .stage{display:flex;align-items:stretch;min-height:100vh;}
+  .proto-col{flex:1;padding:36px 28px;display:flex;justify-content:center;align-items:flex-start;
+    position:relative;overflow:auto;}
+  .desc-col{width:430px;flex-shrink:0;background:#fff;border-left:1px solid var(--line);
+    padding:30px 26px 60px;overflow-y:auto;height:100vh;position:sticky;top:0;}
+  /* ===== iPhone 手机框 ===== */
+  .phone{width:384px;height:790px;background:#0B1220;border-radius:46px;padding:13px;
+    box-shadow:0 24px 70px rgba(15,23,42,.30);position:relative;flex-shrink:0;}
+  .phone-screen{width:100%;height:100%;background:#fff;border-radius:34px;overflow:hidden;
+    position:relative;display:flex;flex-direction:column;}
+  .statusbar{height:30px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;font-size:13px;font-weight:600;color:#0f172a;flex-shrink:0;background:#fff;}
+  .statusbar .sb-right{display:flex;gap:5px;align-items:center;font-size:11px;}
+  .mp-nav{height:44px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 14px;background:var(--brand);color:#fff;flex-shrink:0;position:relative;}
+  .mp-nav .back{font-size:22px;line-height:1;cursor:pointer;width:28px;}
+  .mp-nav .title{font-size:16px;font-weight:600;position:absolute;left:50%;transform:translateX(-50%);}
+  .mp-nav .capsule{display:flex;gap:6px;align-items:center;border:1px solid rgba(255,255,255,.5);
+    border-radius:14px;padding:3px 9px;font-size:12px;}
+  .mp-nav .lang{font-size:12px;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:12px;}
+  .app{flex:1;overflow-y:auto;background:#F7FAFC;position:relative;}
+  .app::-webkit-scrollbar{width:0;}
+  .tabbar{height:56px;background:#fff;border-top:1px solid var(--line);display:flex;
+    flex-shrink:0;padding-bottom:4px;}
+  .tabbar .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:2px;font-size:10px;color:var(--muted);cursor:pointer;}
+  .tabbar .tab.active{color:var(--brand);}
+  .tabbar .tab .ic{font-size:18px;line-height:1;}
+  /* ===== 说明面板 ===== */
+  .desc-header{display:flex;align-items:center;gap:10px;padding-bottom:14px;
+    border-bottom:2px solid var(--brand-l);margin-bottom:8px;}
+  .desc-header .tag{background:var(--brand);color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:.5px;padding:4px 10px;border-radius:6px;}
+  .desc-header .h{font-size:18px;font-weight:700;color:var(--ink);}
+  .desc-header .sub{font-size:11px;color:var(--faint);margin-left:auto;}
+  .desc-intro{font-size:13px;line-height:1.7;color:var(--muted);background:var(--brand-xl);
+    border-left:3px solid var(--brand);padding:10px 12px;border-radius:0 8px 8px 0;margin:10px 0 18px;}
+  .desc-section{display:flex;gap:12px;padding:14px 0;border-bottom:1px dashed var(--line);}
+  .desc-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:2;}
+  .desc-body{flex:1;min-width:0;}
+  .desc-body h4{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+  .desc-body p{font-size:12.5px;line-height:1.65;color:var(--muted);margin-bottom:8px;}
+  .spec{display:flex;gap:8px;font-size:12px;line-height:1.55;margin-bottom:5px;align-items:flex-start;}
+  .spec .k{flex-shrink:0;font-weight:700;color:var(--brand-d);width:42px;}
+  .spec .v{color:#374151;flex:1;}
+  .spec .v.bad{color:var(--danger);}
+  .spec .v.good{color:var(--ok);}
+  .fr{display:inline-block;font-size:10.5px;font-weight:700;color:var(--brand-d);
+    background:var(--brand-l);padding:1px 7px;border-radius:5px;margin-bottom:6px;}
+  /* ===== 手机内通用组件 ===== */
+  .banner{height:130px;margin:12px;border-radius:14px;overflow:hidden;position:relative;
+    background:linear-gradient(120deg,#0D9488,#0891B2);color:#fff;display:flex;flex-direction:column;
+    justify-content:center;padding:0 18px;}
+  .banner h3{font-size:17px;font-weight:700;}
+  .banner p{font-size:11px;opacity:.9;margin-top:4px;}
+  .banner .dots{position:absolute;bottom:10px;left:18px;display:flex;gap:5px;}
+  .banner .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);}
+  .banner .dots i.on{background:#fff;}
+  .kingkong{display:flex;gap:10px;padding:6px 12px 14px;background:#fff;margin:0 12px 12px;border-radius:14px;
+    box-shadow:0 2px 10px rgba(15,23,42,.05);}
+  .kk{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+  .kk .ico{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    font-size:22px;color:#fff;}
+  .kk span{font-size:11px;color:#374151;}
+  .sec-head{display:flex;align-items:center;justify-content:space-between;padding:4px 16px;margin-top:4px;}
+  .sec-head .t{font-size:14px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;}
+  .sec-head .t .bar{width:3px;height:14px;background:var(--brand);border-radius:2px;}
+  .sec-head .more{font-size:11px;color:var(--faint);}
+  .feed-tabs{display:flex;gap:0;padding:6px 16px 0;position:sticky;top:0;background:#F7FAFC;z-index:3;}
+  .feed-tabs .ft{flex:1;text-align:center;padding:8px 0;font-size:13px;color:var(--muted);
+    border-bottom:2px solid transparent;cursor:pointer;font-weight:600;}
+  .feed-tabs .ft.active{color:var(--brand);border-bottom-color:var(--brand);}
+  .card{background:#fff;border-radius:12px;margin:10px 12px;padding:12px;box-shadow:0 1px 6px rgba(15,23,42,.05);}
+  .card .row1{display:flex;justify-content:space-between;align-items:flex-start;}
+  .card .ttl{font-size:14px;font-weight:600;color:var(--ink);}
+  .card .meta{font-size:11px;color:var(--faint);margin-top:3px;}
+  .card .price{font-size:14px;font-weight:700;color:var(--brand-d);white-space:nowrap;}
+  .tagline{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+  .tg{font-size:10.5px;padding:2px 8px;border-radius:10px;background:var(--brand-xl);color:var(--brand-d);}
+  .tg.warn{background:var(--warn-l);color:var(--warn);}
+  .tg.gray{background:#F3F4F6;color:var(--muted);}
+  .hot-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#fff;
+    background:linear-gradient(120deg,#F59E0B,#D97706);padding:2px 7px;border-radius:8px;}
+  .btn-primary{background:var(--brand);color:#fff;border:none;border-radius:24px;padding:11px;
+    font-size:15px;font-weight:600;width:100%;cursor:pointer;}
+  .btn-outline{background:#fff;color:var(--brand-d);border:1px solid var(--brand);border-radius:24px;
+    padding:11px;font-size:15px;font-weight:600;width:100%;cursor:pointer;}
+  .fab{position:absolute;right:16px;bottom:16px;width:52px;height:52px;border-radius:50%;
+    background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;
+    box-shadow:0 6px 18px rgba(13,148,136,.5);cursor:pointer;z-index:5;}
+  /* 手机内定位 pin */
+  .pin{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    border:2px solid #fff;box-shadow:0 2px 8px rgba(37,99,235,.5);z-index:20;transform:translate(-50%,-50%);}
+  /* 连接线 SVG */
+  #conn-svg{position:absolute;top:0;left:0;pointer-events:none;z-index:9000;overflow:visible;}
+  .legend{font-size:11px;color:var(--faint);margin-top:6px;display:flex;align-items:center;gap:6px;}
+  .legend .ln{width:22px;height:0;border-top:2px dashed var(--blue);}
 </style>
-</head>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'464588589b1f42e6874bcf7e6cb67ad6'
+    });
+  }catch(e){}
+})();
+</script></head>
 <body>
-<div class="phone">
-  <div class="statusbar"><span>9:41</span><div style="display:flex;gap:6px;align-items:center;"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
-
-  <div class="topbar">
-    <div class="brand" data-en="ShenZe Trade" data-zh="申泽贸易">ShenZe Trade</div>
-    <div class="lang-toggle" id="langToggle">
-      <span class="on" data-lang="en">EN</span><span data-lang="zh">中</span>
-    </div>
+<div class="stage">
+  <div class="proto-col" id="protoCol">
+    <div class="phone">
+      <div class="phone-screen">
+<div class="statusbar"><span>9:41</span><span class="sb-right">●●● &nbsp;5G &nbsp;🔋</span></div><div class="mp-nav"><span class="back">‹</span><span class="title">Buyer Login</span><span class="lang" onclick="alert('切换语言')">中 / EN</span></div>
+<div class="app" style="padding-bottom:20px;">
+  <div style="padding:22px 18px;text-align:center;">
+    <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(120deg,#0D9488,#0891B2);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">🌐</div>
+    <div style="font-size:16px;font-weight:700;">Cross-Border Trade</div>
+    <div style="font-size:12px;color:#6B7280;margin-top:4px;">No certification required for buyers</div>
+    <button class="btn-primary" style="margin-top:18px;" onclick="alert('WeChat login (no certification)')">WeChat Login</button>
   </div>
-
-  <div class="hero">
-    <div class="logo"><svg viewBox="0 0 24 24"><path d="M3 11a8 8 0 0 1 8-8 8 8 0 0 1 7.7 5.8A6.5 6.5 0 0 1 16 19H11l-5 3 1-3.5A8 8 0 0 1 3 11Z"/></svg></div>
-    <h1 data-en="Buyer Platform" data-zh="买家平台">Buyer Platform</h1>
-    <p data-en="Source from verified global suppliers. Post RFQs and get matched instantly." data-zh="对接全球认证供应商，发布询盘即刻智能匹配。">Source from verified global suppliers. Post RFQs and get matched instantly.</p>
-  </div>
-
-  <div class="actions">
-    <button class="btn-wechat">
-      <svg viewBox="0 0 24 24"><path d="M8.7 3C4.9 3 1.8 5.8 1.8 9.2c0 1.9 1 3.6 2.7 4.8L3.6 16l2.3-1.2c.9.3 1.8.4 2.8.4h.6a5.4 5.4 0 0 1-.2-1.4c0-3.2 3.1-5.6 6.8-5.6h.6C15.6 5.4 12.5 3 8.7 3Zm-2.4 3.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm4.8 0a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/><path d="M22.2 14.6c0-2.9-2.8-5.2-6.2-5.2s-6.2 2.3-6.2 5.2 2.8 5.2 6.2 5.2c.7 0 1.4-.1 2-.3l2 1-.5-1.7c1.6-1 2.7-2.4 2.7-4.2Zm-8.2-1.1a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8Zm4 0a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8Z"/></svg>
-      <span data-en="Sign in with WeChat" data-zh="微信登录">Sign in with WeChat</span>
-    </button>
-    <p class="note" data-en="No verification required to browse or post RFQs. Verification unlocks order &amp; payment features." data-zh="无需认证即可浏览或发布询盘；认证后解锁下单与支付功能。">No verification required to browse or post RFQs. Verification unlocks order &amp; payment features.</p>
-    <div class="terms" data-en="By continuing you agree to our <a href='#'>Terms</a> &amp; <a href='#'>Privacy</a>." data-zh="继续即代表同意<a href='#'>服务条款</a>与<a href='#'>隐私政策</a>。">By continuing you agree to our <a href='#'>Terms</a> &amp; <a href='#'>Privacy</a>.</div>
+  <div class="card" style="border-left:3px solid #0D9488;">
+    <div class="meta" style="color:#0D9488;">Foreign buyers can publish inquiries immediately after login — no merchant certification needed.</div>
   </div>
 </div>
-
+<div class="tabbar"><div class="tab active"><span class="ic">🏠</span><span>Home</span></div><div class="tab"><span class="ic">🔄</span><span>Supply</span></div><div class="tab"><span class="ic">📝</span><span>My Inquiry</span></div><div class="tab"><span class="ic">🔔</span><span>Msg</span></div><div class="tab"><span class="ic">👤</span><span>Me</span></div></div><span class="pin" data-pin="1" style="left:179px;top:200px;">1</span><span class="pin" data-pin="2" style="left:179px;top:470px;">2</span>
+      </div>
+    </div>
+  </div>
+  <div class="desc-col" id="descCol">
+    <div class="desc-header">
+      <span class="tag">PROTOTYPE</span>
+      <span class="h">原型说明</span>
+      <span class="sub">Buyer / Login</span>
+    </div>
+    <div class="desc-intro">买家（外商）微信登录，无需认证即可发布询盘；默认英文界面。</div>
+<div class="desc-section" data-pin="1"><div class="desc-num">1</div><div class="desc-body"><span class="fr">FR-LOGIN-02</span><h4>WeChat Login (No Certification)</h4><p>Foreign buyers log in via WeChat without merchant certification; can publish inquiries immediately.</p><div class="spec"><span class="k">规则</span><span class="v ">Buyer login requires no certification</span></div><div class="spec"><span class="k">验收</span><span class="v good">Buyer enters and publishes inquiry directly; no certification block</span></div></div></div><div class="desc-section" data-pin="2"><div class="desc-num">2</div><div class="desc-body"><span class="fr">FR-I18N-01</span><h4>Default Language = English</h4><p>Buyer app defaults to English; supports one-tap CN/EN switch with persisted preference.</p><div class="spec"><span class="k">规则</span><span class="v ">Buyer first screen = English</span></div><div class="spec"><span class="k">验收</span><span class="v good">Switch updates all copy incl. field labels</span></div></div></div>
+    <div class="legend"><span class="ln"></span> 蓝色虚线连接右侧说明项与左侧对应 UI 元素</div>
+  </div>
+</div>
+<svg id="conn-svg"></svg>
 <script>
-  var toggle = document.getElementById('langToggle');
-  toggle.addEventListener('click', function (e) {
-    var t = e.target.closest('span'); if (!t) return;
-    var lang = t.getAttribute('data-lang');
-    toggle.querySelectorAll('span').forEach(function(s){ s.classList.toggle('on', s === t); });
-    document.querySelectorAll('[data-en]').forEach(function (el) {
-      el.innerHTML = lang === 'zh' ? el.getAttribute('data-zh') : el.getAttribute('data-en');
-    });
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-    try { localStorage.setItem('shenze_lang', lang); } catch (_) {}
+
+function drawConnectors(){
+  var svg=document.getElementById('conn-svg');
+  if(!svg) return;
+  var docW=Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+  var docH=Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  svg.setAttribute('width', docW); svg.setAttribute('height', docH);
+  svg.style.width=docW+'px'; svg.style.height=docH+'px';
+  svg.innerHTML='';
+  /* 统一使用文档坐标（视口坐标 + 页面滚动偏移），SVG 相对文档绝对定位，
+     页面级滚动时引脚与连接线处于同一坐标空间，不会跑歪 */
+  var sx=window.scrollX||window.pageXOffset||0;
+  var sy=window.scrollY||window.pageYOffset||0;
+  var pins=document.querySelectorAll('.pin');
+  pins.forEach(function(pin){
+    var id=pin.getAttribute('data-pin');
+    var sec=document.querySelector('.desc-section[data-pin="'+id+'"]');
+    if(!sec) return;
+    var pr=pin.getBoundingClientRect();
+    var sr=sec.getBoundingClientRect();
+    var x1=pr.left+pr.width/2+sx, y1=pr.top+pr.height/2+sy;
+    var x2=sr.left-6+sx, y2=sr.top+34+sy;
+    var mx=(x1+x2)/2;
+    var ns='http://www.w3.org/2000/svg';
+    var p=document.createElementNS(ns,'path');
+    p.setAttribute('d','M '+x1+' '+y1+' C '+mx+' '+y1+', '+mx+' '+y2+', '+x2+' '+y2);
+    p.setAttribute('stroke','#2563EB');p.setAttribute('stroke-width','1.6');
+    p.setAttribute('fill','none');p.setAttribute('stroke-dasharray','5 4');p.setAttribute('opacity','.85');
+    svg.appendChild(p);
+    var c=document.createElementNS(ns,'circle');
+    c.setAttribute('cx',x2);c.setAttribute('cy',y2);c.setAttribute('r','3.2');
+    c.setAttribute('fill','#2563EB');svg.appendChild(c);
   });
-  try {
-    var saved = localStorage.getItem('shenze_lang');
-    if (saved === 'zh') toggle.querySelector('[data-lang="zh"]').click();
-  } catch (_) {}
+}
+var _raf=null;
+function scheduleDraw(){ if(_raf) return; _raf=requestAnimationFrame(function(){_raf=null;drawConnectors();}); }
+window.addEventListener('load',function(){setTimeout(drawConnectors,200);});
+window.addEventListener('resize',scheduleDraw);
+/* 捕获阶段监听所有滚动容器（手机内 .app、说明栏、后台内容区、页面滚动），
+   内部滚动时重绘，保证连接线两端始终粘住引脚 */
+window.addEventListener('scroll',scheduleDraw,true);
+if(window.ResizeObserver){new ResizeObserver(scheduleDraw).observe(document.body);}
 </script>
 </body>
 </html>

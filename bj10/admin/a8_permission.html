@@ -1,195 +1,185 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>申泽跨境贸易 · 管理后台 / 权限矩阵</title>
-<link rel="stylesheet" href="tokens.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>后台·权限管理 · 跨境贸易服务平台原型</title>
 <style>
-  /* ===== 后台布局骨架（复用 a1_dashboard.html） ===== */
-  .admin { display: flex; min-height: 100vh; }
-  .sidebar { width: 224px; flex: none; background: #fff; border-right: 1px solid var(--border-weak); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
-  .brand { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-5) var(--sp-4); border-bottom: 1px solid var(--border-weak); }
-  .brand-mark { width: 36px; height: 36px; border-radius: var(--r-md); flex: none; background: linear-gradient(135deg, #F5A623, #FFB340); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; font-family: var(--font-cn); box-shadow: var(--shadow-hover); }
-  .brand-name { font-size: 15px; font-weight: 700; color: var(--ink-primary); line-height: 1.2; }
-  .brand-sub { font-size: 11px; color: var(--ink-tertiary); }
-  .nav { padding: var(--sp-3) var(--sp-2); overflow-y: auto; flex: 1; }
-  .nav-group-title { font-size: 11px; color: var(--ink-tertiary); padding: var(--sp-3) var(--sp-3) var(--sp-1); font-weight: 600; letter-spacing: .04em; }
-  .nav-item { display: flex; align-items: center; gap: var(--sp-3); height: 40px; padding: 0 var(--sp-3); border-radius: var(--r-md); color: var(--ink-secondary); font-size: 14px; position: relative; margin-bottom: 2px; transition: background .15s ease, color .15s ease; }
-  .nav-item:hover { background: var(--bg-hover); color: var(--ink-primary); }
-  .nav-item.active { background: var(--color-primary-bg); color: var(--color-primary-active); font-weight: 600; }
-  .nav-item.active::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--color-primary); }
-  .nav-item .ic { width: 18px; height: 18px; }
-  .nav-item.active .ic { stroke: var(--color-primary-active); }
-  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-  .topbar { height: 60px; flex: none; background: #fff; border-bottom: 1px solid var(--border-weak); display: flex; align-items: center; gap: var(--sp-4); padding: 0 var(--sp-5); position: sticky; top: 0; z-index: 10; }
-  .search { flex: 1; max-width: 420px; height: 38px; display: flex; align-items: center; gap: var(--sp-2); background: var(--bg-page); border: 1px solid transparent; border-radius: var(--r-md); padding: 0 var(--sp-3); color: var(--ink-tertiary); font-size: 13px; transition: all .15s ease; }
-  .search:focus-within { background: #fff; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-bg); }
-  .search input { border: none; background: transparent; outline: none; flex: 1; font-family: inherit; font-size: 13px; color: var(--ink-primary); }
-  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: var(--sp-5); }
-  .icon-btn { position: relative; width: 38px; height: 38px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; transition: background .15s; }
-  .icon-btn:hover { background: var(--bg-hover); }
-  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; cursor: pointer; }
-  .avatar-verified { position: relative; }
-  .avatar-verified::after { content: "✓"; position: absolute; right: -2px; bottom: -2px; width: 14px; height: 14px; background: var(--color-primary); color: #fff; border: 2px solid #fff; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; }
-  .content { padding: var(--sp-5); }
-  .page-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--sp-5); }
-  .page-title { font-size: var(--fs-h1); font-weight: 700; }
-  .crumb { font-size: 12px; color: var(--ink-tertiary); margin-bottom: 4px; }
-  .crumb b { color: var(--ink-secondary); font-weight: 600; }
-  table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; font-size: 12px; color: var(--ink-secondary); font-weight: 600; background: #FAFAFA; padding: 10px var(--sp-3); }
-  th:first-child { border-radius: var(--r-sm) 0 0 var(--r-sm); }
-  th:last-child { border-radius: 0 var(--r-sm) var(--r-sm) 0; }
-  td { padding: 12px var(--sp-3); border-bottom: 1px solid var(--border-weak); font-size: 13px; }
-  tr:hover td { background: var(--bg-page); }
-
-  /* ===== 本页扩展（权限矩阵） ===== */
-  .filter-bar { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-5); flex-wrap: wrap; }
-  .role-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--r-pill); font-size: 13px; font-weight: 600; }
-  .chk { width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer; }
-  .chk:disabled { cursor: not-allowed; }
-  .matrix-role { display: flex; align-items: center; gap: 6px; }
-  .op { display: flex; align-items: center; gap: 14px; }
-  .perm-group { font-size: 12px; color: var(--ink-tertiary); font-weight: 600; background: var(--bg-page); }
+  :root{
+    --brand:#0D9488; --brand-d:#0F766E; --brand-l:#CCFBF1; --brand-xl:#ECFDF9;
+    --blue:#2563EB; --ink:#1F2937; --muted:#6B7280; --faint:#9CA3AF;
+    --line:#E5E7EB; --bg:#EEF2F5; --warn:#D97706; --danger:#DC2626; --ok:#059669;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
+  .stage{display:flex;align-items:stretch;min-height:100vh;}
+  .proto-col{flex:1;padding:28px;display:flex;justify-content:center;align-items:flex-start;overflow:auto;}
+  .desc-col{width:430px;flex-shrink:0;background:#fff;border-left:1px solid var(--line);
+    padding:30px 26px 60px;overflow-y:auto;height:100vh;position:sticky;top:0;}
+  /* ===== 后台 Web 控制台 ===== */
+  .admin{width:100%;max-width:980px;height:800px;background:#fff;border-radius:14px;
+    box-shadow:0 24px 70px rgba(15,23,42,.18);display:flex;overflow:hidden;border:1px solid var(--line);}
+  .admin-side{width:190px;background:#0F172A;color:#cbd5e1;flex-shrink:0;padding:14px 10px;display:flex;flex-direction:column;}
+  .admin-side .logo{color:#fff;font-weight:700;font-size:13.5px;padding:4px 8px 16px;display:flex;align-items:center;gap:7px;}
+  .admin-side .logo .d{width:22px;height:22px;border-radius:6px;background:linear-gradient(120deg,#0D9488,#0891B2);display:flex;align-items:center;justify-content:center;font-size:13px;}
+  .admin-side .mi{padding:9px 10px;border-radius:8px;font-size:12.5px;color:#cbd5e1;cursor:pointer;margin-bottom:2px;display:flex;gap:8px;align-items:center;}
+  .admin-side .mi.active{background:var(--brand);color:#fff;}
+  .admin-side .mi .ic{font-size:14px;}
+  .admin-main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .admin-top{height:50px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;}
+  .admin-top .t{font-size:14px;font-weight:700;}
+  .admin-top .u{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center;}
+  .admin-top .u .av{width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;}
+  .admin-content{flex:1;overflow:auto;padding:16px;position:relative;background:#F8FAFC;}
+  .admin-content::-webkit-scrollbar{width:6px;}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .stat-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;}
+  .stat-card .l{font-size:11px;color:var(--muted);}
+  .stat-card .v{font-size:21px;font-weight:700;color:var(--ink);margin-top:5px;}
+  .stat-card .s{font-size:11px;color:var(--ok);margin-top:3px;}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:14px;}
+  .panel .ph{font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+  .panel .ph .act{font-size:11.5px;color:var(--brand-d);cursor:pointer;}
+  .tbl{width:100%;border-collapse:collapse;font-size:12px;}
+  .tbl th{text-align:left;color:var(--muted);font-weight:600;padding:9px 8px;border-bottom:1px solid var(--line);background:#F8FAFC;white-space:nowrap;}
+  .tbl td{padding:9px 8px;border-bottom:1px solid #F1F5F9;color:#374151;vertical-align:middle;}
+  .tag-ok{background:#DCFCE7;color:#059669;padding:2px 9px;border-radius:10px;font-size:11px;}
+  .tag-warn{background:#FEF3C7;color:#D97706;padding:2px 9px;border-radius:10px;font-size:11px;}
+  .tag-gray{background:#F3F4F6;color:#6B7280;padding:2px 9px;border-radius:10px;font-size:11px;}
+  .tag-blue{background:#DBEAFE;color:#1D4ED8;padding:2px 9px;border-radius:10px;font-size:11px;}
+  .btn-sm{font-size:11.5px;padding:4px 11px;border-radius:6px;border:1px solid var(--brand);color:var(--brand-d);background:#fff;cursor:pointer;margin-right:5px;}
+  .btn-sm.p{background:var(--brand);color:#fff;border:none;}
+  .btn-sm.d{border-color:#FCA5A5;color:#DC2626;}
+  .filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+  .filters input,.filters select{border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-size:12px;}
+  .filters .btn-sm.p{margin-left:auto;}
+  .top5{list-style:none;font-size:12px;}
+  .top5 li{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .top5 li .rk{width:18px;height:18px;border-radius:50%;background:var(--brand-l);color:var(--brand-d);font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-right:8px;}
+  .top5 li .nm{flex:1;}
+  .top5 li .vv{color:var(--muted);}
+  /* 说明面板 + pin + 连接线（同 proto_lib） */
+  .desc-header{display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:2px solid var(--brand-l);margin-bottom:8px;}
+  .desc-header .tag{background:var(--brand);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 10px;border-radius:6px;}
+  .desc-header .h{font-size:18px;font-weight:700;}
+  .desc-header .sub{font-size:11px;color:var(--faint);margin-left:auto;}
+  .desc-intro{font-size:13px;line-height:1.7;color:var(--muted);background:var(--brand-xl);border-left:3px solid var(--brand);padding:10px 12px;border-radius:0 8px 8px 0;margin:10px 0 18px;}
+  .desc-section{display:flex;gap:12px;padding:14px 0;border-bottom:1px dashed var(--line);}
+  .desc-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;}
+  .desc-body{flex:1;min-width:0;}
+  .desc-body h4{font-size:14px;font-weight:700;margin-bottom:5px;}
+  .desc-body p{font-size:12.5px;line-height:1.65;color:var(--muted);margin-bottom:8px;}
+  .spec{display:flex;gap:8px;font-size:12px;line-height:1.55;margin-bottom:5px;align-items:flex-start;}
+  .spec .k{flex-shrink:0;font-weight:700;color:var(--brand-d);width:42px;}
+  .spec .v{color:#374151;flex:1;}
+  .spec .v.bad{color:var(--danger);}
+  .spec .v.good{color:var(--ok);}
+  .fr{display:inline-block;font-size:10.5px;font-weight:700;color:var(--brand-d);background:var(--brand-l);padding:1px 7px;border-radius:5px;margin-bottom:6px;}
+  .pin{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(37,99,235,.5);z-index:20;transform:translate(-50%,-50%);}
+  #conn-svg{position:absolute;top:0;left:0;pointer-events:none;z-index:9000;overflow:visible;}
+  .legend{font-size:11px;color:var(--faint);margin-top:6px;display:flex;align-items:center;gap:6px;}
+  .legend .ln{width:22px;height:0;border-top:2px dashed var(--blue);}
 </style>
-</head>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'464588589b1f42e6874bcf7e6cb67ad6'
+    });
+  }catch(e){}
+})();
+</script></head>
 <body>
-<div class="admin">
-  <!-- ============ 侧边栏 ============ -->
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-mark">申</div>
-      <div>
-        <div class="brand-name">申泽跨境贸易</div>
-        <div class="brand-sub">Shenze Trade Platform</div>
+<div class="stage">
+  <div class="proto-col">
+    <div class="admin">
+      <div class="admin-side">
+        <div class="logo"><span class="d">🌐</span> 跨境贸易后台</div>
+<div class="mi"><span class="ic">📊</span>仪表盘</div><div class="mi"><span class="ic">👥</span>用户管理</div><div class="mi"><span class="ic">✅</span>商家认证</div><div class="mi"><span class="ic">🔄</span>供求管理</div><div class="mi"><span class="ic">📦</span>物流管理</div><div class="mi"><span class="ic">📚</span>内容管理</div><div class="mi"><span class="ic">⚙</span>系统设置</div><div class="mi active"><span class="ic">🔐</span>权限管理</div>
+      </div>
+      <div class="admin-main">
+        <div class="admin-top">
+          <span class="t">权限管理</span>
+          <span class="u"><span class="av">运</span>运营 · 张运营</span>
+        </div>
+        <div class="admin-content" id="adminContent">
+
+<div class="panel" style="margin-top:0;">
+  <div class="ph">角色 <span class="act" onclick="alert('新建角色')">+ 新建</span></div>
+  <table class="tbl">
+    <thead><tr><th>角色</th><th>说明</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td><b>超级管理员</b></td><td>全部菜单与操作权限</td><td><span class="tag-ok">启用</span></td></tr>
+      <tr><td><b>运营</b></td><td>供求/物流/内容运营，无超管专属</td><td><span class="tag-ok">启用</span></td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="panel">
+  <div class="ph">运营 · 菜单权限</div>
+  <div style="font-size:12.5px;color:#374151;display:grid;grid-template-columns:repeat(2,1fr);gap:6px 16px;">
+    <div>✅ 仪表盘　✅ 用户管理　✅ 商家认证　✅ 供求管理</div>
+    <div>✅ 物流管理　✅ 内容管理　⛔ 系统设置　⛔ 权限管理</div>
+  </div>
+  <button class="btn-sm p" style="margin-top:12px;" onclick="alert('保存权限配置')">保存配置</button>
+</div>
+<span class="pin" data-pin="1" style="left:140px;top:70px;">1</span><span class="pin" data-pin="2" style="left:400px;top:320px;">2</span>
+        </div>
       </div>
     </div>
-    <nav class="nav">
-      <div class="nav-group-title">概览</div>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>工作台</a>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>用户管理</a>
-      <div class="nav-group-title">交易管理</div>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7h18l-1.5 11.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 7Z"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>询盘管理</a>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>供应管理</a>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg>品类管理</a>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 9h4l3 3v6h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>物流订单</a>
-      <div class="nav-group-title">审核与风控</div>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7l8-4Z"/></svg>企业认证审核<span class="badge-dot" style="position:static;margin-left:auto;border:none;">5</span></a>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>敏感词管理</a>
-      <div class="nav-group-title">内容与权限</div>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2-1.5Z"/><path d="M18 4v16"/></svg>小学堂管理</a>
-      <a class="nav-item active"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 11a3 3 0 1 0 0-6"/><path d="M21 20a5 5 0 0 0-5-5"/></svg>权限矩阵</a>
-      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 14.1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 7l-.1-.1A2 2 0 1 1 7.3 4.1l.1.1A1.7 1.7 0 0 0 10 3.4V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1A2 2 0 1 1 19.9 7l-.1.1A1.7 1.7 0 0 0 21 9.9V10a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.4 1Z"/></svg>系统设置</a>
-    </nav>
-  </aside>
-
-  <div class="main">
-    <header class="topbar">
-      <div class="search">
-        <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input placeholder="搜索供应商、询盘、订单号…" />
-      </div>
-      <div class="topbar-right">
-        <div class="icon-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge-dot">3</span></div>
-        <div class="icon-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <div class="avatar avatar-verified" title="管理员">管</div>
-      </div>
-    </header>
-
-    <main class="content">
-      <div class="page-head">
-        <div>
-          <div class="crumb">内容与权限 / <b>权限矩阵</b></div>
-          <div class="page-title">权限管理</div>
-        </div>
-        <div style="display:flex;gap:12px;">
-          <button class="btn btn-default">新增角色</button>
-          <button class="btn btn-primary">保存修改</button>
-        </div>
-      </div>
-
-      <div class="filter-bar">
-        <span class="fs-caption">行 = 权限项，列 = 角色；勾选表示拥有该权限。</span>
-      </div>
-
-      <section class="card" style="padding:4px 4px 0;">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:280px;">权限项</th>
-              <th><span class="role-pill tag tag-blue">超级管理员</span></th>
-              <th><span class="role-pill tag tag-blue">运营</span></th>
-              <th><span class="role-pill tag tag-blue">审核员</span></th>
-              <th><span class="role-pill tag tag-blue">客服</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="perm-group"><td colspan="5">用户与角色</td></tr>
-            <tr>
-              <td>用户管理 - 查看</td>
-              <td><input class="chk" type="checkbox" checked disabled /></td>
-              <td><input class="chk" type="checkbox" checked /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-            </tr>
-            <tr>
-              <td>用户管理 - 编辑 / 删除</td>
-              <td><input class="chk" type="checkbox" checked disabled /></td>
-              <td><input class="chk" type="checkbox" checked /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-            </tr>
-            <tr>
-              <td>角色与权限配置</td>
-              <td><input class="chk" type="checkbox" checked disabled /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-            </tr>
-            <tr class="perm-group"><td colspan="5">审核与风控</td></tr>
-            <tr>
-              <td>企业认证审核</td>
-              <td><input class="chk" type="checkbox" checked disabled /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" checked /></td>
-              <td><input class="chk" type="checkbox" /></td>
-            </tr>
-            <tr>
-              <td>敏感词管理</td>
-              <td><input class="chk" type="checkbox" checked disabled /></td>
-              <td><input class="chk" type="checkbox" checked /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-            </tr>
-            <tr class="perm-group"><td colspan="5">交易与内容</td></tr>
-            <tr>
-              <td>供求 / 物流管理</td>
-              <td><input class="chk" type="checkbox" checked disabled /></td>
-              <td><input class="chk" type="checkbox" checked /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-            </tr>
-            <tr>
-              <td>小学堂内容编辑</td>
-              <td><input class="chk" type="checkbox" checked disabled /></td>
-              <td><input class="chk" type="checkbox" checked /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-            </tr>
-            <tr>
-              <td>系统设置</td>
-              <td><input class="chk" type="checkbox" checked disabled /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-              <td><input class="chk" type="checkbox" /></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <div class="fs-caption" style="margin-top:12px;">超级管理员为系统内置角色，权限不可取消（已禁用勾选）。</div>
-    </main>
+  </div>
+  <div class="desc-col">
+    <div class="desc-header"><span class="tag">PROTOTYPE</span><span class="h">原型说明</span><span class="sub">Admin / Perm</span></div>
+    <div class="desc-intro">权限管理：角色创建与菜单/操作权限分配。</div>
+<div class="desc-section" data-pin="1"><div class="desc-num">1</div><div class="desc-body"><span class="fr">FR-ADMIN-03</span><h4>角色管理</h4><p>系统支持创建角色（超管、运营）并为每个角色分配菜单与操作权限。</p><div class="spec"><span class="k">字段</span><span class="v ">角色 / 说明 / 状态</span></div><div class="spec"><span class="k">验收</span><span class="v good">运营无权限访问超管专属功能</span></div></div></div><div class="desc-section" data-pin="2"><div class="desc-num">2</div><div class="desc-body"><span class="fr">FR-ADMIN-03</span><h4>权限矩阵</h4><p>运营仅获供求/物流/内容等运营权限，无系统设置与权限管理权限。</p><div class="spec"><span class="k">规则</span><span class="v ">权限变更即时或下次登录生效</span></div><div class="spec"><span class="k">待确认</span><span class="v bad">生效时机（即时/下次登录）（Q8）</span></div><div class="spec"><span class="k">验收</span><span class="v good">权限隔离正确</span></div></div></div>
+    <div class="legend"><span class="ln"></span> 蓝色虚线连接右侧说明项与左侧对应 UI 元素</div>
   </div>
 </div>
+<svg id="conn-svg"></svg>
+<script>
+
+function drawConnectors(){
+  var svg=document.getElementById('conn-svg'); if(!svg) return;
+  var docW=Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+  var docH=Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  svg.setAttribute('width', docW); svg.setAttribute('height', docH);
+  svg.style.width=docW+'px'; svg.style.height=docH+'px';
+  svg.innerHTML='';
+  var sx=window.scrollX||window.pageXOffset||0;
+  var sy=window.scrollY||window.pageYOffset||0;
+  var pins=document.querySelectorAll('.pin');
+  pins.forEach(function(pin){
+    var id=pin.getAttribute('data-pin');
+    var sec=document.querySelector('.desc-section[data-pin="'+id+'"]'); if(!sec) return;
+    var pr=pin.getBoundingClientRect(), sr=sec.getBoundingClientRect();
+    var x1=pr.left+pr.width/2+sx, y1=pr.top+pr.height/2+sy, x2=sr.left-6+sx, y2=sr.top+34+sy, mx=(x1+x2)/2;
+    var ns='http://www.w3.org/2000/svg';
+    var p=document.createElementNS(ns,'path');
+    p.setAttribute('d','M '+x1+' '+y1+' C '+mx+' '+y1+', '+mx+' '+y2+', '+x2+' '+y2);
+    p.setAttribute('stroke','#2563EB');p.setAttribute('stroke-width','1.6');p.setAttribute('fill','none');
+    p.setAttribute('stroke-dasharray','5 4');p.setAttribute('opacity','.85');svg.appendChild(p);
+    var c=document.createElementNS(ns,'circle');c.setAttribute('cx',x2);c.setAttribute('cy',y2);c.setAttribute('r','3.2');c.setAttribute('fill','#2563EB');svg.appendChild(c);
+  });
+}
+var _raf=null;
+function scheduleDraw(){ if(_raf) return; _raf=requestAnimationFrame(function(){_raf=null;drawConnectors();}); }
+window.addEventListener('load',function(){setTimeout(drawConnectors,200);});
+window.addEventListener('resize',scheduleDraw);
+window.addEventListener('scroll',scheduleDraw,true);
+if(window.ResizeObserver){new ResizeObserver(scheduleDraw).observe(document.body);}
+</script>
 </body>
 </html>

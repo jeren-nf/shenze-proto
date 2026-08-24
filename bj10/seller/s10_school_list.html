@@ -1,80 +1,226 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>申泽跨境贸易 · 跨境小学堂</title>
-<link rel="stylesheet" href="tokens.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卖家端·小学堂列表 · 跨境贸易服务平台原型</title>
 <style>
-  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
-  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
-  .statusbar { height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
-  .statusbar .right { display:flex; gap:6px; align-items:center; }
-  .topbar { height:48px; flex:none; display:flex; align-items:center; gap:12px; padding:0 16px; background:#fff; }
-  .topbar .loc { display:flex; align-items:center; gap:2px; font-size:15px; font-weight:700; }
-  .back { display:flex; align-items:center; }
-  .scroll { flex:1; overflow-y:auto; padding-bottom:8px; }
-  .chips { display:flex; gap:8px; padding:10px 16px; background:#fff; }
-  .chip { flex:none; padding:6px 14px; border-radius:var(--r-pill); background:var(--bg-page); font-size:13px; color:var(--ink-secondary); }
-  .chip.on { background:var(--color-primary-bg); color:var(--color-primary); font-weight:600; }
-  .school-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 16px; }
-  .sc-card { background:#fff; border-radius:var(--r-md); overflow:hidden; border:1px solid var(--border-weak); }
-  .sc-cover { height:108px; display:flex; align-items:center; justify-content:center; color:#fff; }
-  .sc-body { padding:10px 10px 12px; }
-  .sc-title { font-size:13px; font-weight:600; line-height:1.4; margin:0 0 8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .sc-foot { display:flex; align-items:center; justify-content:space-between; }
-  .muted { color:var(--ink-tertiary); font-size:11px; }
+  :root{
+    --brand:#0D9488; --brand-d:#0F766E; --brand-l:#CCFBF1; --brand-xl:#ECFDF9;
+    --blue:#2563EB; --blue-l:#EFF4FF;
+    --ink:#1F2937; --muted:#6B7280; --faint:#9CA3AF;
+    --line:#E5E7EB; --bg:#EEF2F5; --warn:#D97706; --warn-l:#FEF3C7;
+    --danger:#DC2626; --ok:#059669; --gold:#CA8A04;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
+  .stage{display:flex;align-items:stretch;min-height:100vh;}
+  .proto-col{flex:1;padding:36px 28px;display:flex;justify-content:center;align-items:flex-start;
+    position:relative;overflow:auto;}
+  .desc-col{width:430px;flex-shrink:0;background:#fff;border-left:1px solid var(--line);
+    padding:30px 26px 60px;overflow-y:auto;height:100vh;position:sticky;top:0;}
+  /* ===== iPhone 手机框 ===== */
+  .phone{width:384px;height:790px;background:#0B1220;border-radius:46px;padding:13px;
+    box-shadow:0 24px 70px rgba(15,23,42,.30);position:relative;flex-shrink:0;}
+  .phone-screen{width:100%;height:100%;background:#fff;border-radius:34px;overflow:hidden;
+    position:relative;display:flex;flex-direction:column;}
+  .statusbar{height:30px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;font-size:13px;font-weight:600;color:#0f172a;flex-shrink:0;background:#fff;}
+  .statusbar .sb-right{display:flex;gap:5px;align-items:center;font-size:11px;}
+  .mp-nav{height:44px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 14px;background:var(--brand);color:#fff;flex-shrink:0;position:relative;}
+  .mp-nav .back{font-size:22px;line-height:1;cursor:pointer;width:28px;}
+  .mp-nav .title{font-size:16px;font-weight:600;position:absolute;left:50%;transform:translateX(-50%);}
+  .mp-nav .capsule{display:flex;gap:6px;align-items:center;border:1px solid rgba(255,255,255,.5);
+    border-radius:14px;padding:3px 9px;font-size:12px;}
+  .mp-nav .lang{font-size:12px;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:12px;}
+  .app{flex:1;overflow-y:auto;background:#F7FAFC;position:relative;}
+  .app::-webkit-scrollbar{width:0;}
+  .tabbar{height:56px;background:#fff;border-top:1px solid var(--line);display:flex;
+    flex-shrink:0;padding-bottom:4px;}
+  .tabbar .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:2px;font-size:10px;color:var(--muted);cursor:pointer;}
+  .tabbar .tab.active{color:var(--brand);}
+  .tabbar .tab .ic{font-size:18px;line-height:1;}
+  /* ===== 说明面板 ===== */
+  .desc-header{display:flex;align-items:center;gap:10px;padding-bottom:14px;
+    border-bottom:2px solid var(--brand-l);margin-bottom:8px;}
+  .desc-header .tag{background:var(--brand);color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:.5px;padding:4px 10px;border-radius:6px;}
+  .desc-header .h{font-size:18px;font-weight:700;color:var(--ink);}
+  .desc-header .sub{font-size:11px;color:var(--faint);margin-left:auto;}
+  .desc-intro{font-size:13px;line-height:1.7;color:var(--muted);background:var(--brand-xl);
+    border-left:3px solid var(--brand);padding:10px 12px;border-radius:0 8px 8px 0;margin:10px 0 18px;}
+  .desc-section{display:flex;gap:12px;padding:14px 0;border-bottom:1px dashed var(--line);}
+  .desc-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:2;}
+  .desc-body{flex:1;min-width:0;}
+  .desc-body h4{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+  .desc-body p{font-size:12.5px;line-height:1.65;color:var(--muted);margin-bottom:8px;}
+  .spec{display:flex;gap:8px;font-size:12px;line-height:1.55;margin-bottom:5px;align-items:flex-start;}
+  .spec .k{flex-shrink:0;font-weight:700;color:var(--brand-d);width:42px;}
+  .spec .v{color:#374151;flex:1;}
+  .spec .v.bad{color:var(--danger);}
+  .spec .v.good{color:var(--ok);}
+  .fr{display:inline-block;font-size:10.5px;font-weight:700;color:var(--brand-d);
+    background:var(--brand-l);padding:1px 7px;border-radius:5px;margin-bottom:6px;}
+  /* ===== 手机内通用组件 ===== */
+  .banner{height:130px;margin:12px;border-radius:14px;overflow:hidden;position:relative;
+    background:linear-gradient(120deg,#0D9488,#0891B2);color:#fff;display:flex;flex-direction:column;
+    justify-content:center;padding:0 18px;}
+  .banner h3{font-size:17px;font-weight:700;}
+  .banner p{font-size:11px;opacity:.9;margin-top:4px;}
+  .banner .dots{position:absolute;bottom:10px;left:18px;display:flex;gap:5px;}
+  .banner .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);}
+  .banner .dots i.on{background:#fff;}
+  .kingkong{display:flex;gap:10px;padding:6px 12px 14px;background:#fff;margin:0 12px 12px;border-radius:14px;
+    box-shadow:0 2px 10px rgba(15,23,42,.05);}
+  .kk{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+  .kk .ico{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    font-size:22px;color:#fff;}
+  .kk span{font-size:11px;color:#374151;}
+  .sec-head{display:flex;align-items:center;justify-content:space-between;padding:4px 16px;margin-top:4px;}
+  .sec-head .t{font-size:14px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;}
+  .sec-head .t .bar{width:3px;height:14px;background:var(--brand);border-radius:2px;}
+  .sec-head .more{font-size:11px;color:var(--faint);}
+  .feed-tabs{display:flex;gap:0;padding:6px 16px 0;position:sticky;top:0;background:#F7FAFC;z-index:3;}
+  .feed-tabs .ft{flex:1;text-align:center;padding:8px 0;font-size:13px;color:var(--muted);
+    border-bottom:2px solid transparent;cursor:pointer;font-weight:600;}
+  .feed-tabs .ft.active{color:var(--brand);border-bottom-color:var(--brand);}
+  .card{background:#fff;border-radius:12px;margin:10px 12px;padding:12px;box-shadow:0 1px 6px rgba(15,23,42,.05);}
+  .card .row1{display:flex;justify-content:space-between;align-items:flex-start;}
+  .card .ttl{font-size:14px;font-weight:600;color:var(--ink);}
+  .card .meta{font-size:11px;color:var(--faint);margin-top:3px;}
+  .card .price{font-size:14px;font-weight:700;color:var(--brand-d);white-space:nowrap;}
+  .tagline{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+  .tg{font-size:10.5px;padding:2px 8px;border-radius:10px;background:var(--brand-xl);color:var(--brand-d);}
+  .tg.warn{background:var(--warn-l);color:var(--warn);}
+  .tg.gray{background:#F3F4F6;color:var(--muted);}
+  .hot-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#fff;
+    background:linear-gradient(120deg,#F59E0B,#D97706);padding:2px 7px;border-radius:8px;}
+  .btn-primary{background:var(--brand);color:#fff;border:none;border-radius:24px;padding:11px;
+    font-size:15px;font-weight:600;width:100%;cursor:pointer;}
+  .btn-outline{background:#fff;color:var(--brand-d);border:1px solid var(--brand);border-radius:24px;
+    padding:11px;font-size:15px;font-weight:600;width:100%;cursor:pointer;}
+  .fab{position:absolute;right:16px;bottom:16px;width:52px;height:52px;border-radius:50%;
+    background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;
+    box-shadow:0 6px 18px rgba(13,148,136,.5);cursor:pointer;z-index:5;}
+  /* 手机内定位 pin */
+  .pin{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    border:2px solid #fff;box-shadow:0 2px 8px rgba(37,99,235,.5);z-index:20;transform:translate(-50%,-50%);}
+  /* 连接线 SVG */
+  #conn-svg{position:absolute;top:0;left:0;pointer-events:none;z-index:9000;overflow:visible;}
+  .legend{font-size:11px;color:var(--faint);margin-top:6px;display:flex;align-items:center;gap:6px;}
+  .legend .ln{width:22px;height:0;border-top:2px dashed var(--blue);}
 </style>
-</head>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'464588589b1f42e6874bcf7e6cb67ad6'
+    });
+  }catch(e){}
+})();
+</script></head>
 <body>
-<div class="phone">
-  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
-
-  <div class="topbar">
-    <div class="back"><svg class="ic" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
-    <div class="loc" style="font-size:16px">跨境小学堂</div>
+<div class="stage">
+  <div class="proto-col" id="protoCol">
+    <div class="phone">
+      <div class="phone-screen">
+<div class="statusbar"><span>9:41</span><span class="sb-right">●●● &nbsp;5G &nbsp;🔋</span></div><div class="mp-nav"><span class="back">‹</span><span class="title">跨境小学堂</span><span class="capsule">◯ &nbsp;⋯</span></div>
+<div class="app" style="padding-bottom:20px;">
+  <div class="card">
+    <div style="height:90px;border-radius:10px;background:linear-gradient(120deg,#0D9488,#0891B2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;">📺 视频 · 跨境结汇新政解读</div>
+    <div class="ttl" style="margin-top:8px;">2026 跨境结汇政策最新解读</div>
+    <div class="meta">视频 · 8 分钟 · 1.2万 浏览</div>
   </div>
-
-  <div class="scroll">
-    <div class="chips">
-      <span class="chip on">全部</span>
-      <span class="chip">视频</span>
-      <span class="chip">图文</span>
-      <span class="chip">物流</span>
-      <span class="chip">认证</span>
-    </div>
-
-    <div class="school-grid">
-      <div class="sc-card">
-        <div class="sc-cover" style="background:linear-gradient(135deg,#1677FF,#4096FF)"><svg class="ic" viewBox="0 0 24 24" style="stroke:#fff;width:30px;height:30px"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-9-4-9 4Z"/><path d="M3 7l9 4 9-4M9 12v5M15 12v5"/></svg></div>
-        <div class="sc-body">
-          <p class="sc-title">新手卖家如何快速完成企业认证</p>
-          <div class="sc-foot"><span class="tag tag-blue">认证</span><span class="muted">1.2k 阅读</span></div>
-        </div>
-      </div>
-      <div class="sc-card">
-        <div class="sc-cover" style="background:linear-gradient(135deg,#F5A623,#FFB340)"><svg class="ic" viewBox="0 0 24 24" style="stroke:#fff;width:30px;height:30px"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></div>
-        <div class="sc-body">
-          <p class="sc-title">空运与海运，怎么选更省钱</p>
-          <div class="sc-foot"><span class="tag tag-blue">物流</span><span class="muted">860 阅读</span></div>
-        </div>
-      </div>
-      <div class="sc-card">
-        <div class="sc-cover" style="background:linear-gradient(135deg,#52C41A,#73D13D)"><svg class="ic" viewBox="0 0 24 24" style="stroke:#fff;width:30px;height:30px"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2-1.5Z"/></svg></div>
-        <div class="sc-body">
-          <p class="sc-title">CE 认证全流程避坑指南</p>
-          <div class="sc-foot"><span class="tag tag-blue">认证</span><span class="muted">2.4k 阅读</span></div>
-        </div>
-      </div>
-      <div class="sc-card">
-        <div class="sc-cover" style="background:linear-gradient(135deg,#722ED1,#9254DE)"><svg class="ic" viewBox="0 0 24 24" style="stroke:#fff;width:30px;height:30px"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div>
-        <div class="sc-body">
-          <p class="sc-title">视频：写好供应标题的 5 个技巧</p>
-          <div class="sc-foot"><span class="tag tag-blue">视频</span><span class="muted">3.1k 播放</span></div>
-        </div>
-      </div>
-    </div>
+  <div class="card">
+    <div class="row1"><span class="ttl">外贸商家必看：3 步完成物流报关</span></div>
+    <div class="meta">图文 · 5 分钟阅读 · 8600 浏览</div>
+    <div class="tagline"><span class="tg">物流</span><span class="tg">报关</span></div>
+  </div>
+  <div class="card">
+    <div class="row1"><span class="ttl">海外采购商开发信模板合集</span></div>
+    <div class="meta">图文 · 3 分钟阅读 · 6400 浏览</div>
+    <div class="tagline"><span class="tg">营销</span></div>
   </div>
 </div>
+<div class="tabbar"><div class="tab"><span class="ic">🏠</span><span>首页</span></div><div class="tab"><span class="ic">🔄</span><span>供求</span></div><div class="tab"><span class="ic">📦</span><span>物流</span></div><div class="tab active"><span class="ic">🎓</span><span>小学堂</span></div><div class="tab"><span class="ic">👤</span><span>我的</span></div></div><span class="pin" data-pin="1" style="left:179px;top:200px;">1</span>
+      </div>
+    </div>
+  </div>
+  <div class="desc-col" id="descCol">
+    <div class="desc-header">
+      <span class="tag">PROTOTYPE</span>
+      <span class="h">原型说明</span>
+      <span class="sub">Seller / Edu</span>
+    </div>
+    <div class="desc-intro">跨境小学堂展示后台发布的知识/政策内容，支持图文与视频。</div>
+<div class="desc-section" data-pin="1"><div class="desc-num">1</div><div class="desc-body"><span class="fr">FR-EDU-01</span><h4>内容列表</h4><p>跨境小学堂提供图文/视频内容列表，展示后台上传的跨境领域知识或政策。</p><div class="spec"><span class="k">字段</span><span class="v ">标题 / 类型(图文·视频) / 浏览数</span></div><div class="spec"><span class="k">验收</span><span class="v good">前台列表正常渲染图文视频</span></div></div></div>
+    <div class="legend"><span class="ln"></span> 蓝色虚线连接右侧说明项与左侧对应 UI 元素</div>
+  </div>
+</div>
+<svg id="conn-svg"></svg>
+<script>
+
+function drawConnectors(){
+  var svg=document.getElementById('conn-svg');
+  if(!svg) return;
+  var docW=Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+  var docH=Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  svg.setAttribute('width', docW); svg.setAttribute('height', docH);
+  svg.style.width=docW+'px'; svg.style.height=docH+'px';
+  svg.innerHTML='';
+  /* 统一使用文档坐标（视口坐标 + 页面滚动偏移），SVG 相对文档绝对定位，
+     页面级滚动时引脚与连接线处于同一坐标空间，不会跑歪 */
+  var sx=window.scrollX||window.pageXOffset||0;
+  var sy=window.scrollY||window.pageYOffset||0;
+  var pins=document.querySelectorAll('.pin');
+  pins.forEach(function(pin){
+    var id=pin.getAttribute('data-pin');
+    var sec=document.querySelector('.desc-section[data-pin="'+id+'"]');
+    if(!sec) return;
+    var pr=pin.getBoundingClientRect();
+    var sr=sec.getBoundingClientRect();
+    var x1=pr.left+pr.width/2+sx, y1=pr.top+pr.height/2+sy;
+    var x2=sr.left-6+sx, y2=sr.top+34+sy;
+    var mx=(x1+x2)/2;
+    var ns='http://www.w3.org/2000/svg';
+    var p=document.createElementNS(ns,'path');
+    p.setAttribute('d','M '+x1+' '+y1+' C '+mx+' '+y1+', '+mx+' '+y2+', '+x2+' '+y2);
+    p.setAttribute('stroke','#2563EB');p.setAttribute('stroke-width','1.6');
+    p.setAttribute('fill','none');p.setAttribute('stroke-dasharray','5 4');p.setAttribute('opacity','.85');
+    svg.appendChild(p);
+    var c=document.createElementNS(ns,'circle');
+    c.setAttribute('cx',x2);c.setAttribute('cy',y2);c.setAttribute('r','3.2');
+    c.setAttribute('fill','#2563EB');svg.appendChild(c);
+  });
+}
+var _raf=null;
+function scheduleDraw(){ if(_raf) return; _raf=requestAnimationFrame(function(){_raf=null;drawConnectors();}); }
+window.addEventListener('load',function(){setTimeout(drawConnectors,200);});
+window.addEventListener('resize',scheduleDraw);
+/* 捕获阶段监听所有滚动容器（手机内 .app、说明栏、后台内容区、页面滚动），
+   内部滚动时重绘，保证连接线两端始终粘住引脚 */
+window.addEventListener('scroll',scheduleDraw,true);
+if(window.ResizeObserver){new ResizeObserver(scheduleDraw).observe(document.body);}
+</script>
 </body>
 </html>

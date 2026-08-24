@@ -1,41 +1,54 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>申泽跨境贸易 · 原型导航</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 原型门户</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#0F172A;color:#e2e8f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;}
-  .wrap{max-width:720px;width:100%;text-align:center;}
-  h1{font-size:28px;font-weight:800;color:#fff;margin-bottom:8px;}
-  .sub{color:#94a3b8;font-size:14px;line-height:1.7;margin-bottom:36px;}
-  .cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-  a.card{display:block;background:#1e293b;border:1px solid #334155;border-radius:16px;padding:28px 20px;text-decoration:none;color:#e2e8f0;transition:.15s;}
-  a.card:hover{border-color:#1677FF;transform:translateY(-3px);background:#243044;}
-  a.card .t{font-size:18px;font-weight:700;color:#f1f5f9;}
-  a.card .d{font-size:13px;color:#94a3b8;margin-top:8px;line-height:1.6;}
-  a.card .tag{display:inline-block;margin-top:14px;font-size:11px;color:#5eead4;background:#0d3b36;padding:3px 10px;border-radius:8px;}
-  .foot{margin-top:40px;font-size:12px;color:#64748b;}
+  :root { --brand:#1677FF; --bg:#f5f7fa; --card:#fff; --text:#1f2329; --sub:#646a73; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 16px; }
+  .wrap { max-width:880px; width:100%; }
+  header { text-align:center; margin-bottom:36px; }
+  header h1 { font-size:26px; font-weight:700; }
+  header p { color:var(--sub); margin-top:8px; font-size:14px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; }
+  .card { background:var(--card); border-radius:16px; padding:24px; box-shadow:0 2px 12px rgba(0,0,0,.06); transition:.2s; text-decoration:none; color:inherit; display:block; border:1px solid #eef0f3; }
+  .card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(22,119,255,.15); border-color:var(--brand); }
+  .badge { display:inline-block; font-size:12px; padding:3px 10px; border-radius:999px; background:rgba(22,119,255,.1); color:var(--brand); margin-bottom:14px; }
+  .card h2 { font-size:18px; margin-bottom:8px; }
+  .card p { color:var(--sub); font-size:13px; line-height:1.6; }
+  .pages { margin-top:12px; font-size:12px; color:var(--sub); }
+  footer { text-align:center; color:var(--sub); font-size:12px; margin-top:36px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>申泽跨境贸易 · UI 原型</h1>
-  <div class="sub">跨境贸易服务平台（管理后台 / 卖家端小程序 / 买家端小程序）<br>以下为两套原型版本，点击进入。</div>
-  <div class="cards">
-    <a class="card" href="bj6/index.html">
-      <div class="t">扁平总览版（bj6）</div>
-      <div class="d">32 页扁平结构 · 全部页面同级目录 · 通用 UI 原型总览</div>
-      <span class="tag">ui-prototype</span>
-    </a>
-    <a class="card" href="bj10/index.html">
-      <div class="t">嵌套 FR 编号版（bj10）</div>
-      <div class="d">seller / buyer / admin 三目录嵌套 · 带 FR 功能编号</div>
-      <span class="tag">FR-numbered</span>
-    </a>
+  <div class="wrap">
+    <header>
+      <h1>申泽跨境贸易服务平台 · 原型门户</h1>
+      <p>静态托管于 EdgeOne Pages · 域名 gdhappy.online</p>
+    </header>
+    <div class="grid">
+      <a class="card" href="bj10/index.html">
+        <span class="badge">嵌套 · FR 编号版</span>
+        <h2>原型总览（bj10）</h2>
+        <p>卖家端 / 买家端 / 管理后台三套，按 FR 编号组织，32 页完整交互原型。</p>
+        <div class="pages">seller 14 · buyer 6 · admin 12</div>
+      </a>
+      <a class="card" href="sh3/index.html">
+        <span class="badge">UI 细化版</span>
+        <h2>UI 细化（sh3）</h2>
+        <p>基于原型的视觉/交互细化版本，部分页面已细化、部分待细化。</p>
+        <div class="pages">扁平原型 · 含细化页与资源图</div>
+      </a>
+      <a class="card" href="bj6/index.html">
+        <span class="badge">原始扁平总览</span>
+        <h2>原始总览（bj6）</h2>
+        <p>早期扁平结构 32 页总览，作为对照参考。</p>
+        <div class="pages">扁平 · 全部 32 页</div>
+      </a>
+    </div>
+    <footer>由 PRD 生成的跨境贸易服务平台 UI 原型 · 仅供内部评审</footer>
   </div>
-  <div class="foot">由 WorkBuddy 整理并部署 · 静态原型，无需后端</div>
-</div>
 </body>
 </html>

@@ -45,28 +45,7 @@
   }
   .toast.show{opacity:1}
 </style>
-<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
-<script>
-(function(){
-  try{
-    var beacon=new BeaconAction({
-      appkey:'0WEB06U85YBSLJNL',
-      versionCode:'1.0.0',
-      channelID:'share',
-      delay:1000,
-      sessionDuration:30*60*1000,
-      isOversea:false,
-      needReportRqdEvent:false
-    });
-    beacon.onDirectUserAction('preview_page_view',{
-      'url':location.href,
-      'referrer':document.referrer,
-      'title':document.title,
-      'sandbox_id':'6b3bf596688b4bcab7cc3e396a0e7056'
-    });
-  }catch(e){}
-})();
-</script></head>
+</head>
 <body>
   <div class="phone">
     <div class="bg"></div>
@@ -90,7 +69,7 @@
     location.href=from;
   };
   document.getElementById('denyBtn').onclick=function(){
-    location.href="./login.html"+encodeURIComponent(from);
+    location.href='login.html?from='+encodeURIComponent(from);
   };
   document.getElementById('otherBtn').onclick=function(){ toast('切换其它号码'); };
 })();

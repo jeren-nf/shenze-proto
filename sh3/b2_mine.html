@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>申泽跨境贸易 · 我的（买家端）</title>
-<link rel="stylesheet" href="./tokens.css" />
+<link rel="stylesheet" href="tokens.css" />
 <style>
   body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
   .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
@@ -63,28 +63,7 @@
   .tab .ic { width:22px; height:22px; }
   .tab.active .ic { stroke:var(--color-primary); background:var(--tab-active-bg); border-radius:50%; padding:3px; }
 </style>
-<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
-<script>
-(function(){
-  try{
-    var beacon=new BeaconAction({
-      appkey:'0WEB06U85YBSLJNL',
-      versionCode:'1.0.0',
-      channelID:'share',
-      delay:1000,
-      sessionDuration:30*60*1000,
-      isOversea:false,
-      needReportRqdEvent:false
-    });
-    beacon.onDirectUserAction('preview_page_view',{
-      'url':location.href,
-      'referrer':document.referrer,
-      'title':document.title,
-      'sandbox_id':'6b3bf596688b4bcab7cc3e396a0e7056'
-    });
-  }catch(e){}
-})();
-</script></head>
+</head>
 <body>
 <div class="phone">
   <!-- 滚动容器：蓝块与卡片同处其中，卡片负 margin 上移盖住蓝块时不会被裁切 -->
@@ -166,10 +145,10 @@
 
   <!-- 底部 Tab：首页 / 货源 / 我的 -->
   <div class="tabbar">
-    <div class="tab" onclick="location.href="./b2_home.html"">
+    <div class="tab" onclick="location.href='b2_home.html'">
       <svg class="ic" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>首页
     </div>
-    <div class="tab" onclick="location.href="./b_supply.html"">
+    <div class="tab" onclick="location.href='b_supply.html'">
       <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>货源
     </div>
     <div class="tab active">
@@ -218,7 +197,7 @@
 
   function doLogin(){
     // 跳转到登录中间页（传递来源页，授权完成后回到这里）
-    location.href="./login.html" + encodeURIComponent('b2_mine.html');
+    location.href = 'login.html?from=' + encodeURIComponent('b2_mine.html');
   }
   function doLogout(){
     loggedIn = false;

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>申泽跨境贸易 · 我的</title>
-<link rel="stylesheet" href="./tokens.css" />
+<link rel="stylesheet" href="tokens.css" />
 <style>
   body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
   .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
@@ -92,28 +92,7 @@
   .tab .ic { width:22px; height:22px; }
   .tab.active .ic { stroke:var(--color-primary); background:var(--tab-active-bg); border-radius:50%; padding:3px; }
 </style>
-<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
-<script>
-(function(){
-  try{
-    var beacon=new BeaconAction({
-      appkey:'0WEB06U85YBSLJNL',
-      versionCode:'1.0.0',
-      channelID:'share',
-      delay:1000,
-      sessionDuration:30*60*1000,
-      isOversea:false,
-      needReportRqdEvent:false
-    });
-    beacon.onDirectUserAction('preview_page_view',{
-      'url':location.href,
-      'referrer':document.referrer,
-      'title':document.title,
-      'sandbox_id':'6b3bf596688b4bcab7cc3e396a0e7056'
-    });
-  }catch(e){}
-})();
-</script></head>
+</head>
 <body>
 <div class="phone">
   <!-- 滚动容器：蓝块与卡片同处其中，卡片负 margin 上移盖住蓝块时不会被裁切 -->
@@ -175,12 +154,12 @@
     <!-- 物流服务（分隔标题 + 两行图标入口） -->
     <div class="sec-divider"><div class="sec-title">物流服务</div></div>
     <div class="menu">
-      <div class="menu-item" onclick="location.href="./s2_waybill.html"">
+      <div class="menu-item" onclick="location.href='s2_waybill.html'">
         <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 8 12 13l8.7-5"/><path d="M12 13v8"/></svg></div>
         <div class="mi-text">我的运单</div>
         <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
       </div>
-      <div class="menu-item" onclick="location.href="./s2_address.html"">
+      <div class="menu-item" onclick="location.href='s2_address.html'">
         <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-10a7 7 0 0 1 14 0c0 4.8-7 10-7 10Z"/><circle cx="12" cy="11" r="2.6"/></svg></div>
         <div class="mi-text">地址管理</div>
         <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
@@ -216,10 +195,10 @@
 
   <!-- 底部 Tab：首页 / 商机 / 我的 -->
   <div class="tabbar">
-    <div class="tab" onclick="location.href="./s2_home.html"">
+    <div class="tab" onclick="location.href='s2_home.html'">
       <svg class="ic" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>首页
     </div>
-    <div class="tab" onclick="location.href="./s2_business.html"">
+    <div class="tab" onclick="location.href='s2_business.html'">
       <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>商机
     </div>
     <div class="tab active">
@@ -276,7 +255,7 @@
 
   function doLogin(){
     // 跳转到登录中间页（传递来源页，授权完成后回到这里）
-    location.href="./login.html" + encodeURIComponent('s2_mine.html');
+    location.href = 'login.html?from=' + encodeURIComponent('s2_mine.html');
   }
   function doLogout(){
     loggedIn = false;
@@ -287,7 +266,7 @@
     render();
   }
 
-  function goVerify(){ location.href="./s2_verify.html"; }
+  function goVerify(){ location.href = 's2_verify.html'; }
   window.goVerify = goVerify;
 
   // 商机入口：未认证时引导至认证页（暗示需认证后使用）；已认证则提示功能开发中

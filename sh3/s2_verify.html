@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>申泽跨境贸易 · 商家认证</title>
-<link rel="stylesheet" href="./tokens.css" />
+<link rel="stylesheet" href="tokens.css" />
 <style>
   body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
   .phone { width:390px; height:844px; background:#fff; border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
@@ -69,28 +69,7 @@
   .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
   .toast.show { opacity:1; }
 </style>
-<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
-<script>
-(function(){
-  try{
-    var beacon=new BeaconAction({
-      appkey:'0WEB06U85YBSLJNL',
-      versionCode:'1.0.0',
-      channelID:'share',
-      delay:1000,
-      sessionDuration:30*60*1000,
-      isOversea:false,
-      needReportRqdEvent:false
-    });
-    beacon.onDirectUserAction('preview_page_view',{
-      'url':location.href,
-      'referrer':document.referrer,
-      'title':document.title,
-      'sandbox_id':'6b3bf596688b4bcab7cc3e396a0e7056'
-    });
-  }catch(e){}
-})();
-</script></head>
+</head>
 <body>
 <div class="phone">
   <div class="vstatus"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
@@ -173,7 +152,7 @@
   var catCount = document.getElementById('catCount');
   var selectedCount = 0;
 
-  document.getElementById('vback').onclick = function(){ location.href="./s2_mine.html"; };
+  document.getElementById('vback').onclick = function(){ location.href = 's2_mine.html'; };
 
   function pullBizInfo(){
     var name = company.value.trim();
@@ -222,7 +201,7 @@
     if(selectedCount === 0){ toast('请至少选择一个经营品类'); return; }
     toast('认证提交成功，审核中…');
     localStorage.setItem('s2_verified', '1');
-    setTimeout(function(){ location.href="./s2_mine.html"; }, 1200);
+    setTimeout(function(){ location.href = 's2_mine.html'; }, 1200);
   };
 
   function toast(msg){

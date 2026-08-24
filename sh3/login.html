@@ -13,28 +13,7 @@
   .tap-back { position:absolute; top:6px; left:6px; width:48px; height:48px; cursor:pointer; }
   .tap-login { position:absolute; left:14px; right:14px; top:56%; height:52px; cursor:pointer; }
 </style>
-<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
-<script>
-(function(){
-  try{
-    var beacon=new BeaconAction({
-      appkey:'0WEB06U85YBSLJNL',
-      versionCode:'1.0.0',
-      channelID:'share',
-      delay:1000,
-      sessionDuration:30*60*1000,
-      isOversea:false,
-      needReportRqdEvent:false
-    });
-    beacon.onDirectUserAction('preview_page_view',{
-      'url':location.href,
-      'referrer':document.referrer,
-      'title':document.title,
-      'sandbox_id':'6b3bf596688b4bcab7cc3e396a0e7056'
-    });
-  }catch(e){}
-})();
-</script></head>
+</head>
 <body>
   <div class="phone">
     <div class="screen"></div>
@@ -44,7 +23,7 @@
   <script>
     var from = new URLSearchParams(location.search).get('from') || 's2_mine.html';
     function goBack(){ if(history.length > 1){ history.back(); } else { location.href = from; } }
-    function goLogin(){ location.href="./wx_auth.html" + encodeURIComponent(from); }
+    function goLogin(){ location.href = 'wx_auth.html?from=' + encodeURIComponent(from); }
   </script>
 </body>
 </html>

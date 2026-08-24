@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>商机 · 卖家端</title>
-<link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="tokens.css">
 <style>
   .phone { width:390px; height:844px; background:var(--bg-page); border-radius:40px; box-shadow:0 12px 40px rgba(0,0,0,.12); overflow:hidden; position:relative; display:flex; flex-direction:column; margin:24px auto; }
   body { background:#E9EDF2; }
@@ -83,28 +83,7 @@
   .toast { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.78); color:#fff; font-size:13px; padding:10px 16px; border-radius:8px; z-index:60; opacity:0; pointer-events:none; transition:opacity .2s; }
   .toast.show { opacity:1; }
 </style>
-<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
-<script>
-(function(){
-  try{
-    var beacon=new BeaconAction({
-      appkey:'0WEB06U85YBSLJNL',
-      versionCode:'1.0.0',
-      channelID:'share',
-      delay:1000,
-      sessionDuration:30*60*1000,
-      isOversea:false,
-      needReportRqdEvent:false
-    });
-    beacon.onDirectUserAction('preview_page_view',{
-      'url':location.href,
-      'referrer':document.referrer,
-      'title':document.title,
-      'sandbox_id':'6b3bf596688b4bcab7cc3e396a0e7056'
-    });
-  }catch(e){}
-})();
-</script></head>
+</head>
 <body>
 <div class="phone">
   <!-- 导航栏 -->
@@ -145,13 +124,13 @@
 
   <!-- 底部 Tab：首页 / 商机 / 我的 -->
   <div class="botbar">
-    <div class="btab" onclick="location.href="./s2_home.html"">
+    <div class="btab" onclick="location.href='s2_home.html'">
       <svg class="ic" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>首页
     </div>
     <div class="btab active">
       <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>商机
     </div>
-    <div class="btab" onclick="location.href="./s2_mine.html"">
+    <div class="btab" onclick="location.href='s2_mine.html'">
       <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的
     </div>
   </div>
@@ -210,7 +189,7 @@ function qiugouCard(d){
   el.className = 'wf-card';
   el.dataset.leaf = d.leaf;
   el.innerHTML =
-    '<div class="thumb"><img src="./img/index.html"+d.img+'.jpg" alt="'+d.cat+'"></div>'+
+    '<div class="thumb"><img src="img/'+d.img+'.jpg" alt="'+d.cat+'"></div>'+
     '<div class="body">'+
     '<div class="card-head"><h4>'+d.title+'</h4><div class="wf-time">'+d.time+'</div></div>'+
     '<span class="cat">'+d.cat+'</span>'+
@@ -235,7 +214,7 @@ function supplyCard(d){
   const trade = '<div class="supply-trade"><div class="trade-left">'+priceHtml+'</div><span class="trade-moq">起订 '+d.moq+'</span></div>';
   let grid = '';
   if(d.imgs && d.imgs.length){
-    grid = '<div class="supply-grid">'+ d.imgs.map(i=>'<img src="./img/index.html"+i+'.jpg" alt="">').join('') +'</div>';
+    grid = '<div class="supply-grid">'+ d.imgs.map(i=>'<img src="img/'+i+'.jpg" alt="">').join('') +'</div>';
   }
   el.innerHTML =
     '<div class="supply-head">'+
@@ -325,7 +304,7 @@ function doLoadMore(){
 }
 
 /* 导航 / 搜索 / Toast */
-function goHome(){ window.location.href="./s2_home.html"; }
+function goHome(){ window.location.href = 's2_home.html'; }
 function focusSearch(){ document.getElementById('searchInput').focus(); }
 let toastTimer;
 function toast(msg){

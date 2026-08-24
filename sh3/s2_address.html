@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 地址管理</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:#fff; border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+  .sub-action { margin-left:auto; height:30px; padding:0 12px; margin-right:10px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-md); font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:3px; cursor:pointer; flex:none; }
+  .sub-action:active { background:var(--color-primary-active); }
+
+  .scroll { flex:1; overflow-y:auto; overflow-x:hidden; background:var(--bg-page); padding:12px 16px 24px; }
+
+  /* 地址卡片 */
+  .addr-card { position:relative; background:#fff; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:14px 12px; margin-bottom:12px; display:flex; align-items:flex-start; gap:8px; }
+  .addr-default { position:absolute; left:0; top:0; background:var(--color-success); color:#fff; font-size:11px; font-weight:600; padding:2px 8px; border-radius:var(--r-md) 0 var(--r-md) 0; }
+  .addr-main { flex:1; min-width:0; padding-left:2px; }
+  .addr-name { font-size:16px; font-weight:700; color:var(--ink-primary); display:flex; align-items:baseline; gap:10px; }
+  .addr-phone { font-size:14px; font-weight:400; color:var(--ink-tertiary); }
+  .addr-detail { margin-top:6px; font-size:14px; color:var(--ink-tertiary); line-height:1.45; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .addr-actions { flex:none; display:flex; flex-direction:column; gap:14px; padding-top:2px; }
+  .addr-act { width:34px; height:34px; border-radius:50%; background:var(--bg-hover); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .addr-act:active { background:#E8E8E8; }
+  .addr-act svg { width:18px; height:18px; }
+  .addr-act.edit svg { stroke:var(--color-primary); }
+  .addr-act.del svg { stroke:var(--color-error); }
+
+  /* 空态 */
+  .empty { margin-top:120px; display:flex; flex-direction:column; align-items:center; gap:14px; color:var(--ink-tertiary); }
+  .empty svg { width:56px; height:56px; stroke:var(--ink-tertiary); opacity:.5; }
+  .empty .et { font-size:14px; text-align:center; }
+
+  /* 新增/编辑 底部弹窗 */
+  .mask { position:absolute; inset:0; background:rgba(0,0,0,.4); opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:40; }
+  .mask.show { opacity:1; pointer-events:auto; }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:18px 18px 0 0; transform:translateY(100%); transition:transform .26s cubic-bezier(.18,.89,.32,1.1); z-index:41; padding:8px 16px 24px; }
+  .sheet.show { transform:translateY(0); }
+  .sheet-bar { width:38px; height:4px; border-radius:2px; background:var(--border-strong); margin:6px auto 12px; }
+  .sheet-title { font-size:17px; font-weight:700; color:var(--ink-primary); margin-bottom:14px; }
+  .fld { margin-bottom:14px; }
+  .flabel { font-size:13px; color:var(--ink-secondary); margin-bottom:7px; display:block; }
+  .flabel .req { color:var(--color-error); margin-left:2px; }
+  .finp { width:100%; height:44px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:0 12px; font-size:14px; color:var(--ink-primary); background:#fff; outline:none; transition:border-color .15s, box-shadow .15s; }
+  .finp::placeholder { color:var(--ink-tertiary); }
+  .finp:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+  .farea { width:100%; min-height:72px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:10px 12px; font-size:14px; color:var(--ink-primary); resize:none; outline:none; font-family:inherit; transition:border-color .15s, box-shadow .15s; }
+  .farea:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+  .default-row { display:flex; align-items:center; justify-content:space-between; margin:8px 0 16px; font-size:14px; color:var(--ink-primary); }
+  .switch { width:46px; height:26px; border-radius:999px; background:var(--border-strong); position:relative; cursor:pointer; transition:background .2s; flex:none; }
+  .switch.on { background:var(--color-success); }
+  .switch .knob { position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+  .switch.on .knob { left:23px; }
+  .sheet-btns { display:flex; gap:12px; }
+  .sheet-btns button { flex:1; height:46px; border-radius:var(--r-md); font-size:15px; font-weight:600; border:none; }
+  .btn-cancel { background:#F5F5F5; color:var(--ink-secondary); }
+  .btn-save { background:var(--color-primary); color:#fff; }
+  .btn-save:active { background:var(--color-primary-active); }
+
+  .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="subheader">
+    <div class="subback" onclick="location.href='s2_mine.html'">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">地址管理</div>
+    <button class="sub-action" onclick="openForm(-1)">+ 新增地址</button>
+  </div>
+
+  <div class="scroll" id="scroll"></div>
+
+  <!-- 新增/编辑弹窗 -->
+  <div class="mask" id="mask" onclick="closeForm()"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheet-bar"></div>
+    <div class="sheet-title" id="formTitle">新增地址</div>
+    <div class="fld">
+      <label class="flabel">联系人姓名<span class="req">*</span></label>
+      <input class="finp" id="fName" placeholder="请输入联系人姓名" />
+    </div>
+    <div class="fld">
+      <label class="flabel">联系电话<span class="req">*</span></label>
+      <input class="finp" id="fPhone" placeholder="请输入联系电话" inputmode="numeric" />
+    </div>
+    <div class="fld">
+      <label class="flabel">详细地址<span class="req">*</span></label>
+      <textarea class="farea" id="fAddr" placeholder="省 / 市 / 区（县）+ 详细街道门牌"></textarea>
+    </div>
+    <div class="default-row">
+      <span>设为默认地址</span>
+      <div class="switch" id="fDefault" onclick="toggleDefault()"><div class="knob"></div></div>
+    </div>
+    <div class="sheet-btns">
+      <button class="btn-cancel" onclick="closeForm()">取消</button>
+      <button class="btn-save" onclick="saveAddr()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var KEY = 's2_addresses';
+  var seed = [
+    {name:'张伟', phone:'13800006789', addr:'广东省广州市番禺区南村镇兴业大道西 18 号跨境物流园 B 栋 3 层', def:true},
+    {name:'李娜', phone:'13900001234', addr:'浙江省义乌市福田街道国际商贸城五区 92 号门 4 楼 318 室', def:false},
+    {name:'王强', phone:'13700005678', addr:'福建省泉州市晋江市陈埭镇鞋都路 88 号电商大厦 1207', def:false},
+    {name:'陈晓', phone:'13500009987', addr:'上海市青浦区华新镇华腾路 1288 号智慧物流中心 7 号仓', def:false}
+  ];
+
+  function load(){
+    var raw; try { raw = localStorage.getItem(KEY); } catch(e){}
+    if(!raw){ try { localStorage.setItem(KEY, JSON.stringify(seed)); } catch(e){} return seed.slice(); }
+    try { return JSON.parse(raw) || []; } catch(e){ return []; }
+  }
+  function save(list){ try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){} }
+
+  var list = load();
+  var editing = -1;
+  var defOn = false;
+
+  var scroll = document.getElementById('scroll');
+
+  function render(){
+    if(!list.length){
+      scroll.innerHTML =
+        '<div class="empty">'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-10a7 7 0 0 1 14 0c0 4.8-7 10-7 10Z"/><circle cx="12" cy="11" r="2.6"/></svg>'+
+        '<div class="et">暂无地址，点击右上角添加</div>'+
+        '</div>';
+      return;
+    }
+    var html = '';
+    list.forEach(function(a, i){
+      html +=
+        '<div class="addr-card">'+
+          (a.def ? '<span class="addr-default">默认</span>' : '')+
+          '<div class="addr-main">'+
+            '<div class="addr-name">'+a.name+'<span class="addr-phone">'+maskPhone(a.phone)+'</span></div>'+
+            '<div class="addr-detail">'+a.addr+'</div>'+
+          '</div>'+
+          '<div class="addr-actions">'+
+            '<button class="addr-act edit" onclick="openForm('+i+')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>'+
+            '<button class="addr-act del" onclick="delAddr('+i+')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>'+
+          '</div>'+
+        '</div>';
+    });
+    scroll.innerHTML = html;
+  }
+  function maskPhone(p){ if(!p || p.length<7) return p; return p.slice(0,3)+'****'+p.slice(-4); }
+
+  var sheet = document.getElementById('sheet');
+  var mask = document.getElementById('mask');
+
+  window.openForm = function(i){
+    editing = i;
+    if(i >= 0){
+      var a = list[i];
+      document.getElementById('formTitle').textContent = '编辑地址';
+      document.getElementById('fName').value = a.name;
+      document.getElementById('fPhone').value = a.phone;
+      document.getElementById('fAddr').value = a.addr;
+      defOn = !!a.def;
+    } else {
+      document.getElementById('formTitle').textContent = '新增地址';
+      document.getElementById('fName').value = '';
+      document.getElementById('fPhone').value = '';
+      document.getElementById('fAddr').value = '';
+      defOn = false;
+    }
+    document.getElementById('fDefault').classList.toggle('on', defOn);
+    mask.classList.add('show'); sheet.classList.add('show');
+  };
+  window.toggleDefault = function(){ defOn = !defOn; document.getElementById('fDefault').classList.toggle('on', defOn); };
+  window.closeForm = function(){ mask.classList.remove('show'); sheet.classList.remove('show'); };
+
+  window.saveAddr = function(){
+    var name = document.getElementById('fName').value.trim();
+    var phone = document.getElementById('fPhone').value.trim();
+    var addr = document.getElementById('fAddr').value.trim();
+    if(!name){ toast('请填写联系人姓名'); return; }
+    if(!/^1[3-9]\d{9}$/.test(phone)){ toast('请填写正确的 11 位手机号'); return; }
+    if(!addr){ toast('请填写详细地址'); return; }
+    var rec = {name:name, phone:phone, addr:addr, def:defOn};
+    if(editing >= 0){ list[editing] = rec; }
+    else { list.push(rec); }
+    if(defOn){ list.forEach(function(a,idx){ if(idx !== (editing>=0?editing:list.length-1)) a.def = false; }); }
+    save(list); render();
+    closeForm();
+  };
+
+  window.delAddr = function(i){
+    var a = list[i];
+    if(!confirm('确定删除「'+a.name+'」的地址吗？')) return;
+    list.splice(i,1);
+    save(list); render();
+  };
+
+  function toast(msg){
+    var t = document.getElementById('toast');
+    if(!t){ t = document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>

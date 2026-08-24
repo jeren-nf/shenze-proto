@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 物流下单</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+
+  .scroll { flex:1; overflow-y:auto; overflow-x:hidden; background:var(--bg-page); padding:14px 0 8px; }
+
+  /* 表单分组卡片 */
+  .group { margin:0 16px 12px; background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); overflow:hidden; }
+  .group-head { padding:12px 14px; font-size:14px; font-weight:700; color:var(--ink-primary); background:#F7F9FC; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; justify-content:space-between; }
+  .group-head .chev { width:20px; height:20px; stroke:var(--ink-tertiary); transition:transform .2s ease; }
+  .group-head.collapsed .chev { transform:rotate(-90deg); }
+  .group-body { padding:4px 14px 14px; }
+  .group-body.hide { display:none; }
+
+  .field { margin-top:12px; }
+  .flabel { font-size:13px; color:var(--ink-secondary); margin-bottom:7px; display:block; }
+  .flabel .req { color:var(--color-error); margin-left:2px; }
+
+  .finp { width:100%; height:44px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:0 12px; font-size:14px; color:var(--ink-primary); background:#fff; outline:none; transition:border-color .15s, box-shadow .15s; }
+  .finp::placeholder { color:var(--ink-tertiary); }
+  .finp:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+  .farea { width:100%; min-height:72px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:10px 12px; font-size:14px; color:var(--ink-primary); resize:none; outline:none; font-family:inherit; transition:border-color .15s, box-shadow .15s; }
+  .farea:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+
+  /* 下拉选择（仿真 input） */
+  .select { width:100%; height:44px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:0 12px; display:flex; align-items:center; justify-content:space-between; background:#fff; cursor:pointer; transition:border-color .15s; }
+  .select:active { border-color:var(--color-primary); }
+  .select .sel-label { font-size:14px; color:var(--ink-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .select .sel-label.ph { color:var(--ink-tertiary); }
+  .select .sel-arr { width:18px; height:18px; stroke:var(--ink-tertiary); flex:none; }
+
+  /* 地址行：输入框 + 地址簿 */
+  .addr-row { display:flex; gap:10px; align-items:stretch; }
+  .addr-row .finp { flex:1; min-width:0; }
+  .book-btn { flex:none; height:44px; padding:0 12px; border:1px solid var(--border-strong); border-radius:var(--r-md); background:#fff; color:var(--color-primary); font-size:13px; font-weight:600; white-space:nowrap; display:inline-flex; align-items:center; gap:3px; }
+  .book-btn:active { background:var(--bg-hover); }
+
+  /* 底部固定栏 */
+  .fixed-bar { flex:none; background:#fff; border-top:1px solid var(--border-weak); padding:10px 16px 14px; }
+  .fee-card { background:var(--color-primary-bg); border:1px solid var(--color-primary-border); border-radius:var(--r-md); padding:10px 12px; margin-bottom:10px; }
+  .fee-main { font-size:14px; font-weight:700; color:var(--color-primary-active); }
+  .fee-note { font-size:11px; color:var(--ink-tertiary); margin-top:4px; line-height:1.4; }
+  .submit-btn { width:100%; height:48px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-md); font-size:16px; font-weight:600; }
+  .submit-btn:active { background:var(--color-primary-active); }
+
+  /* 通用底部弹窗（选择器 / 地址簿） */
+  .picker-mask { position:absolute; inset:0; background:rgba(0,0,0,.4); opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:40; }
+  .picker-mask.show { opacity:1; pointer-events:auto; }
+  .picker-sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:18px 18px 0 0; transform:translateY(100%); transition:transform .26s cubic-bezier(.18,.89,.32,1.1); z-index:41; padding:8px 0 16px; max-height:74%; display:flex; flex-direction:column; }
+  .picker-sheet.show { transform:translateY(0); }
+  .sheet-bar { width:38px; height:4px; border-radius:2px; background:var(--border-strong); margin:6px auto 8px; }
+  .picker-head { display:flex; align-items:center; justify-content:space-between; padding:4px 16px 10px; }
+  .picker-title { font-size:17px; font-weight:700; color:var(--ink-primary); }
+  .picker-done { color:var(--color-primary); font-size:14px; font-weight:600; }
+  .picker-search { padding:0 16px 10px; }
+  .picker-search input { width:100%; height:40px; border:1px solid var(--border-strong); border-radius:var(--r-pill); padding:0 14px; font-size:14px; outline:none; background:#F5F5F5; }
+  .picker-search input:focus { border-color:var(--color-primary); background:#fff; }
+  .picker-list { flex:1; overflow-y:auto; padding:0 16px; -webkit-overflow-scrolling:touch; }
+  .picker-group { font-size:12px; color:var(--ink-tertiary); font-weight:600; padding:10px 2px 6px; position:sticky; top:0; background:#fff; }
+  .picker-item { padding:13px 2px; border-bottom:1px solid var(--border-weak); cursor:pointer; }
+  .picker-item:active { background:var(--bg-hover); }
+  .picker-item .pi-main { font-size:15px; color:var(--ink-primary); }
+  .picker-item .pi-sub { font-size:12px; color:var(--ink-tertiary); margin-top:3px; line-height:1.4; }
+  .picker-empty { text-align:center; color:var(--ink-tertiary); font-size:13px; padding:30px 0; }
+
+  .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="subheader">
+    <div class="subback" onclick="location.href='s2_home.html'">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">物流下单</div>
+  </div>
+
+  <div class="scroll">
+    <!-- 第一组：发运信息 -->
+    <div class="group">
+      <div class="group-head">发运信息</div>
+      <div class="group-body">
+        <div class="field">
+          <label class="flabel">发货地<span class="req">*</span></label>
+          <div class="select" id="sel_shipFrom" onclick="pickShipFrom()">
+            <span class="sel-label ph">请选择发货城市</span>
+            <svg class="sel-arr" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+        <div class="field">
+          <label class="flabel">目的地<span class="req">*</span></label>
+          <div class="select" id="sel_shipTo" onclick="pickShipTo()">
+            <span class="sel-label ph">请选择目的地国家</span>
+            <svg class="sel-arr" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二组：发货信息 -->
+    <div class="group">
+      <div class="group-head">发货信息</div>
+      <div class="group-body">
+        <div class="field">
+          <label class="flabel">发货人<span class="req">*</span></label>
+          <input class="finp" id="shipName" placeholder="请输入发货人姓名" />
+        </div>
+        <div class="field">
+          <label class="flabel">联系电话<span class="req">*</span></label>
+          <input class="finp" id="shipPhone" placeholder="请输入联系电话" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label class="flabel">详细地址<span class="req">*</span></label>
+          <div class="addr-row">
+            <input class="finp" id="shipAddr" placeholder="省 / 市 / 区 + 详细街道门牌" />
+            <button class="book-btn" onclick="openBook('ship')">📖 地址簿</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第三组：收货信息 -->
+    <div class="group">
+      <div class="group-head">收货信息</div>
+      <div class="group-body">
+        <div class="field">
+          <label class="flabel">收货人<span class="req">*</span></label>
+          <input class="finp" id="recvName" placeholder="请输入收货人姓名" />
+        </div>
+        <div class="field">
+          <label class="flabel">联系电话<span class="req">*</span></label>
+          <input class="finp" id="recvPhone" placeholder="请输入联系电话" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label class="flabel">详细地址<span class="req">*</span></label>
+          <div class="addr-row">
+            <input class="finp" id="recvAddr" placeholder="国家 / 城市 + 详细地址" />
+            <button class="book-btn" onclick="openBook('recv')">📖 地址簿</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第四组：货物信息 -->
+    <div class="group">
+      <div class="group-head">货物信息</div>
+      <div class="group-body">
+        <div class="field">
+          <label class="flabel">品名<span class="req">*</span></label>
+          <input class="finp" id="goodsName" placeholder="如：运动鞋 / 箱包" />
+        </div>
+        <div class="field">
+          <label class="flabel">件数 / 包装<span class="req">*</span></label>
+          <input class="finp" id="goodsPack" placeholder="如：30000 双 / 50 箱" />
+        </div>
+        <div class="field">
+          <label class="flabel">重量（kg）<span class="req">*</span></label>
+          <input class="finp" id="goodsWeight" placeholder="预估重量" inputmode="decimal" oninput="calcFee()" />
+        </div>
+        <div class="field">
+          <label class="flabel">体积（m³）<span class="req" style="color:var(--ink-tertiary)">选填</span></label>
+          <input class="finp" id="goodsVolume" placeholder="预估体积" inputmode="decimal" oninput="calcFee()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 第五组：附加信息（可折叠，默认展开） -->
+    <div class="group">
+      <div class="group-head" id="addHead" onclick="toggleAdd()">
+        附加信息
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="group-body" id="addBody">
+        <div class="field">
+          <label class="flabel">发货方式</label>
+          <div class="select" id="sel_addShip" onclick="pickAddShip()">
+            <span class="sel-label">上门接货</span>
+            <svg class="sel-arr" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+        <div class="field">
+          <label class="flabel">付款方式</label>
+          <div class="select" id="sel_payType" onclick="pickPayType()">
+            <span class="sel-label">到付</span>
+            <svg class="sel-arr" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+        <div class="field">
+          <label class="flabel">代收货款（元）</label>
+          <input class="finp" id="cod" placeholder="0" inputmode="decimal" value="0" />
+        </div>
+        <div class="field">
+          <label class="flabel">备注<span class="req" style="color:var(--ink-tertiary)">选填</span></label>
+          <textarea class="farea" id="remark" placeholder="如需特殊包装、时效要求等请备注"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部固定栏 -->
+  <div class="fixed-bar">
+    <div class="fee-card">
+      <div class="fee-main" id="feeMain">预估运费区间：¥800 - ¥2,600</div>
+      <div class="fee-note">* 此为参考价，实际费用以物流商确认为准</div>
+    </div>
+    <button class="submit-btn" onclick="submitOrder()">提交运单</button>
+  </div>
+
+  <!-- 选择器弹窗 -->
+  <div class="picker-mask" id="pmask" onclick="closePicker()"></div>
+  <div class="picker-sheet" id="psheet">
+    <div class="sheet-bar"></div>
+    <div class="picker-head">
+      <div class="picker-title" id="pickerTitle"></div>
+      <div class="picker-done" onclick="closePicker()">完成</div>
+    </div>
+    <div class="picker-search" id="pickerSearchWrap"><input id="pickerSearch" placeholder="搜索" oninput="renderPicker(this.value)" /></div>
+    <div class="picker-list" id="pickerList"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ---------- 数据源 ---------- */
+  var CITIES = ['北京','上海','广州','深圳','义乌','温州','宁波','杭州','苏州','佛山','东莞','泉州','厦门','青岛','成都','重庆','武汉','西安','郑州','南京','天津','福州','无锡','南通','绍兴','嘉兴','台州','金华','中山','惠州','江门','汕头','揭阳','保定','石家庄','沈阳','大连','济南','烟台','潍坊','合肥','南昌','长沙','昆明','贵阳','南宁','海口','兰州','太原','哈尔滨','长春','常州','扬州','镇江','湖州','丽水','衢州','珠海','湛江','茂名','肇庆','清远','潮州'];
+
+  var COUNTRY_GROUPS = [
+    {name:'非洲', items:['南非','尼日利亚','埃及','肯尼亚','加纳','坦桑尼亚','埃塞俄比亚','摩洛哥','阿尔及利亚','突尼斯','乌干达','安哥拉','刚果（金）','喀麦隆','科特迪瓦','赞比亚','卢旺达','塞内加尔','博茨瓦纳','纳米比亚','马达加斯加','莫桑比克','加蓬','津巴布韦','利比亚','毛里求斯','塞舌尔','贝宁','多哥','马里','几内亚','塞拉利昂','利比里亚','布基纳法索','尼日尔','乍得','赤道几内亚','佛得角','毛里塔尼亚','冈比亚','几内亚比绍','科摩罗','斯威士兰','莱索托','马拉维','布隆迪','吉布提','厄立特里亚'].map(function(c){return {value:c,label:c};})},
+    {name:'中东（不含伊朗、以色列及战乱国）', items:['阿联酋','沙特阿拉伯','卡塔尔','阿曼','科威特','巴林','约旦','黎巴嫩','伊拉克','土耳其'].map(function(c){return {value:c,label:c};})},
+    {name:'南亚', items:['印度','巴基斯坦','孟加拉国','斯里兰卡','尼泊尔','马尔代夫','不丹'].map(function(c){return {value:c,label:c};})}
+  ];
+
+  /* ---------- 选择器 ---------- */
+  var pickerState = null;
+  function openPicker(opts){
+    pickerState = opts;
+    document.getElementById('pickerTitle').textContent = opts.title;
+    document.getElementById('pickerSearchWrap').style.display = opts.searchable ? 'block' : 'none';
+    document.getElementById('pickerSearch').value = '';
+    renderPicker('');
+    document.getElementById('pmask').classList.add('show');
+    document.getElementById('psheet').classList.add('show');
+  }
+  function esc(s){ return String(s).replace(/'/g,"\\'"); }
+  function renderPicker(filter){
+    var opts = pickerState; if(!opts) return;
+    filter = (filter||'').trim();
+    var html = '';
+    opts.groups.forEach(function(g){
+      var items = g.items.filter(function(it){ return !filter || it.label.indexOf(filter) >= 0; });
+      if(!items.length) return;
+      if(g.name) html += '<div class="picker-group">'+g.name+'</div>';
+      items.forEach(function(it){
+        html += '<div class="picker-item" onclick="pickItem(\''+esc(it.value)+'\')">'+
+          '<div class="pi-main">'+it.label+'</div>'+
+          (it.sub ? '<div class="pi-sub">'+it.sub+'</div>' : '')+
+        '</div>';
+      });
+    });
+    if(!html) html = '<div class="picker-empty">无匹配结果</div>';
+    document.getElementById('pickerList').innerHTML = html;
+  }
+  window.renderPicker = renderPicker;
+  window.pickItem = function(value){
+    var opts = pickerState; if(!opts) return;
+    var label = value;
+    opts.groups.forEach(function(g){ g.items.forEach(function(it){ if(it.value === value) label = it.label; }); });
+    opts.onPick(value, label);
+    closePicker();
+  };
+  window.closePicker = function(){ document.getElementById('pmask').classList.remove('show'); document.getElementById('psheet').classList.remove('show'); };
+
+  function setSelect(id, value, label){
+    var el = document.getElementById(id);
+    el.dataset.value = value;
+    var span = el.querySelector('.sel-label');
+    span.textContent = label;
+    span.classList.remove('ph');
+  }
+
+  /* ---------- 各下拉 ---------- */
+  window.pickShipFrom = function(){
+    openPicker({ title:'选择发货城市', searchable:true, groups:[{name:'', items: CITIES.map(function(c){return {value:c,label:c};})}],
+      onPick:function(v){ setSelect('sel_shipFrom', v, v); } });
+  };
+  window.pickShipTo = function(){
+    openPicker({ title:'选择目的地国家', searchable:true, groups: COUNTRY_GROUPS,
+      onPick:function(v){ setSelect('sel_shipTo', v, v); } });
+  };
+  window.pickAddShip = function(){
+    openPicker({ title:'发货方式', searchable:false, groups:[{name:'', items:[{value:'上门接货',label:'上门接货'},{value:'自送上门',label:'自送上门'}]}],
+      onPick:function(v){ setSelect('sel_addShip', v, v); } });
+  };
+  window.pickPayType = function(){
+    openPicker({ title:'付款方式', searchable:false, groups:[{name:'', items:[{value:'到付',label:'到付'},{value:'预付',label:'预付'}]}],
+      onPick:function(v){ setSelect('sel_payType', v, v); } });
+  };
+
+  /* ---------- 地址簿 ---------- */
+  function loadAddresses(){
+    var raw; try { raw = localStorage.getItem('s2_addresses'); } catch(e){}
+    if(!raw) return [];
+    try { return JSON.parse(raw) || []; } catch(e){ return []; }
+  }
+  window.openBook = function(target){
+    var list = loadAddresses();
+    if(!list.length){ toast('暂无保存的地址，请先去地址管理添加'); return; }
+    openPicker({ title:'选择地址', searchable:true,
+      groups:[{name:'', items: list.map(function(a,i){ return {value:String(i), label:a.name+'　'+a.phone, sub:a.addr}; })}],
+      onPick:function(v){
+        var a = list[Number(v)];
+        if(target === 'ship'){ document.getElementById('shipAddr').value = a.addr; }
+        else { document.getElementById('recvName').value = a.name; document.getElementById('recvPhone').value = a.phone; document.getElementById('recvAddr').value = a.addr; }
+      } });
+  };
+
+  /* ---------- 折叠 ---------- */
+  window.toggleAdd = function(){
+    var head = document.getElementById('addHead');
+    var body = document.getElementById('addBody');
+    head.classList.toggle('collapsed');
+    body.classList.toggle('hide');
+  };
+
+  /* ---------- 预估运费 ---------- */
+  function num(id){ var v = parseFloat(document.getElementById(id).value); return isNaN(v) ? 0 : v; }
+  function feeRange(){
+    var w = num('goodsWeight'), v = num('goodsVolume');
+    var low, high;
+    if(w === 0 && v === 0){ low = 800; high = 2600; }
+    else {
+      low = Math.round((w*7 + v*1200)/10)*10;
+      high = Math.round((w*13 + v*2000)/10)*10;
+    }
+    return { low:low, high:high };
+  }
+  window.calcFee = function(){
+    var f = feeRange();
+    document.getElementById('feeMain').textContent = '预估运费区间：¥' + f.low.toLocaleString() + ' - ¥' + f.high.toLocaleString();
+  };
+
+  /* ---------- 默认值 ---------- */
+  var loggedPhone = ''; try { loggedPhone = localStorage.getItem('loggedPhone') || ''; } catch(e){}
+  document.getElementById('shipName').value = '微信用户';
+  document.getElementById('shipPhone').value = loggedPhone;
+
+  /* ---------- 提交 ---------- */
+  function val(id){ return document.getElementById(id).value.trim(); }
+  function selVal(id){ return document.getElementById(id).dataset.value || ''; }
+  window.submitOrder = function(){
+    var shipFrom = selVal('sel_shipFrom');
+    var shipTo = selVal('sel_shipTo');
+    var shipName = val('shipName'), shipPhone = val('shipPhone'), shipAddr = val('shipAddr');
+    var recvName = val('recvName'), recvPhone = val('recvPhone'), recvAddr = val('recvAddr');
+    var goodsName = val('goodsName'), goodsPack = val('goodsPack'), goodsWeight = val('goodsWeight');
+
+    if(!shipFrom){ toast('请选择发货地'); return; }
+    if(!shipTo){ toast('请选择目的地'); return; }
+    if(!shipName){ toast('请填写发货人'); return; }
+    if(!/^1[3-9]\d{9}$/.test(shipPhone)){ toast('请填写正确的发货联系电话'); return; }
+    if(!shipAddr){ toast('请填写发货详细地址'); return; }
+    if(!recvName){ toast('请填写收货人'); return; }
+    if(!/^1[3-9]\d{9}$/.test(recvPhone)){ toast('请填写正确的收货联系电话'); return; }
+    if(!recvAddr){ toast('请填写收货详细地址'); return; }
+    if(!goodsName){ toast('请填写品名'); return; }
+    if(!goodsPack){ toast('请填写件数 / 包装'); return; }
+    if(!goodsWeight){ toast('请填写预估重量'); return; }
+
+    // 生成运单并写入「我的运单」
+    var now = new Date();
+    var pad = function(n){ return n<10?'0'+n:''+n; };
+    var ymd = ''+now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate());
+    var rnd = pad(Math.floor(Math.random()*10000));
+    var no = 'WB'+ymd+rnd;
+    var time = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+    var f = feeRange();
+    var remark = val('remark');
+
+    var order = {
+      no:no, time:time,
+      from:shipFrom, to:shipTo,
+      name:goodsName, count:goodsPack, weight:goodsWeight,
+      remark:remark,
+      feeLow:f.low, feeHigh:f.high,
+      status:'待揽收'
+    };
+
+    var KEY = 's2_waybills';
+    var list; try { list = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ list = []; }
+    list.unshift(order);
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){}
+
+    // 暂存本次订单摘要，供「提交成功」页渲染
+    try { localStorage.setItem('s2_last_order', JSON.stringify(order)); } catch(e){}
+
+    toast('运单提交成功');
+    setTimeout(function(){ location.href = 's2_logistics_success.html'; }, 700);
+  };
+
+  /* ---------- Toast ---------- */
+  function toast(msg){
+    var t = document.getElementById('toast');
+    if(!t){ t = document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+})();
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>申泽跨境贸易 · 买家端小程序首页</title>
-<link rel="stylesheet" href="./tokens.css" />
+<link rel="stylesheet" href="tokens.css" />
 <style>
   body { background: #E9EDF2; display: flex; justify-content: center; padding: 32px 0; }
   /* iPhone 390×844 设备框 */
@@ -142,7 +142,7 @@
   <!-- 顶部标题栏 -->
   <div class="topbar">
     <div class="brand">
-      <img class="brand-logo" src="./logo.png" alt="鞋贸汇" onerror="this.style.display='none';document.getElementById('blf').style.display='flex';" />
+      <img class="brand-logo" src="logo.png" alt="鞋贸汇" onerror="this.style.display='none';document.getElementById('blf').style.display='flex';" />
       <span id="blf" class="brand-logo-fallback" style="display:none">鞋</span>
       <span class="brand-name">鞋贸汇</span>
     </div>
@@ -181,10 +181,10 @@
         <svg class="ic ic-arrow" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
       </span>首页
     </div>
-    <div class="tab" onclick="location.href="./b_supply.html"">
+    <div class="tab" onclick="location.href='b_supply.html'">
       <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>货源
     </div>
-    <div class="tab" onclick="location.href="./b2_mine.html"">
+    <div class="tab" onclick="location.href='b2_mine.html'">
       <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的
     </div>
   </div>
@@ -245,7 +245,7 @@
     var el = document.createElement('div');
     el.className = 'hs-card';
     var hero = d.imgs && d.imgs.length ? d.imgs[0] : '';
-    var thumb = hero ? '<div class="thumb"><img src="./img/index.html"+hero+'.jpg" alt=""></div>'
+    var thumb = hero ? '<div class="thumb"><img src="img/'+hero+'.jpg" alt=""></div>'
                      : '<div class="thumb" style="background:#EAF3FF"></div>';
     el.innerHTML =
       thumb +
@@ -265,7 +265,7 @@
     el.className = 'supply-card';
     var grid = '';
     if(d.imgs && d.imgs.length){
-      grid = '<div class="supply-grid">'+ d.imgs.map(function(i){ return '<img src="./img/index.html"+i+'.jpg" alt="">'; }).join('') +'</div>';
+      grid = '<div class="supply-grid">'+ d.imgs.map(function(i){ return '<img src="img/'+i+'.jpg" alt="">'; }).join('') +'</div>';
     }
     el.innerHTML =
       '<div class="supply-head">' +

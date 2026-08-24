@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 发布成功</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+  .scroll { flex:1; overflow-y:auto; background:var(--bg-page); padding:0 16px 24px; }
+  .hero { text-align:center; padding:40px 0 24px; }
+  .check { width:72px; height:72px; border-radius:50%; background:var(--color-success); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; box-shadow:0 8px 20px rgba(82,196,26,.3); }
+  .check svg { width:40px; height:40px; stroke:#fff; stroke-width:3; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .hero h1 { font-size:22px; font-weight:700; margin:0 0 8px; color:var(--ink-primary); }
+  .hero p { font-size:13px; color:var(--ink-tertiary); margin:0; line-height:1.5; }
+  .summary { background:var(--bg-hover); border:1px solid var(--border-weak); border-radius:var(--r-md); padding:6px 14px; margin-top:8px; }
+  .srow { display:flex; padding:12px 0; border-bottom:1px solid var(--border-weak); font-size:14px; }
+  .srow:last-child { border-bottom:none; }
+  .srow .sk { width:72px; flex:none; color:var(--ink-tertiary); }
+  .srow .sv { flex:1; color:var(--ink-primary); word-break:break-all; }
+  .actions { margin-top:28px; display:flex; flex-direction:column; gap:12px; }
+  .btn { height:46px; border-radius:var(--r-md); font-size:15px; font-weight:600; border:1px solid transparent; display:flex; align-items:center; justify-content:center; }
+  .btn-primary { background:var(--color-primary); color:#fff; }
+  .btn-default { background:#fff; color:var(--ink-primary); border-color:var(--border-strong); }
+  .btn-text { background:transparent; color:var(--color-primary); height:auto; padding:6px; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+  <div class="subheader">
+    <div class="subback" onclick="location.href='b2_home.html'">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">发布成功</div>
+  </div>
+
+  <div class="scroll">
+    <div class="hero">
+      <div class="check"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h1>发布成功</h1>
+      <p>您的求购信息已发布，审核通过后将推送给匹配的供应商</p>
+    </div>
+    <div class="summary" id="summary"></div>
+    <div class="actions">
+      <div class="btn btn-primary" id="btnDetail">查看详情</div>
+      <div class="btn btn-default" onclick="location.href='b2_my_inquiry.html'">查看我的询价</div>
+      <div class="btn btn-text" onclick="location.href='b2_home.html'">返回首页</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var data = null;
+  try { data = JSON.parse(localStorage.getItem('b2_last_inquiry')); } catch(e){}
+  var box = document.getElementById('summary');
+  if(data){
+    box.innerHTML =
+      row('标题', data.title) +
+      row('品类', data.category) +
+      row('数量', data.qty) +
+      row('销售地区', data.region) +
+      row('发布时间', data.time);
+    document.getElementById('btnDetail').setAttribute('onclick', "location.href='b2_inquiry_detail.html?id="+data.id+"'");
+  } else {
+    box.innerHTML = '<div class="srow"><div class="sv">未获取到发布信息</div></div>';
+  }
+  function row(k, v){ return '<div class="srow"><div class="sk">'+k+'</div><div class="sv">'+v+'</div></div>'; }
+</script>
+</body>
+</html>

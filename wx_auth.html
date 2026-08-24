@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>微信授权登录</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    background:#E9EDF2;
+    display:flex;justify-content:center;align-items:center;
+    padding:24px 0;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
+  }
+  .phone{
+    width:390px;height:844px;
+    background:#fff;
+    border-radius:44px;
+    box-shadow:0 24px 60px rgba(0,0,0,.18);
+    overflow:hidden;
+    position:relative;
+    border:10px solid #111;
+  }
+  /* 底层：登录页（蒙层遮罩前） */
+  .bg{position:absolute;inset:0;background:url(img/login_ref.png) center/cover no-repeat}
+  /* 暗色蒙层，模拟原页被压暗 */
+  .scrim{position:absolute;inset:0;background:rgba(0,0,0,.35)}
+  /* 底部 sheet：用参考图原图作为视觉，保证 1:1 */
+  .sheet{
+    position:absolute;left:0;right:0;bottom:0;height:55%;
+    background:url(img/wx_auth_ref.png) center top/100% 100% no-repeat;
+  }
+  /* 三个交互覆盖层（透明可点） */
+  .ovl{position:absolute;cursor:pointer;background:transparent}
+  .ovl:active{background:rgba(0,0,0,.06)}
+  .ovl-phone{left:5%;right:5%;top:34%;height:13%}
+  .ovl-deny{left:5%;right:5%;top:53%;height:13%}
+  .ovl-other{left:5%;right:5%;top:78%;height:9%}
+  /* toast */
+  .toast{
+    position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+    background:rgba(0,0,0,.78);color:#fff;padding:10px 18px;border-radius:6px;
+    font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:99;
+  }
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div class="bg"></div>
+    <div class="scrim"></div>
+    <div class="sheet">
+      <div class="ovl ovl-phone" id="authPhone" aria-label="使用此手机号授权"></div>
+      <div class="ovl ovl-deny"  id="denyBtn"  aria-label="不允许"></div>
+      <div class="ovl ovl-other" id="otherBtn" aria-label="使用其它号码"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+<script>
+(function(){
+  var p=new URLSearchParams(location.search);
+  var from=p.get('from')||'s2_mine.html';
+  var toastEl=document.getElementById('toast');
+  function toast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); setTimeout(function(){toastEl.classList.remove('show')},1500); }
+  document.getElementById('authPhone').onclick=function(){
+    localStorage.setItem('loggedIn','1');
+    localStorage.setItem('loggedPhone','186****1436');
+    location.href=from;
+  };
+  document.getElementById('denyBtn').onclick=function(){
+    location.href='login.html?from='+encodeURIComponent(from);
+  };
+  document.getElementById('otherBtn').onclick=function(){ toast('切换其它号码'); };
+})();
+</script>
+</body>
+</html>

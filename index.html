@@ -3,51 +3,171 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>跨境贸易服务平台</title>
+<title>跨境贸易服务平台 · UI 细化</title>
+<link rel="stylesheet" href="tokens.css" />
 <style>
-  :root { --brand:#1677FF; --bg:#f5f7fa; --card:#fff; --text:#1f2329; --sub:#646a73; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 16px; }
-  .wrap { max-width:880px; width:100%; }
-  header { text-align:center; margin-bottom:36px; }
-  header h1 { font-size:26px; font-weight:700; }
-  header p { color:var(--sub); margin-top:8px; font-size:14px; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; }
-  .card { background:var(--card); border-radius:16px; padding:24px; box-shadow:0 2px 12px rgba(0,0,0,.06); transition:.2s; text-decoration:none; color:inherit; display:block; border:1px solid #eef0f3; }
-  .card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(22,119,255,.15); border-color:var(--brand); }
-  .badge { display:inline-block; font-size:12px; padding:3px 10px; border-radius:999px; background:rgba(22,119,255,.1); color:var(--brand); margin-bottom:14px; }
-  .card h2 { font-size:18px; margin-bottom:8px; }
-  .card p { color:var(--sub); font-size:13px; line-height:1.6; }
-  .pages { margin-top:12px; font-size:12px; color:var(--sub); }
-  footer { text-align:center; color:var(--sub); font-size:12px; margin-top:36px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 48px 24px 64px; }
+  .hero { text-align: center; margin-bottom: 32px; }
+  .hero-mark { width: 56px; height: 56px; border-radius: 14px; margin: 0 auto 16px; background: linear-gradient(135deg, #F5A623, #FFB340); color: #fff; font-size: 30px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-hover); }
+  .hero h1 { font-size: 28px; font-weight: 700; margin: 0 0 8px; }
+  .hero .sub { color: var(--ink-secondary); font-size: 14px; margin: 0; }
+  .pill-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  .summary { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 24px 0 8px; }
+  .stat { background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 12px 20px; text-align: center; min-width: 120px; }
+  .stat b { display: block; font-size: 22px; color: var(--color-primary); font-weight: 700; }
+  .stat span { font-size: 12px; color: var(--ink-tertiary); }
+
+  .feat { margin-top: 40px; background: linear-gradient(180deg, #F5F9FF, #fff); border: 1px solid var(--color-primary-border); border-radius: var(--r-lg); padding: 22px 22px 26px; }
+  .feat-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+  .feat-head h2 { font-size: 20px; font-weight: 700; margin: 0; }
+  .feat-head .hint { font-size: 12px; color: var(--ink-tertiary); }
+  .feat-sub { font-size: 13px; color: var(--ink-secondary); margin: 0 0 16px; }
+
+  .group { margin-top: 40px; }
+  .group-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .group-head .dot { width: 10px; height: 10px; border-radius: 3px; }
+  .group-head h2 { font-size: 20px; font-weight: 700; margin: 0; }
+  .group-head .cnt { font-size: 12px; color: #fff; background: var(--ink-tertiary); border-radius: var(--r-pill); padding: 2px 10px; font-weight: 600; }
+
+  .pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .pcard { display: block; background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 14px; text-decoration: none; color: inherit; transition: all .15s ease; }
+  .pcard:hover { box-shadow: var(--shadow-overlay); transform: translateY(-2px); border-color: var(--color-primary-border); }
+  .pcard .pid { font-size: 11px; color: var(--ink-tertiary); font-family: var(--font-en); }
+  .pcard .pt { font-size: 14px; font-weight: 600; margin: 4px 0 4px; }
+  .pcard .pd { font-size: 12px; color: var(--ink-tertiary); line-height: 1.5; }
+
+  .pcard.featured { border-color: var(--color-primary); box-shadow: 0 0 0 2px rgba(22,119,255,.12); }
+  .pcard.featured:hover { box-shadow: 0 0 0 2px rgba(22,119,255,.2); transform: translateY(-2px); }
+  .badge-refined { display: inline-block; font-size: 10px; color: #fff; background: var(--color-primary); border-radius: var(--r-pill); padding: 1px 7px; margin-left: 6px; vertical-align: middle; }
+
+  .pcard.muted { opacity: .55; cursor: default; }
+  .pcard.muted:hover { transform: none; box-shadow: none; border-color: var(--border-weak); }
+  .tag-undone { display: inline-block; font-size: 10px; color: var(--ink-tertiary); background: var(--bg-page); border: 1px solid var(--border-weak); border-radius: var(--r-pill); padding: 1px 7px; margin-top: 6px; }
+
+  .foot { text-align: center; color: var(--ink-tertiary); font-size: 12px; margin-top: 48px; }
+  @media (max-width: 880px){ .pgrid { grid-template-columns: repeat(2,1fr);} }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>跨境贸易服务平台</h1>
-    </header>
-    <div class="grid">
-      <a class="card" href="bj10/index.html">
-        <span class="badge">嵌套 · FR 编号版</span>
-        <h2>原型总览</h2>
-        <p>卖家端 / 买家端 / 管理后台三套，按 FR 编号组织，32 页完整交互原型。</p>
-        <div class="pages">seller 14 · buyer 6 · admin 12</div>
-      </a>
-      <a class="card" href="bj6/index.html">
-        <span class="badge">原始扁平总览</span>
-        <h2>UI 总览</h2>
-        <p>全部 32 页可预览 HTML 原型，作为对照参考。</p>
-        <div class="pages">扁平 · 全部 32 页</div>
-      </a>
-      <a class="card" href="sh3/index.html">
-        <span class="badge">UI 细化版</span>
-        <h2>UI 细化总览</h2>
-        <p>基于原型的视觉/交互细化版本，部分页面已细化、部分待细化。</p>
-        <div class="pages">扁平原型 · 含细化页与资源图</div>
-      </a>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-mark">申</div>
+    <h1>跨境贸易服务平台 · UI 细化</h1>
+    <p class="sub">细化调整后的 UI 展示 · 已细化页面可点击进入查看完整交互</p>
+    <div class="pill-row">
+      <span class="tag tag-blue">管理后台 Web</span>
+      <span class="tag tag-orange">卖家端小程序</span>
+      <span class="tag tag-green">买家端小程序</span>
     </div>
-    <footer>来源 PRD  · 仅供内部评审</footer>
   </div>
+
+  <div class="summary">
+    <div class="stat"><b>42</b><span>原型总页</span></div>
+    <div class="stat"><b>12</b><span>管理后台</span></div>
+    <div class="stat"><b>19</b><span>卖家端</span></div>
+    <div class="stat"><b>11</b><span>买家端</span></div>
+    <div class="stat"><b>27</b><span>已细化</span></div>
+  </div>
+
+  <!-- ============ 已细化页面（可交互预览） ============ -->
+  <section class="feat">
+    <div class="feat-head"><h2>已细化页面</h2><span class="hint">· 点击进入完整交互预览</span></div>
+    <div class="pgrid">
+      <a class="pcard featured" href="s2_home.html" target="_blank"><div class="pid">s2</div><div class="pt">小程序卖家端首页<span class="badge-refined">已细化</span></div><div class="pd">Logo · Banner · 热门/全部求购 · 发供应 · 回顶</div></a>
+      <a class="pcard featured" href="s2_business.html" target="_blank"><div class="pid">s2+</div><div class="pt">商机页面<span class="badge-refined">已细化</span></div><div class="pd">求购/供应双 Tab · 列表 · 筛选入口</div></a>
+      <a class="pcard featured" href="b2_home.html" target="_blank"><div class="pid">b2</div><div class="pt">小程序买家端首页<span class="badge-refined">已细化</span></div><div class="pd">Logo · Banner · 热门/全部供应 · 发求购 · 回顶</div></a>
+      <a class="pcard featured" href="b_supply.html" target="_blank"><div class="pid">b+</div><div class="pt">货源页面<span class="badge-refined">已细化</span></div><div class="pd">供应列表 · 九宫格 · 筛选入口</div></a>
+      <a class="pcard featured" href="s2_mine.html" target="_blank"><div class="pid">s2·我的</div><div class="pt">小程序卖家端·我的<span class="badge-refined">已细化</span></div><div class="pd">科技蓝顶栏 · 登录态 · 我的商机 · 未认证引导</div></a>
+      <a class="pcard featured" href="s2_verify.html" target="_blank"><div class="pid">s12</div><div class="pt">商家认证<span class="badge-refined">已细化</span></div><div class="pd">公司名称 · 识别名片 · 工商信息 · 品类 · 执照</div></a>
+      <a class="pcard featured" href="b2_mine.html" target="_blank"><div class="pid">b2·我的</div><div class="pt">小程序买家端·我的<span class="badge-refined">已细化</span></div><div class="pd">科技蓝顶栏 · 登录态(无认证) · 我的询价</div></a>
+      <a class="pcard featured" href="login.html" target="_blank"><div class="pid">login</div><div class="pt">登录中间页<span class="badge-refined">已细化</span></div><div class="pd">北明数科品牌 · 立即登录</div></a>
+      <a class="pcard featured" href="wx_auth.html" target="_blank"><div class="pid">wx_auth</div><div class="pt">微信原生授权<span class="badge-refined">已细化</span></div><div class="pd">手机号授权 · 不允许 · 使用其它号码</div></a>
+      <a class="pcard featured" href="s2_logistics_order.html" target="_blank"><div class="pid">s6</div><div class="pt">物流下单<span class="badge-refined">已细化</span></div><div class="pd">五组表单 · 实时运费估算 · 地址簿 · 提交成功</div></a>
+      <a class="pcard featured" href="s2_waybill.html" target="_blank"><div class="pid">s7</div><div class="pt">我的运单<span class="badge-refined">已细化</span></div><div class="pd">运单卡片列表 · 倒序 · 详情</div></a>
+      <a class="pcard featured" href="s2_address.html" target="_blank"><div class="pid">s9</div><div class="pt">地址管理<span class="badge-refined">已细化</span></div><div class="pd">默认地址标签 · 增删改 · 地址簿复用</div></a>
+      <a class="pcard featured" href="s2_logistics_success.html" target="_blank"><div class="pid">s15</div><div class="pt">提交成功<span class="badge-refined">已细化</span></div><div class="pd">下单成功 · 运费 · 订单摘要 · 跟进提示</div></a>
+      <a class="pcard featured" href="s2_supply_form.html" target="_blank"><div class="pid">s3</div><div class="pt">发布供应表单<span class="badge-refined">已细化</span></div><div class="pd">标题 · 品类 · 描述 · 9图 · 价格(4模式)</div></a>
+      <a class="pcard featured" href="s2_supply_success.html" target="_blank"><div class="pid">s3b</div><div class="pt">发布供应成功<span class="badge-refined">已细化</span></div><div class="pd">绿勾 · 摘要 · 查看详情/我的供应/首页</div></a>
+      <a class="pcard featured" href="s2_supply_detail.html" target="_blank"><div class="pid">s4</div><div class="pt">供应详情<span class="badge-refined">已细化</span></div><div class="pd">轮播 · 标题/价格/品类 · 收藏·感兴趣</div></a>
+      <a class="pcard featured" href="b2_inquiry_detail.html" target="_blank"><div class="pid">s4b</div><div class="pt">求购详情<span class="badge-refined">已细化</span></div><div class="pd">轮播 · 数量/地区 · 卖家收藏+感兴趣(报价)</div></a>
+      <a class="pcard featured" href="s2_my_supply.html" target="_blank"><div class="pid">s5</div><div class="pt">我的供应<span class="badge-refined">已细化</span></div><div class="pd">时间倒序 · 状态标签 · 编辑/删除</div></a>
+      <a class="pcard featured" href="s2_favorite.html" target="_blank"><div class="pid">s5b</div><div class="pt">我收藏的(卖家)<span class="badge-refined">已细化</span></div><div class="pd">求购/供应双 Tab · 收藏时间倒序</div></a>
+      <a class="pcard featured" href="s2_interested.html" target="_blank"><div class="pid">s5c</div><div class="pt">感兴趣的(卖家)<span class="badge-refined">已细化</span></div><div class="pd">求购卡片 · 联系方式脱敏</div></a>
+      <a class="pcard featured" href="b2_inquiry_form.html" target="_blank"><div class="pid">b3</div><div class="pt">发询价表单<span class="badge-refined">已细化</span></div><div class="pd">标题 · 品类 · 数量 · 销售地区 · 9图</div></a>
+      <a class="pcard featured" href="b2_inquiry_success.html" target="_blank"><div class="pid">b3b</div><div class="pt">发询价成功<span class="badge-refined">已细化</span></div><div class="pd">绿勾 · 推送匹配供应商 · 摘要</div></a>
+      <a class="pcard featured" href="b2_inquiry_detail.html" target="_blank"><div class="pid">b4</div><div class="pt">询价详情<span class="badge-refined">已细化</span></div><div class="pd">轮播 · 数量/地区 · 收藏·感兴趣</div></a>
+      <a class="pcard featured" href="s2_supply_detail.html" target="_blank"><div class="pid">b4b</div><div class="pt">供应详情<span class="badge-refined">已细化</span></div><div class="pd">轮播 · 标题/价格/品类 · 买家收藏+感兴趣</div></a>
+      <a class="pcard featured" href="b2_my_inquiry.html" target="_blank"><div class="pid">b5</div><div class="pt">我的询价<span class="badge-refined">已细化</span></div><div class="pd">时间倒序 · 状态标签 · 编辑/删除</div></a>
+      <a class="pcard featured" href="b2_favorite.html" target="_blank"><div class="pid">b5b</div><div class="pt">我收藏的(买家)<span class="badge-refined">已细化</span></div><div class="pd">供应 9 宫格 · 收藏时间倒序</div></a>
+      <a class="pcard featured" href="b2_interested.html" target="_blank"><div class="pid">b5c</div><div class="pt">感兴趣的(买家)<span class="badge-refined">已细化</span></div><div class="pd">供应 9 宫格 · 联系方式脱敏</div></a>
+    </div>
+  </section>
+
+  <!-- ============ 卖家端小程序 ============ -->
+  <section class="group">
+    <div class="group-head"><span class="dot" style="background:var(--color-accent)"></span><h2>卖家端小程序</h2><span class="cnt">19 页</span></div>
+    <div class="pgrid">
+      <a class="pcard featured" href="login.html" target="_blank"><div class="pid">s1a</div><div class="pt">登录中间页<span class="badge-refined">已细化</span></div><div class="pd">北明数科品牌 · 立即登录</div></a>
+      <a class="pcard featured" href="wx_auth.html" target="_blank"><div class="pid">s1b</div><div class="pt">微信原生授权<span class="badge-refined">已细化</span></div><div class="pd">手机号授权 · 不允许 · 使用其它号码</div></a>
+      <a class="pcard featured" href="s2_home.html" target="_blank"><div class="pid">s2</div><div class="pt">首页<span class="badge-refined">已细化</span></div><div class="pd">金刚区 · 热门求购 · 信息流</div></a>
+      <a class="pcard featured" href="s2_business.html" target="_blank"><div class="pid">s2+</div><div class="pt">商机页面<span class="badge-refined">已细化</span></div><div class="pd">求购/供应双 Tab · 列表 · 筛选入口</div></a>
+      <a class="pcard featured" href="s2_supply_form.html" target="_blank"><div class="pid">s3</div><div class="pt">发布供应表单<span class="badge-refined">已细化</span></div><div class="pd">标题 · 品类 · 描述 · 9图 · 价格(4模式)</div></a>
+      <a class="pcard featured" href="s2_supply_success.html" target="_blank"><div class="pid">s3b</div><div class="pt">发布供应成功<span class="badge-refined">已细化</span></div><div class="pd">绿勾 · 摘要 · 查看详情/我的供应/首页</div></a>
+      <a class="pcard featured" href="s2_supply_detail.html" target="_blank"><div class="pid">s4</div><div class="pt">供应详情<span class="badge-refined">已细化</span></div><div class="pd">轮播 · 标题/价格/品类 · 收藏·感兴趣</div></a>
+      <a class="pcard featured" href="b2_inquiry_detail.html" target="_blank"><div class="pid">s4b</div><div class="pt">求购详情<span class="badge-refined">已细化</span></div><div class="pd">轮播 · 数量/地区 · 卖家收藏+感兴趣(报价)</div></a>
+      <a class="pcard featured" href="s2_my_supply.html" target="_blank"><div class="pid">s5</div><div class="pt">我的供应<span class="badge-refined">已细化</span></div><div class="pd">时间倒序 · 状态标签 · 编辑/删除</div></a>
+      <a class="pcard featured" href="s2_favorite.html" target="_blank"><div class="pid">s5b</div><div class="pt">我收藏的(卖家)<span class="badge-refined">已细化</span></div><div class="pd">求购/供应双 Tab · 收藏时间倒序</div></a>
+      <a class="pcard featured" href="s2_interested.html" target="_blank"><div class="pid">s5c</div><div class="pt">感兴趣的(卖家)<span class="badge-refined">已细化</span></div><div class="pd">求购卡片 · 联系方式脱敏</div></a>
+      <a class="pcard featured" href="s2_logistics_order.html" target="_blank"><div class="pid">s6</div><div class="pt">物流下单<span class="badge-refined">已细化</span></div><div class="pd">五组表单 · 实时运费估算 · 地址簿 · 提交成功</div></a>
+      <a class="pcard featured" href="s2_waybill.html" target="_blank"><div class="pid">s7</div><div class="pt">我的运单<span class="badge-refined">已细化</span></div><div class="pd">运单卡片列表 · 倒序 · 详情</div></a>
+      <a class="pcard featured" href="s2_address.html" target="_blank"><div class="pid">s9</div><div class="pt">地址管理<span class="badge-refined">已细化</span></div><div class="pd">默认地址标签 · 增删改 · 地址簿复用</div></a>
+      <a class="pcard featured" href="s2_logistics_success.html" target="_blank"><div class="pid">s15</div><div class="pt">提交成功<span class="badge-refined">已细化</span></div><div class="pd">下单成功 · 运费 · 订单摘要 · 跟进提示</div></a>
+      <div class="pcard muted"><div class="pid">s10</div><div class="pt">小学堂列表</div><div class="pd">图文 / 视频内容</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">s11</div><div class="pt">小学堂详情</div><div class="pd">富媒体渲染</div><span class="tag-undone">未细化</span></div>
+      <a class="pcard featured" href="s2_verify.html" target="_blank"><div class="pid">s12</div><div class="pt">商家认证<span class="badge-refined">已细化</span></div><div class="pd">公司名称 · 识别名片 · 工商信息 · 品类 · 执照</div></a>
+      <a class="pcard featured" href="s2_mine.html" target="_blank"><div class="pid">s14</div><div class="pt">我的（聚合）<span class="badge-refined">已细化</span></div><div class="pd">科技蓝顶栏 · 登录态演示</div></a>
+    </div>
+  </section>
+
+  <!-- ============ 买家端小程序 ============ -->
+  <section class="group">
+    <div class="group-head"><span class="dot" style="background:var(--color-success)"></span><h2>买家端小程序</h2><span class="cnt">11 页</span></div>
+    <div class="pgrid">
+      <a class="pcard featured" href="login.html" target="_blank"><div class="pid">b1a</div><div class="pt">登录中间页<span class="badge-refined">已细化</span></div><div class="pd">北明数科品牌 · 立即登录</div></a>
+      <a class="pcard featured" href="wx_auth.html" target="_blank"><div class="pid">b1b</div><div class="pt">微信原生授权<span class="badge-refined">已细化</span></div><div class="pd">手机号授权 · 不允许 · 使用其它号码</div></a>
+      <a class="pcard featured" href="b2_home.html" target="_blank"><div class="pid">b2</div><div class="pt">首页<span class="badge-refined">已细化</span></div><div class="pd">发布询盘入口 · 热门供应</div></a>
+      <a class="pcard featured" href="b_supply.html" target="_blank"><div class="pid">b+</div><div class="pt">货源页面<span class="badge-refined">已细化</span></div><div class="pd">供应列表 · 九宫格 · 筛选入口</div></a>
+      <a class="pcard featured" href="b2_inquiry_form.html" target="_blank"><div class="pid">b3</div><div class="pt">发询价表单<span class="badge-refined">已细化</span></div><div class="pd">标题 · 品类 · 数量 · 销售地区 · 9图</div></a>
+      <a class="pcard featured" href="b2_inquiry_success.html" target="_blank"><div class="pid">b3b</div><div class="pt">发询价成功<span class="badge-refined">已细化</span></div><div class="pd">绿勾 · 推送匹配供应商 · 摘要</div></a>
+      <a class="pcard featured" href="b2_inquiry_detail.html" target="_blank"><div class="pid">b4</div><div class="pt">询价详情<span class="badge-refined">已细化</span></div><div class="pd">轮播 · 数量/地区 · 收藏·感兴趣</div></a>
+      <a class="pcard featured" href="s2_supply_detail.html" target="_blank"><div class="pid">b4b</div><div class="pt">供应详情<span class="badge-refined">已细化</span></div><div class="pd">轮播 · 标题/价格/品类 · 买家收藏+感兴趣</div></a>
+      <a class="pcard featured" href="b2_my_inquiry.html" target="_blank"><div class="pid">b5</div><div class="pt">我的询价<span class="badge-refined">已细化</span></div><div class="pd">时间倒序 · 状态标签 · 编辑/删除</div></a>
+      <a class="pcard featured" href="b2_favorite.html" target="_blank"><div class="pid">b5b</div><div class="pt">我收藏的(买家)<span class="badge-refined">已细化</span></div><div class="pd">供应 9 宫格 · 收藏时间倒序</div></a>
+      <a class="pcard featured" href="b2_interested.html" target="_blank"><div class="pid">b5c</div><div class="pt">感兴趣的(买家)<span class="badge-refined">已细化</span></div><div class="pd">供应 9 宫格 · 联系方式脱敏</div></a>
+      <a class="pcard featured" href="b2_mine.html" target="_blank"><div class="pid">b6</div><div class="pt">我的（聚合）<span class="badge-refined">已细化</span></div><div class="pd">科技蓝顶栏 · 登录态(无认证)</div></a>
+    </div>
+  </section>
+
+  <!-- ============ 管理后台 Web ============ -->
+  <section class="group">
+    <div class="group-head"><span class="dot" style="background:var(--color-primary)"></span><h2>管理后台 Web</h2><span class="cnt">12 页</span></div>
+    <div class="pgrid">
+      <div class="pcard muted"><div class="pid">a1</div><div class="pt">仪表盘</div><div class="pd">核心指标 · Top5 · 趋势图</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a2</div><div class="pt">用户管理</div><div class="pd">授权用户列表 · 角色</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a3</div><div class="pt">商家认证列表</div><div class="pd">认证状态筛选</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a3b</div><div class="pt">认证审核详情</div><div class="pd">通过 / 驳回(必填原因)</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a4</div><div class="pt">供求管理</div><div class="pd">筛选 · 下架 · 置顶</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a4b</div><div class="pt">品类管理</div><div class="pd">三级品类树</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a4c</div><div class="pt">敏感词管理</div><div class="pd">词库 · 启用停用</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a5</div><div class="pt">物流管理</div><div class="pd">订单筛选 · 详情</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a6</div><div class="pt">内容管理</div><div class="pd">图文 / 视频列表</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a6b</div><div class="pt">内容编辑</div><div class="pd">富文本编辑</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a7</div><div class="pt">系统设置</div><div class="pd">消息 / Banner / 日志</div><span class="tag-undone">未细化</span></div>
+      <div class="pcard muted"><div class="pid">a8</div><div class="pt">权限管理</div><div class="pd">角色 · 权限矩阵</div><span class="tag-undone">未细化</span></div>
+    </div>
+  </section>
+
+  <div class="foot">跨境贸易服务平台 · UI 细化展示 · 已细化 27 个页面（卖家 16 + 买家 11），其余为原型占位卡片</div>
+</div>
 </body>
 </html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 我的运单</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+
+  /* 状态栏 */
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+
+  /* 顶部标题栏 */
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+  .sub-action { margin-left:auto; padding:0 14px; height:32px; display:inline-flex; align-items:center; gap:4px; color:var(--color-primary); font-size:14px; font-weight:600; cursor:pointer; flex:none; }
+  .sub-action:active { opacity:.6; }
+
+  /* 滚动区 */
+  .scroll { flex:1; overflow-y:auto; overflow-x:hidden; background:var(--bg-page); padding:12px 16px 24px; }
+
+  /* 运单卡片 */
+  .wb-card { background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:14px; margin-bottom:12px; cursor:pointer; transition:box-shadow .15s ease, transform .1s ease; }
+  .wb-card:active { box-shadow:var(--shadow-overlay); transform:scale(.995); }
+  .wb-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .wb-no { font-size:16px; font-weight:700; color:var(--ink-primary); line-height:1.3; }
+  .wb-route { margin-top:10px; font-size:14px; font-weight:600; color:var(--color-primary); line-height:1.4; }
+  .wb-goods { margin-top:6px; font-size:12px; color:var(--ink-tertiary); line-height:1.4; }
+  .wb-time { margin-top:6px; font-size:12px; color:var(--ink-tertiary); }
+
+  /* 空态 */
+  .empty { margin-top:120px; display:flex; flex-direction:column; align-items:center; gap:14px; color:var(--ink-tertiary); }
+  .empty svg { width:56px; height:56px; stroke:var(--ink-tertiary); opacity:.5; }
+  .empty .et { font-size:14px; }
+  .empty .ebtn { margin-top:4px; height:40px; padding:0 24px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-md); font-size:14px; font-weight:600; }
+  .empty .ebtn:active { background:var(--color-primary-active); }
+
+  /* 详情底部弹窗 */
+  .mask { position:absolute; inset:0; background:rgba(0,0,0,.4); opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:40; }
+  .mask.show { opacity:1; pointer-events:auto; }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:18px 18px 0 0; transform:translateY(100%); transition:transform .26s cubic-bezier(.18,.89,.32,1.1); z-index:41; padding:8px 16px 24px; max-height:78%; overflow-y:auto; }
+  .sheet.show { transform:translateY(0); }
+  .sheet-bar { width:38px; height:4px; border-radius:2px; background:var(--border-strong); margin:6px auto 14px; }
+  .dt-no { font-size:18px; font-weight:700; color:var(--ink-primary); }
+  .dt-rows { margin-top:14px; }
+  .dt-row { display:flex; gap:12px; padding:11px 0; border-top:1px solid var(--border-weak); font-size:14px; }
+  .dt-row .k { flex:none; width:76px; color:var(--ink-tertiary); }
+  .dt-row .v { flex:1; min-width:0; color:var(--ink-primary); font-weight:500; }
+  .dt-row .v.blue { color:var(--color-primary); font-weight:600; }
+  .dt-close { margin-top:18px; width:100%; height:46px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-md); font-size:16px; font-weight:600; }
+  .dt-close:active { background:var(--color-primary-active); }
+
+  /* Toast */
+  .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="subheader">
+    <div class="subback" onclick="location.href='s2_mine.html'">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">我的运单</div>
+    <div class="sub-action" onclick="location.href='s2_logistics_order.html'">+ 下单</div>
+  </div>
+
+  <div class="scroll" id="scroll"></div>
+
+  <!-- 详情弹窗 -->
+  <div class="mask" id="mask" onclick="closeDetail()"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheet-bar"></div>
+    <div class="dt-no" id="dtNo"></div>
+    <div class="dt-rows" id="dtRows"></div>
+    <button class="dt-close" onclick="closeDetail()">关闭</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var KEY = 's2_waybills';
+  var seed = [
+    {no:'WB2026081800123', time:'2026-08-18 09:24', from:'广州', to:'南非·约翰内斯堡', name:'运动鞋', count:'30,000 双', status:'运输中'},
+    {no:'WB2026081500087', time:'2026-08-15 14:32', from:'义乌', to:'尼日利亚·拉各斯', name:'箱包', count:'8,000 件', status:'已揽收'},
+    {no:'WB2026080900033', time:'2026-08-09 11:45', from:'温州', to:'阿联酋·迪拜', name:'皮鞋', count:'6,000 双', status:'运输中'},
+    {no:'WB2026080500018', time:'2026-08-05 08:50', from:'广州', to:'印度·孟买', name:'帆布鞋', count:'50,000 双', status:'待揽收'},
+    {no:'WB2026080100009', time:'2026-08-01 16:10', from:'深圳', to:'埃及·开罗', name:'皮带', count:'15,000 条', status:'已签收'}
+  ];
+
+  function load(){
+    var raw;
+    try { raw = localStorage.getItem(KEY); } catch(e){}
+    if(!raw){
+      try { localStorage.setItem(KEY, JSON.stringify(seed)); } catch(e){}
+      return seed.slice();
+    }
+    try { return JSON.parse(raw) || []; } catch(e){ return []; }
+  }
+  function save(list){ try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){} }
+
+  var list = load();
+  // 按下单时间倒序
+  list.sort(function(a,b){ return (b.time||'').localeCompare(a.time||''); });
+
+  var scroll = document.getElementById('scroll');
+  if(!list.length){
+    scroll.innerHTML =
+      '<div class="empty">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 8 12 13l8.7-5"/><path d="M12 13v8"/></svg>'+
+      '<div class="et">暂无运单，去下单</div>'+
+      '<button class="ebtn" onclick="location.href=\'s2_logistics_order.html\'">去下单</button>'+
+      '</div>';
+  } else {
+    var html = '';
+    list.forEach(function(w, i){
+      html +=
+        '<div class="wb-card" onclick="openDetail('+i+')">'+
+          '<div class="wb-top">'+
+            '<span class="wb-no">'+w.no+'</span>'+
+            '<span class="wb-time">'+w.time+'</span>'+
+          '</div>'+
+          '<div class="wb-route">'+w.from+' → '+w.to+'</div>'+
+          '<div class="wb-goods">'+w.name+'　'+w.count+'</div>'+
+        '</div>';
+    });
+    scroll.innerHTML = html;
+  }
+
+  window.openDetail = function(i){
+    var w = list[i]; if(!w) return;
+    document.getElementById('dtNo').textContent = w.no;
+    document.getElementById('dtRows').innerHTML =
+      row('运输路线', w.from+' → '+w.to, true) +
+      row('品名', w.name) +
+      row('件数/包装', w.count) +
+      row('下单时间', w.time);
+    document.getElementById('mask').classList.add('show');
+    document.getElementById('sheet').classList.add('show');
+  };
+  function row(k,v,blue){
+    return '<div class="dt-row"><span class="k">'+k+'</span><span class="v'+(blue?' blue':'')+'">'+v+'</span></div>';
+  }
+  window.closeDetail = function(){
+    document.getElementById('mask').classList.remove('show');
+    document.getElementById('sheet').classList.remove('show');
+  };
+
+  // 跨页下单后回到本页：刷新列表（若提交成功会写入 localStorage）
+  window.addEventListener('pageshow', function(){
+    var fresh = load(); fresh.sort(function(a,b){ return (b.time||'').localeCompare(a.time||''); });
+    if(JSON.stringify(fresh) !== JSON.stringify(list)){ location.reload(); }
+  });
+})();
+</script>
+</body>
+</html>

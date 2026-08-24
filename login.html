@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>登录 · 申泽跨境贸易</title>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; border:10px solid #111; border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; }
+  .screen { position:absolute; inset:0; background:url('img/login_ref.png') center center / cover no-repeat; }
+  /* 透明点击层：返回箭头 / 立即登录按钮（位置对应参考图） */
+  .tap-back { position:absolute; top:6px; left:6px; width:48px; height:48px; cursor:pointer; }
+  .tap-login { position:absolute; left:14px; right:14px; top:56%; height:52px; cursor:pointer; }
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen"></div>
+    <div class="tap-back" onclick="goBack()"></div>
+    <div class="tap-login" onclick="goLogin()"></div>
+  </div>
+  <script>
+    var from = new URLSearchParams(location.search).get('from') || 's2_mine.html';
+    function goBack(){ if(history.length > 1){ history.back(); } else { location.href = from; } }
+    function goLogin(){ location.href = 'wx_auth.html?from=' + encodeURIComponent(from); }
+  </script>
+</body>
+</html>

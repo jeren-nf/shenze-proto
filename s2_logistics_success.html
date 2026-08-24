@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 提交成功</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:#fff; border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+
+  .scroll { flex:1; overflow-y:auto; overflow-x:hidden; background:var(--bg-page); padding:8px 16px 16px; }
+  .scroll::-webkit-scrollbar { width:0; }
+
+  /* 成功 hero */
+  .hero { display:flex; flex-direction:column; align-items:center; padding:28px 0 18px; }
+  .ok-icon { width:72px; height:72px; border-radius:50%; background:#52C41A; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(82,196,26,.28); }
+  .ok-icon svg { width:40px; height:40px; stroke:#fff; }
+  .ok-title { margin-top:16px; font-size:22px; font-weight:800; color:var(--ink-primary); letter-spacing:1px; }
+  .ok-sub { margin-top:8px; font-size:13px; color:var(--ink-tertiary); }
+
+  /* 预估运费卡 */
+  .fee-card { background:#fff; border:1px solid var(--color-primary-border); border-radius:var(--r-lg); padding:16px; text-align:center; box-shadow:0 6px 18px rgba(22,119,255,.08); }
+  .fee-cap { font-size:13px; color:var(--ink-secondary); }
+  .fee-price { margin-top:6px; font-size:30px; font-weight:800; color:var(--color-primary); line-height:1.1; letter-spacing:.5px; }
+  .fee-price .cur { font-size:20px; font-weight:700; margin-right:1px; }
+  .fee-note { margin-top:10px; font-size:11px; color:var(--ink-tertiary); line-height:1.4; }
+
+  /* 区块标题 */
+  .block-title { font-size:13px; color:var(--ink-tertiary); font-weight:600; margin:18px 2px 8px; }
+
+  /* 订单摘要卡 */
+  .summary { background:#F5F7FA; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:4px 14px; }
+  .summary-row { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:12px 0; border-bottom:1px solid var(--border-weak); }
+  .summary-row:last-child { border-bottom:none; }
+  .s-label { flex:none; font-size:13px; color:var(--ink-tertiary); }
+  .s-val { flex:1; text-align:right; font-size:14px; color:var(--ink-primary); font-weight:500; word-break:break-all; }
+
+  /* 运营跟进卡 */
+  .follow { background:#E8F3FF; border:1px solid var(--color-primary-border); border-radius:var(--r-md); padding:14px; margin-top:14px; display:flex; gap:10px; }
+  .follow .f-ic { flex:none; width:20px; height:20px; stroke:var(--color-primary); margin-top:1px; }
+  .follow .f-text { font-size:13px; color:#0B4FA0; line-height:1.6; }
+  .follow .f-text b { color:var(--color-primary); font-weight:700; }
+
+  /* 底部按钮栏 */
+  .actions { flex:none; background:#fff; border-top:1px solid var(--border-weak); padding:12px 16px 16px; display:flex; gap:12px; }
+  .btn { flex:1; height:46px; border-radius:var(--r-md); font-size:15px; font-weight:600; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .btn-primary { background:var(--color-primary); color:#fff; border:none; }
+  .btn-primary:active { background:var(--color-primary-active); }
+  .btn-ghost { background:#fff; color:var(--ink-secondary); border:1px solid var(--border-strong); }
+  .btn-ghost:active { background:var(--bg-hover); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="subheader">
+    <div class="subback" onclick="location.href='s2_home.html'">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">提交成功</div>
+  </div>
+
+  <div class="scroll">
+    <div class="hero">
+      <div class="ok-icon">
+        <svg viewBox="0 0 24 24" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <div class="ok-title">下单成功</div>
+      <div class="ok-sub">运营人员将联系您确认需求</div>
+    </div>
+
+    <div class="fee-card">
+      <div class="fee-cap">预估运费</div>
+      <div class="fee-price" id="feePrice"><span class="cur">¥</span>—</div>
+      <div class="fee-note">此为参考价，实际费用以物流商确认为准</div>
+    </div>
+
+    <div class="block-title">订单信息</div>
+    <div class="summary" id="summary"><!-- 动态渲染 --></div>
+
+    <div class="follow">
+      <svg class="f-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div class="f-text">物流服务人员将与您电话沟通，确认具体需求并安排上门取货。如有疑问，请联系客服电话：<b>4008008080</b></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <div class="btn btn-primary" onclick="location.href='s2_waybill.html'">查看我的发运单</div>
+    <div class="btn btn-ghost" onclick="location.href='s2_logistics_order.html'">再来一单</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var order = null;
+  try { order = JSON.parse(localStorage.getItem('s2_last_order')); } catch(e){}
+  if(!order) order = {};
+
+  // 运费
+  var low = order.feeLow, high = order.feeHigh;
+  var fp = document.getElementById('feePrice');
+  if(low != null && high != null){ fp.innerHTML = '<span class="cur">¥</span>' + Number(low).toLocaleString() + ' - ¥' + Number(high).toLocaleString(); }
+  else { fp.textContent = '¥—'; }
+
+  // 摘要行
+  var rows = [
+    ['发货地', order.from],
+    ['目的地', order.to],
+    ['品名', order.name],
+    ['件数', order.count],
+    ['重量', order.weight ? (order.weight + ' kg') : '']
+  ];
+  if(order.remark){ rows.push(['备注', order.remark]); }
+
+  var html = '';
+  rows.forEach(function(r){
+    var v = (r[1] == null || r[1] === '') ? '—' : escapeHtml(r[1]);
+    html += '<div class="summary-row"><span class="s-label">'+r[0]+'</span><span class="s-val">'+v+'</span></div>';
+  });
+  document.getElementById('summary').innerHTML = html;
+
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+})();
+</script>
+</body>
+</html>

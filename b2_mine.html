@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 我的（买家端）</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+
+  /* ===== 顶部科技蓝大色块（页面顶部） ===== */
+  .topblue { position:relative; flex:none; background:linear-gradient(135deg,var(--gradient-brand-start) 0%,var(--gradient-brand-end) 100%); padding:4px 0 60px; overflow:hidden; }
+  .topblue::before { content:""; position:absolute; right:-34px; top:-34px; width:170px; height:170px; border-radius:50%; background:rgba(255,255,255,.13); }
+  .topblue::after  { content:""; position:absolute; right:64px; bottom:-58px; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,.10); }
+  .arc { position:absolute; left:0; bottom:0; width:100%; height:30px; display:block; z-index:1; }
+
+  .statusbar { position:relative; z-index:2; height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:#fff; }
+  .statusbar .right { display:flex; gap:6px; align-items:center; }
+
+  /* ===== 用户资料（位于蓝色块上） ===== */
+  .profile { position:relative; z-index:2; display:flex; align-items:center; gap:14px; padding:16px 18px 0; }
+  .avatar { width:54px; height:54px; border-radius:50%; background:rgba(255,255,255,.92); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden; cursor:pointer; border:2px solid rgba(255,255,255,.55); }
+  .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+  .avatar .cam { color:#BFBFBF; }
+  .pinfo { min-width:0; flex:1; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; }
+  .login-row { display:flex; align-items:center; gap:6px; cursor:pointer; }
+  .login-row .lt { font-size:17px; font-weight:700; color:#fff; }
+  .login-row .arrow { color:#fff; stroke:#fff; margin-left:0; }
+  .pname { display:inline-block; font-size:17px; font-weight:700; color:#fff; outline:none; max-width:100%; }
+  .pname:focus { text-decoration:underline dotted rgba(255,255,255,.7); }
+
+  /* ===== 滚动内容 ===== */
+  .scroll { flex:1; overflow-y:auto; background:var(--bg-page); padding-bottom:24px; }
+
+  /* 我的商机 */
+  .bizcard { position:relative; z-index:3; margin:-36px 16px 0; background:#fff; border-radius:var(--r-lg); box-shadow:0 6px 24px rgba(0,0,0,.08); padding:16px 12px 14px; }
+  .biz-title { font-size:15px; font-weight:700; color:var(--color-primary); padding:0 0 14px; }
+  .biz-grid { display:flex; justify-content:space-between; }
+  .biz-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .biz-ic { width:46px; height:46px; border-radius:12px; background:var(--color-primary-bg); display:flex; align-items:center; justify-content:center; }
+  .biz-ic .ic { stroke:var(--color-primary); width:24px; height:24px; }
+  .biz-item .t { font-size:12px; color:var(--ink-secondary); }
+
+  /* 通用菜单行 */
+  .menu { margin:12px 16px 0; background:#fff; border-radius:var(--r-lg); border:1px solid var(--border-weak); overflow:hidden; }
+  .menu-item { display:flex; align-items:center; gap:12px; padding:14px 12px; border-bottom:1px solid var(--border-weak); }
+  .menu-item:last-child { border-bottom:none; }
+  .mi-ic { width:34px; height:34px; border-radius:9px; background:var(--bg-hover); display:flex; align-items:center; justify-content:center; flex:none; }
+  .mi-ic .ic { stroke:var(--ink-tertiary); width:20px; height:20px; }
+  .mi-ic.wx { background:#E8F8EF; }
+  .mi-ic.wx svg { fill:#07C160; stroke:none; }
+  .mi-text { flex:1; min-width:0; font-size:14px; color:var(--ink-primary); line-height:1.45; }
+  .cell-arrow { flex:none; margin-left:auto; display:flex; align-items:center; }
+  .arrow { stroke:var(--ink-tertiary); width:20px; height:20px; }
+  .logout .menu-item { justify-content:center; }
+  .logout .lt { color:var(--color-error); font-size:14px; font-weight:600; }
+
+  /* ===== 底部 Tab ===== */
+  .tabbar { height:56px; flex:none; background:#fff; border-top:1px solid var(--border-weak); display:flex; padding-bottom:6px; }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:var(--ink-tertiary); font-size:10.5px; cursor:pointer; }
+  .tab.active { color:var(--color-primary); }
+  .tab .ic { width:22px; height:22px; }
+  .tab.active .ic { stroke:var(--color-primary); background:var(--tab-active-bg); border-radius:50%; padding:3px; }
+  /* Toast */
+  .toast { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.78); color:#fff; font-size:13px; padding:10px 16px; border-radius:8px; z-index:60; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .toast.show { opacity:1; }
+
+  /* ===== 底部半屏 Sheet 弹窗（关注微信/客户服务/语言 通用） ===== */
+  .sheet-mask { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:90; opacity:0; pointer-events:none; transition:opacity .25s ease; }
+  .sheet-mask.show { opacity:1; pointer-events:auto; }
+  .sheet { position:fixed; left:0; right:0; bottom:0; background:#fff; border-radius:16px 16px 0 0; z-index:91; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); max-height:80vh; overflow-y:auto; padding-bottom:env(safe-area-inset-bottom, 20px); box-shadow:0 -8px 24px rgba(0,0,0,.12); }
+  .sheet.show { transform:translateY(0); }
+  .sheet-handle { width:36px; height:4px; background:#E5E7EB; border-radius:2px; margin:8px auto 0; }
+  .sheet-head { position:relative; padding:14px 16px 8px; display:flex; align-items:center; justify-content:center; }
+  .sheet-title { font-size:17px; font-weight:600; color:var(--ink-primary); }
+  .sheet-close { position:absolute; right:8px; top:6px; width:36px; height:36px; border:none; background:transparent; cursor:pointer; font-size:28px; line-height:1; padding:0; color:var(--ink-tertiary); font-weight:300; }
+  .sheet-close:active { background:var(--bg-hover); border-radius:50%; }
+  .sheet-body { padding:8px 0 8px; }
+
+  /* 关注微信 */
+  .wx-name { text-align:center; font-size:16px; font-weight:600; margin:4px 0 18px; color:var(--ink-primary); }
+  .wx-qr { width:160px; height:160px; margin:0 auto; background:#fff; border:1px solid #F0F2F5; border-radius:8px; box-sizing:border-box; padding:8px; }
+  .wx-qr svg { display:block; width:100%; height:100%; }
+  .wx-tip { text-align:center; color:var(--ink-tertiary); font-size:14px; margin-top:14px; }
+
+  /* 客户服务 */
+  .cs-item { display:flex; align-items:center; gap:14px; padding:16px 20px; text-decoration:none; color:var(--color-primary); border-bottom:1px solid var(--border-weak); cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .cs-item:last-child { border-bottom:none; }
+  .cs-item:active { background:var(--bg-hover); }
+  .cs-ic { width:34px; height:34px; border-radius:9px; background:var(--color-primary-bg); display:flex; align-items:center; justify-content:center; flex:none; }
+  .cs-ic svg { stroke:var(--color-primary); width:18px; height:18px; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .cs-text { font-size:16px; font-weight:500; flex:1; min-width:0; }
+
+  /* 语言 */
+  .lang-row { display:flex; align-items:center; padding:16px 20px; border-bottom:1px solid var(--border-weak); cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .lang-row:last-child { border-bottom:none; }
+  .lang-row:active { background:var(--bg-hover); }
+  .lang-label { flex:1; font-size:16px; color:var(--ink-primary); }
+  .lang-check { color:var(--color-primary); font-size:22px; font-weight:700; opacity:0; transition:opacity .15s ease; }
+  .lang-row.on .lang-check { opacity:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <!-- 滚动容器：蓝块与卡片同处其中，卡片负 margin 上移盖住蓝块时不会被裁切 -->
+  <div class="scroll">
+    <!-- 顶部科技蓝大色块 -->
+    <div class="topblue">
+      <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+      <!-- 用户资料（蓝色块上） -->
+      <div class="profile">
+        <div class="avatar" id="avatar"></div>
+        <div class="pinfo" id="pinfo"></div>
+      </div>
+
+      <!-- 下边缘弧度 -->
+      <svg class="arc" viewBox="0 0 390 30" preserveAspectRatio="none"><path d="M0,30 L0,16 Q195,30 390,16 L390,30 Z" fill="#EDF7FF"/></svg>
+    </div>
+
+    <!-- 我的商机（模块标题：我的商机；卡片上 1/3 盖在蓝块上） -->
+    <div class="bizcard">
+      <div class="biz-title">我的商机</div>
+      <div class="biz-grid">
+        <div class="biz-item" onclick="location.href='b2_interested.html'">
+          <div class="biz-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.3-8.2C1 9.9 2.4 6.5 5.6 6.5c1.9 0 3.2 1.1 4.4 2.6 1.2-1.5 2.5-2.6 4.4-2.6 3.2 0 4.6 3.4 2.9 6.3C19 16.6 12 21 12 21Z"/></svg></div>
+          <div class="t">感兴趣的</div>
+        </div>
+        <div class="biz-item" onclick="location.href='b2_favorite.html'">
+          <div class="biz-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M6 4h12a1 1 0 0 1 1 1v15l-7-4-7 4V5a1 1 0 0 1 1-1Z"/></svg></div>
+          <div class="t">我收藏的</div>
+        </div>
+        <div class="biz-item" onclick="location.href='b2_my_inquiry.html'">
+          <div class="biz-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg></div>
+          <div class="t">我的询价</div>
+        </div>
+        <div class="biz-item" onclick="b2Toast('「我的主页」功能开发中')">
+          <div class="biz-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg></div>
+          <div class="t">我的主页</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 关注微信服务号 -->
+    <div class="menu">
+      <div class="menu-item" onclick="openSheet('sheet-wx')">
+        <div class="mi-ic wx">
+          <svg viewBox="0 0 24 24" style="width:22px;height:22px"><path d="M9 3.2C5.1 3.2 2 5.9 2 9.2c0 1.9 1.1 3.6 2.8 4.8L3.7 16.5l2.8-1.4c.8.2 1.6.3 2.5.3h.5a5.4 5.4 0 0 1-.6-2.4C9 11 11.5 8.8 14.6 8.8c.3 0 .6 0 .9.1C14.7 5.6 12.1 3.2 9 3.2Z"/><path d="M22 13.9c0-2.9-2.7-5.2-6-5.2s-6 2.3-6 5.2 2.7 5.2 6 5.2c.8 0 1.5-.1 2.2-.3l2.4 1.2-.7-2a5 5 0 0 0 2.1-3.9Z" opacity=".82"/></svg>
+        </div>
+        <div class="mi-text">关注微信，更快接收商机信息</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+    </div>
+
+    <!-- 浏览记录 / 客户服务 / 语言 -->
+    <div class="menu">
+      <div class="menu-item" onclick="b2Toast('「浏览记录」功能开发中')">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="mi-text">浏览记录</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+      <div class="menu-item" onclick="openSheet('sheet-cs')">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="7" rx="2"/><rect x="17" y="13" width="4" height="7" rx="2"/></svg></div>
+        <div class="mi-text">客户服务</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+      <div class="menu-item" onclick="openSheet('sheet-lang')">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.5 3.8 5.8 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.8-3.8-9S9.5 5.5 12 3Z"/></svg></div>
+        <div class="mi-text">语言</div>
+        <span class="cell-arrow"><svg class="arrow" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+    </div>
+
+    <!-- 退出登录（未登录态隐藏） -->
+    <div class="menu logout" id="logoutMenu">
+      <div class="menu-item" id="logoutBtn"><span class="lt">退出登录</span></div>
+    </div>
+  </div>
+
+  <input type="file" accept="image/*" id="avatarFile" style="display:none" />
+  <div class="toast" id="toast"></div>
+
+  <!-- 底部 Tab：首页 / 货源 / 我的 -->
+  <div class="tabbar">
+    <div class="tab" onclick="location.href='b2_home.html'">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>首页
+    </div>
+    <div class="tab" onclick="location.href='b_supply.html'">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>货源
+    </div>
+    <div class="tab active">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的
+    </div>
+  </div>
+</div>
+
+<!-- ===== 半屏 Sheet 弹窗（点击 mask 可关闭） ===== -->
+<div class="sheet-mask" id="sheet-mask" onclick="if(event.target===this) closeAllSheets()"></div>
+
+<!-- 关注微信 -->
+<div class="sheet" id="sheet-wx">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <div class="sheet-title">关注微信</div>
+    <button class="sheet-close" type="button" aria-label="关闭" onclick="closeSheet('sheet-wx')">×</button>
+  </div>
+  <div class="sheet-body">
+    <div class="wx-name">跨境贸易服务平台</div>
+    <div class="wx-qr">
+      <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+        <rect width="25" height="25" fill="#fff"/>
+        <rect x="0" y="0" width="7" height="7" fill="#111"/>
+        <rect x="1" y="1" width="5" height="5" fill="#fff"/>
+        <rect x="2" y="2" width="3" height="3" fill="#111"/>
+        <rect x="18" y="0" width="7" height="7" fill="#111"/>
+        <rect x="19" y="1" width="5" height="5" fill="#fff"/>
+        <rect x="20" y="2" width="3" height="3" fill="#111"/>
+        <rect x="0" y="18" width="7" height="7" fill="#111"/>
+        <rect x="1" y="19" width="5" height="5" fill="#fff"/>
+        <rect x="2" y="20" width="3" height="3" fill="#111"/>
+        <g fill="#111">
+          <rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="1" height="1"/><rect x="11" y="0" width="1" height="1"/><rect x="13" y="0" width="1" height="1"/><rect x="15" y="0" width="1" height="1"/><rect x="16" y="0" width="1" height="1"/>
+          <rect x="8" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="12" y="1" width="1" height="1"/><rect x="14" y="1" width="1" height="1"/><rect x="17" y="1" width="1" height="1"/>
+          <rect x="9" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="13" y="2" width="1" height="1"/><rect x="16" y="2" width="1" height="1"/>
+          <rect x="8" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="14" y="3" width="1" height="1"/><rect x="15" y="3" width="1" height="1"/>
+          <rect x="9" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="16" y="4" width="1" height="1"/><rect x="17" y="4" width="1" height="1"/>
+          <rect x="8" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="14" y="5" width="1" height="1"/>
+          <rect x="9" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="15" y="6" width="1" height="1"/><rect x="16" y="6" width="1" height="1"/><rect x="17" y="6" width="1" height="1"/>
+          <rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="14" y="8" width="1" height="1"/><rect x="16" y="8" width="1" height="1"/>
+          <rect x="8" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="13" y="9" width="1" height="1"/><rect x="15" y="9" width="1" height="1"/><rect x="16" y="9" width="1" height="1"/>
+          <rect x="9" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="17" y="10" width="1" height="1"/>
+          <rect x="8" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="13" y="11" width="1" height="1"/><rect x="15" y="11" width="1" height="1"/><rect x="16" y="11" width="1" height="1"/>
+          <rect x="9" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="14" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="17" y="12" width="1" height="1"/>
+          <rect x="8" y="13" width="1" height="1"/><rect x="10" y="13" width="1" height="1"/><rect x="13" y="13" width="1" height="1"/><rect x="16" y="13" width="1" height="1"/>
+          <rect x="9" y="14" width="1" height="1"/><rect x="11" y="14" width="1" height="1"/><rect x="12" y="14" width="1" height="1"/><rect x="14" y="14" width="1" height="1"/><rect x="15" y="14" width="1" height="1"/><rect x="17" y="14" width="1" height="1"/>
+          <rect x="8" y="15" width="1" height="1"/><rect x="10" y="15" width="1" height="1"/><rect x="13" y="15" width="1" height="1"/><rect x="16" y="15" width="1" height="1"/>
+          <rect x="9" y="16" width="1" height="1"/><rect x="11" y="16" width="1" height="1"/><rect x="12" y="16" width="1" height="1"/><rect x="14" y="16" width="1" height="1"/><rect x="15" y="16" width="1" height="1"/><rect x="17" y="16" width="1" height="1"/>
+          <rect x="8" y="18" width="1" height="1"/><rect x="10" y="18" width="1" height="1"/><rect x="11" y="18" width="1" height="1"/><rect x="13" y="18" width="1" height="1"/><rect x="15" y="18" width="1" height="1"/><rect x="17" y="18" width="1" height="1"/>
+          <rect x="9" y="19" width="1" height="1"/><rect x="12" y="19" width="1" height="1"/><rect x="14" y="19" width="1" height="1"/><rect x="16" y="19" width="1" height="1"/>
+          <rect x="8" y="20" width="1" height="1"/><rect x="10" y="20" width="1" height="1"/><rect x="13" y="20" width="1" height="1"/><rect x="15" y="20" width="1" height="1"/><rect x="17" y="20" width="1" height="1"/>
+          <rect x="9" y="21" width="1" height="1"/><rect x="11" y="21" width="1" height="1"/><rect x="14" y="21" width="1" height="1"/><rect x="16" y="21" width="1" height="1"/>
+          <rect x="8" y="22" width="1" height="1"/><rect x="12" y="22" width="1" height="1"/><rect x="13" y="22" width="1" height="1"/><rect x="15" y="22" width="1" height="1"/><rect x="17" y="22" width="1" height="1"/>
+          <rect x="9" y="23" width="1" height="1"/><rect x="10" y="23" width="1" height="1"/><rect x="11" y="23" width="1" height="1"/><rect x="14" y="23" width="1" height="1"/><rect x="16" y="23" width="1" height="1"/>
+          <rect x="8" y="24" width="1" height="1"/><rect x="13" y="24" width="1" height="1"/><rect x="15" y="24" width="1" height="1"/><rect x="17" y="24" width="1" height="1"/>
+        </g>
+      </svg>
+    </div>
+    <div class="wx-tip">长按识别二维码关注服务号</div>
+  </div>
+</div>
+
+<!-- 客户服务 -->
+<div class="sheet" id="sheet-cs">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <div class="sheet-title">客户服务</div>
+    <button class="sheet-close" type="button" aria-label="关闭" onclick="closeSheet('sheet-cs')">×</button>
+  </div>
+  <div class="sheet-body">
+    <a class="cs-item" href="tel:400-880-8080">
+      <span class="cs-ic"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></span>
+      <span class="cs-text">400-880-8080</span>
+    </a>
+    <a class="cs-item" href="mailto:help@example.com" onclick="copyEmail(event, 'help@example.com')">
+      <span class="cs-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m22 6-10 7L2 6"/></svg></span>
+      <span class="cs-text">help@example.com</span>
+    </a>
+  </div>
+</div>
+
+<!-- 语言 -->
+<div class="sheet" id="sheet-lang">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <div class="sheet-title">语言</div>
+    <button class="sheet-close" type="button" aria-label="关闭" onclick="closeSheet('sheet-lang')">×</button>
+  </div>
+  <div class="sheet-body">
+    <div class="lang-row" data-lc="zh-CN" onclick="setLang('zh-CN')">
+      <div class="lang-label">简体中文</div>
+      <div class="lang-check">✓</div>
+    </div>
+    <div class="lang-row" data-lc="en" onclick="setLang('en')">
+      <div class="lang-label">English</div>
+      <div class="lang-check">✓</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var loggedIn = false;
+  var avatarEl = document.getElementById('avatar');
+  var pinfoEl  = document.getElementById('pinfo');
+  var fileInput = document.getElementById('avatarFile');
+  // 从 wx_auth.html 授权成功后写入了 loggedIn=1，恢复登录态
+  try { if(localStorage.getItem('loggedIn') === '1') loggedIn = true; } catch(e){}
+
+  function wechatAvatarSVG(){
+    return '<svg viewBox="0 0 66 66" width="100%" height="100%">'+
+      '<defs><linearGradient id="wg" x1="0" y1="0" x2="1" y2="1">'+
+      '<stop offset="0" stop-color="#36CFC9"/><stop offset="1" stop-color="#1677FF"/></linearGradient></defs>'+
+      '<rect width="66" height="66" fill="url(#wg)"/>'+
+      '<circle cx="33" cy="26" r="12.5" fill="#fff"/>'+
+      '<path d="M14 56c0-10.5 8.5-17 19-17s19 6.5 19 17Z" fill="#fff"/></svg>';
+  }
+
+  // 买家端无认证功能：不展示「未认证」状态
+  function render(){
+    if(!loggedIn){
+      avatarEl.removeAttribute('data-img');
+      avatarEl.innerHTML = '<svg class="cam" viewBox="0 0 24 24" style="width:24px;height:24px" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.6A1 1 0 0 1 11 4h2a1 1 0 0 1 .8.4L15 6h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>';
+      pinfoEl.innerHTML = '<div class="login-row" id="loginRow"><span class="lt">登录</span>'+
+        '<svg class="arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="m9 18 6-6-6-6"/></svg></div>';
+      document.getElementById('loginRow').onclick = doLogin;
+    } else {
+      if(!avatarEl.getAttribute('data-img')){
+        avatarEl.innerHTML = wechatAvatarSVG();
+      }
+      pinfoEl.innerHTML = '<div class="pname" id="pname" contenteditable="true" spellcheck="false">微信用户</div>';
+      var pn = document.getElementById('pname');
+      pn.addEventListener('blur', function(){ if(!pn.textContent.trim()) pn.textContent = '微信用户'; });
+      pn.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); pn.blur(); } });
+    }
+    document.getElementById('logoutMenu').style.display = loggedIn ? '' : 'none';
+  }
+
+  function doLogin(){
+    // 跳转到登录中间页（传递来源页，授权完成后回到这里）
+    location.href = 'login.html?from=' + encodeURIComponent('b2_mine.html');
+  }
+  function doLogout(){
+    loggedIn = false;
+    avatarEl.removeAttribute('data-img');
+    fileInput.value = '';
+    try { localStorage.removeItem('loggedIn'); } catch(e){}
+    try { localStorage.removeItem('loggedPhone'); } catch(e){}
+    render();
+  }
+
+  avatarEl.onclick = function(){
+    if(!loggedIn){ doLogin(); }
+    else { fileInput.click(); }
+  };
+  fileInput.onchange = function(){
+    var f = this.files && this.files[0];
+    if(!f) return;
+    var r = new FileReader();
+    r.onload = function(e){
+      avatarEl.setAttribute('data-img','1');
+      avatarEl.innerHTML = '<img src="'+e.target.result+'" alt="头像">';
+    };
+    r.readAsDataURL(f);
+  };
+  document.getElementById('logoutBtn').onclick = doLogout;
+
+  render();
+
+  /* ===== 半屏 Sheet 通用逻辑（关注微信 / 客户服务 / 语言 共用） ===== */
+  var sheetMask = document.getElementById('sheet-mask');
+  function openSheet(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    if(sheetMask) sheetMask.classList.add('show');
+    el.classList.add('show');
+    var ph = document.querySelector('.phone'); if(ph) ph.style.overflow = 'hidden';
+  }
+  function closeSheet(id){
+    var el = document.getElementById(id);
+    if(el) el.classList.remove('show');
+    var any = document.querySelector('.sheet.show');
+    if(!any && sheetMask){ sheetMask.classList.remove('show'); }
+    var ph = document.querySelector('.phone'); if(ph) ph.style.overflow = '';
+  }
+  function closeAllSheets(){
+    document.querySelectorAll('.sheet.show').forEach(function(s){ s.classList.remove('show'); });
+    if(sheetMask) sheetMask.classList.remove('show');
+    var ph = document.querySelector('.phone'); if(ph) ph.style.overflow = '';
+  }
+  window.openSheet = openSheet;
+  window.closeSheet = closeSheet;
+  window.closeAllSheets = closeAllSheets;
+
+  /* 客服邮箱复制 */
+  function copyEmail(e, email){
+    e = e || window.event;
+    if(e && e.preventDefault) e.preventDefault();
+    try {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(email).then(function(){ b2Toast('邮箱已复制'); }, function(){ b2Toast('未复制：' + email); });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = email; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); b2Toast('邮箱已复制'); }
+        catch(_){ b2Toast('未复制：' + email); }
+        document.body.removeChild(ta);
+      }
+    } catch(_){ b2Toast(email); }
+  }
+  window.copyEmail = copyEmail;
+
+  /* 语言切换：买家端默认 English；持久化到 localStorage（全局 app_lang） */
+  var APP_LANG = (function(){ try { return localStorage.getItem('app_lang') || 'en'; } catch(e){ return 'en'; } })();
+  function setLang(code){
+    APP_LANG = code;
+    try { localStorage.setItem('app_lang', code); } catch(e){}
+    document.querySelectorAll('.lang-row').forEach(function(r){ r.classList.remove('on'); });
+    var row = document.querySelector('.lang-row[data-lc="'+code+'"]');
+    if(row) row.classList.add('on');
+    b2Toast(code === 'zh-CN' ? '已切换为简体中文' : 'Switched to English');
+    setTimeout(closeAllSheets, 280);
+  }
+  window.setLang = setLang;
+  // 初始化勾选
+  (function initLang(){
+    var row = document.querySelector('.lang-row[data-lc="'+APP_LANG+'"]');
+    if(row) row.classList.add('on');
+  })();
+})();
+function b2Toast(msg){ var t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(t._tm); t._tm=setTimeout(function(){ t.classList.remove('show'); },1600); }
+</script>
+</body>
+</html>

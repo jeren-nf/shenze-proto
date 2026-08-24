@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · UI 原型总览（全部 28 页）</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 48px 24px 64px; }
+  .hero { text-align: center; margin-bottom: 32px; }
+  .hero-mark { width: 56px; height: 56px; border-radius: 14px; margin: 0 auto 16px; background: linear-gradient(135deg, #F5A623, #FFB340); color: #fff; font-size: 30px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-hover); }
+  .hero h1 { font-size: 28px; font-weight: 700; margin: 0 0 8px; }
+  .hero p { color: var(--ink-secondary); font-size: 15px; margin: 0; }
+  .pill-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  .summary { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 24px 0 8px; }
+  .stat { background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 12px 20px; text-align: center; min-width: 120px; }
+  .stat b { display: block; font-size: 22px; color: var(--color-primary); font-weight: 700; }
+  .stat span { font-size: 12px; color: var(--ink-tertiary); }
+
+  .group { margin-top: 40px; }
+  .group-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .group-head .dot { width: 10px; height: 10px; border-radius: 3px; }
+  .group-head h2 { font-size: 20px; font-weight: 700; margin: 0; }
+  .group-head .cnt { font-size: 12px; color: #fff; background: var(--ink-tertiary); border-radius: var(--r-pill); padding: 2px 10px; font-weight: 600; }
+
+  .pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .pcard { display: block; background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 14px; text-decoration: none; color: inherit; transition: all .15s ease; }
+  .pcard:hover { box-shadow: var(--shadow-overlay); transform: translateY(-2px); border-color: var(--color-primary-border); }
+  .pcard .pid { font-size: 11px; color: var(--ink-tertiary); font-family: var(--font-en); }
+  .pcard .pt { font-size: 14px; font-weight: 600; margin: 4px 0 4px; }
+  .pcard .pd { font-size: 12px; color: var(--ink-tertiary); line-height: 1.5; }
+
+  .notes { margin-top: 48px; }
+  .notes h2 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+  .notes ul { padding-left: 20px; color: var(--ink-secondary); line-height: 1.9; font-size: 14px; }
+  .notes code { background: var(--bg-page); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  .foot { text-align: center; color: var(--ink-tertiary); font-size: 12px; margin-top: 48px; }
+  @media (max-width: 880px){ .pgrid { grid-template-columns: repeat(2,1fr);} }
+</style>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'c605e9c56c584d32ba06aac042bba710'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-mark">申</div>
+    <h1>申泽跨境贸易服务平台 · UI 原型总览</h1>
+    <p>基于《UI 设计规范 V1.1》生成的全部 28 页可预览 HTML 原型 · 全端浅色 · 科技蓝主色 + Logo 橙辅色</p>
+    <div class="pill-row">
+      <span class="tag tag-blue">管理后台 Web</span>
+      <span class="tag tag-orange">卖家端小程序</span>
+      <span class="tag tag-green">买家端小程序（中英）</span>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="stat"><b>28</b><span>总页面</span></div>
+    <div class="stat"><b>12</b><span>管理后台</span></div>
+    <div class="stat"><b>10</b><span>卖家端</span></div>
+    <div class="stat"><b>6</b><span>买家端</span></div>
+  </div>
+
+  <!-- ============ 管理后台 Web ============ -->
+  <section class="group">
+    <div class="group-head"><span class="dot" style="background:var(--color-primary)"></span><h2>管理后台 Web</h2><span class="cnt">12 页</span></div>
+    <div class="pgrid">
+      <a class="pcard" href="a1_dashboard.html" target="_blank"><div class="pid">a1</div><div class="pt">仪表盘</div><div class="pd">核心指标 · Top5 · 趋势图</div></a>
+      <a class="pcard" href="a2_user.html" target="_blank"><div class="pid">a2</div><div class="pt">用户管理</div><div class="pd">授权用户列表 · 角色</div></a>
+      <a class="pcard" href="a3_merchant.html" target="_blank"><div class="pid">a3</div><div class="pt">商家认证列表</div><div class="pd">认证状态筛选</div></a>
+      <a class="pcard" href="a3b_cert_review.html" target="_blank"><div class="pid">a3b</div><div class="pt">认证审核详情</div><div class="pd">通过 / 驳回(必填原因)</div></a>
+      <a class="pcard" href="a4_supply.html" target="_blank"><div class="pid">a4</div><div class="pt">供求管理</div><div class="pd">筛选 · 下架 · 置顶</div></a>
+      <a class="pcard" href="a4b_category.html" target="_blank"><div class="pid">a4b</div><div class="pt">品类管理</div><div class="pd">三级品类树</div></a>
+      <a class="pcard" href="a4c_sensitive.html" target="_blank"><div class="pid">a4c</div><div class="pt">敏感词管理</div><div class="pd">词库 · 启用停用</div></a>
+      <a class="pcard" href="a5_logistics.html" target="_blank"><div class="pid">a5</div><div class="pt">物流管理</div><div class="pd">订单筛选 · 详情</div></a>
+      <a class="pcard" href="a6_content.html" target="_blank"><div class="pid">a6</div><div class="pt">内容管理</div><div class="pd">图文 / 视频列表</div></a>
+      <a class="pcard" href="a6b_content_edit.html" target="_blank"><div class="pid">a6b</div><div class="pt">内容编辑</div><div class="pd">富文本编辑</div></a>
+      <a class="pcard" href="a7_system.html" target="_blank"><div class="pid">a7</div><div class="pt">系统设置</div><div class="pd">消息 / Banner / 日志</div></a>
+      <a class="pcard" href="a8_permission.html" target="_blank"><div class="pid">a8</div><div class="pt">权限管理</div><div class="pd">角色 · 权限矩阵</div></a>
+    </div>
+  </section>
+
+  <!-- ============ 卖家端小程序 ============ -->
+  <section class="group">
+    <div class="group-head"><span class="dot" style="background:var(--color-accent)"></span><h2>卖家端小程序</h2><span class="cnt">10 页</span></div>
+    <div class="pgrid">
+      <a class="pcard" href="s1_login_auth.html" target="_blank"><div class="pid">s1</div><div class="pt">登录与商家认证</div><div class="pd">微信登录 · 认证提交 · 状态</div></a>
+      <a class="pcard" href="s2_home.html" target="_blank"><div class="pid">s2</div><div class="pt">首页</div><div class="pd">金刚区 · 热门求购 · 信息流</div></a>
+      <a class="pcard" href="s3_publish_supply.html" target="_blank"><div class="pid">s3</div><div class="pt">发布供应</div><div class="pd">品类 · 图片≤9 · 必填校验</div></a>
+      <a class="pcard" href="s4_detail.html" target="_blank"><div class="pid">s4</div><div class="pt">供求详情</div><div class="pd">留言沟通 · 联系方式脱敏</div></a>
+      <a class="pcard" href="s5_my_supply.html" target="_blank"><div class="pid">s5</div><div class="pt">我的供应</div><div class="pd">状态筛选 · 编辑/下架/删除</div></a>
+      <a class="pcard" href="s7_waybill_list.html" target="_blank"><div class="pid">s7</div><div class="pt">运单列表</div><div class="pd">状态分类筛选</div></a>
+      <a class="pcard" href="s9_address.html" target="_blank"><div class="pid">s9</div><div class="pt">地址管理</div><div class="pd">默认地址 · 增删改</div></a>
+      <a class="pcard" href="s11_school_detail.html" target="_blank"><div class="pid">s11</div><div class="pt">小学堂详情</div><div class="pd">富媒体渲染</div></a>
+      <a class="pcard" href="s12_profile.html" target="_blank"><div class="pid">s12</div><div class="pt">资料与认证</div><div class="pd">认证状态查看</div></a>
+      <a class="pcard" href="s14_mine.html" target="_blank"><div class="pid">s14</div><div class="pt">我的（聚合）</div><div class="pd">功能入口聚合</div></a>
+    </div>
+  </section>
+
+  <!-- ============ 买家端小程序 ============ -->
+  <section class="group">
+    <div class="group-head"><span class="dot" style="background:var(--color-success)"></span><h2>买家端小程序（默认英文）</h2><span class="cnt">6 页</span></div>
+    <div class="pgrid">
+      <a class="pcard" href="b1_login.html" target="_blank"><div class="pid">b1</div><div class="pt">登录</div><div class="pd">微信登录 · 无需认证</div></a>
+      <a class="pcard" href="b2_home.html" target="_blank"><div class="pid">b2</div><div class="pt">首页</div><div class="pd">发布询盘入口 · 热门供应</div></a>
+      <a class="pcard" href="b3_publish_inquiry.html" target="_blank"><div class="pid">b3</div><div class="pt">发布询盘</div><div class="pd">表单 · 目标价格可选</div></a>
+      <a class="pcard" href="b4_detail.html" target="_blank"><div class="pid">b4</div><div class="pt">供应详情</div><div class="pd">留言 · 联系方式脱敏</div></a>
+      <a class="pcard" href="b5_my_inquiry.html" target="_blank"><div class="pid">b5</div><div class="pt">我的询盘</div><div class="pd">状态筛选 · 编辑/下架</div></a>
+      <a class="pcard" href="b6_mine.html" target="_blank"><div class="pid">b6</div><div class="pt">我的（聚合）</div><div class="pd">功能入口聚合 · 语言切换</div></a>
+    </div>
+  </section>
+
+  <div class="notes">
+    <h2>设计落点</h2>
+    <ul>
+      <li><b>导航框架</b>：后台固定侧边栏（选中态 3px 蓝竖条 + 浅蓝底）+ 顶栏（搜索/通知角标/头像）；小程序 iPhone 390 框 + 底部 Tab（卖家 5 / 买家 4）。</li>
+      <li><b>色彩</b>：主色 <code>#1677FF</code> 用于导航/按钮/链接/选中；辅色 <code>#F5A623</code> 仅用于标签、角标、重点 CTA。</li>
+      <li><b>状态双轨（§3.3）</b>：流程态（待审核/运输中/Open）橙色标签；结果态（已认证/已成交 绿、驳回/异常 红）绿/红标签。</li>
+      <li><b>国际化（§10）</b>：买家端默认英文，顶栏与"我的"页均含 EN/中 即时切换（localStorage 记忆）。</li>
+      <li><b>主题</b>：全端浅色（Light-only），无深色模式；旧深色值已废弃（§3.5）。</li>
+      <li>Token 统一在 <code>tokens.css</code> 定义（<code>--color-primary</code> / <code>--sp-*</code> / <code>--r-*</code> 等），全部页面引用。</li>
+    </ul>
+  </div>
+
+  <div class="foot">申泽跨境贸易服务平台 · UI 原型 V1 · 全部 28 页 · 设计基线：UI设计规范 V1.1</div>
+</div>
+</body>
+</html>

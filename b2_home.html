@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 买家端小程序首页</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background: #E9EDF2; display: flex; justify-content: center; padding: 32px 0; }
+  /* iPhone 390×844 设备框 */
+  .phone {
+    width: 390px; height: 844px; background: var(--bg-page);
+    border-radius: 44px; box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+    overflow: hidden; position: relative; border: 10px solid #111;
+    display: flex; flex-direction: column;
+  }
+  /* 状态栏 */
+  .statusbar { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 13px; font-weight: 600; color: var(--ink-primary); }
+  .statusbar .right { display: flex; gap: 6px; align-items: center; }
+  /* 顶部标题栏 */
+  .topbar { height: 48px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #fff; }
+  .icon-circle { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-page); display: flex; align-items: center; justify-content: center; position: relative; flex: none; }
+
+  /* 品牌区（logo + 名称） */
+  .brand { display: flex; align-items: center; gap: 8px; flex: none; }
+  .brand-logo { height: 30px; width: auto; max-width: 120px; object-fit: contain; border-radius: 4px; }
+  .brand-logo-fallback { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg,#F5A623,#FFB340); color: #fff; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none; }
+  .brand-name { font-size: 16px; font-weight: 700; color: var(--ink-primary); white-space: nowrap; }
+
+  /* 滚动内容 */
+  .scroll { flex: 1; overflow-y: auto; padding-bottom: 8px; }
+  /* Banner - 双行：第一行弱化，第二行凸显 */
+  .banner { margin: 12px 16px; height: 100px; border-radius: var(--r-lg); background: linear-gradient(135deg, var(--gradient-brand-start), var(--gradient-brand-end)); color: #fff; padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .banner .b-sub { margin: 0; font-size: 14px; font-weight: 500; opacity: .82; letter-spacing: .4px; }
+  .banner .b-main { margin: 5px 0 0; font-size: 21px; font-weight: 800; line-height: 1.25; text-shadow: 0 1px 8px rgba(0,0,0,.18); }
+  .banner .deco { position: absolute; right: -20px; top: -20px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,.12); }
+  .banner .deco2 { position: absolute; right: 40px; bottom: -40px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.1); }
+
+  /* 区块标题 */
+  .sec-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 16px; margin-top: 4px; }
+  .sec-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .sec-title::before { content: ""; width: 4px; height: 15px; background: var(--color-primary); border-radius: 2px; }
+  .sec-more { font-size: 12px; color: var(--ink-tertiary); }
+
+  /* 热门供应 - 横向滑动（紧凑预览卡） */
+  .hot-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 0 16px 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .hot-scroll::-webkit-scrollbar { display: none; }
+  .hs-card { flex: 0 0 244px; scroll-snap-align: start; background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 10px; display: flex; gap: 10px; align-items: stretch; }
+  .hs-card .thumb { width: 88px; border-radius: 8px; background: #EAF3FF; overflow: hidden; flex: none; align-self: stretch; display: flex; align-items: center; justify-content: center; }
+  .hs-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hs-card .body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .hs-card .supply-head { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 15px; flex: none; }
+  .avatar.sm { width: 22px; height: 22px; font-size: 10px; }
+  .hs-card .supply-info { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+  .hs-card .supply-name { font-size: 12px; font-weight: 600; color: var(--ink-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hs-card .supply-time { font-size: 10px; color: var(--ink-tertiary); flex: none; white-space: nowrap; }
+  .hs-card .supply-content { font-size: 11px; color: var(--ink-secondary); line-height: 1.4; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  /* 交易信息区（价格 + 起订量）—— 热门供应紧凑卡 */
+  .hs-card .supply-trade { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 8px; margin-top: 6px; }
+  .hs-card .trade-left { display: flex; align-items: baseline; gap: 3px; min-width: 0; }
+  .hs-card .trade-label { font-size: 10px; color: var(--ink-tertiary); flex: none; }
+  .hs-card .trade-price { font-size: 12px; font-weight: 700; color: #F5222D; line-height: 1; white-space: nowrap; }
+  .hs-card .trade-mianyi { font-size: 12px; font-weight: 600; color: var(--ink-secondary); }
+  .hs-card .trade-moq { flex: none; font-size: 10px; font-weight: 500; color: #1677FF; background: #E6F1FB; border-radius: 999px; padding: 2px 7px; white-space: nowrap; }
+
+  /* 全部供应 - 一卡一行（供应卡：头像/名称/时间/文字/九宫格） */
+  .waterfall { padding: 0 16px 8px; }
+  .supply-card { background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 12px; margin-bottom: 10px; }
+  .supply-head { display: flex; align-items: center; gap: 10px; }
+  .supply-info { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .supply-name { font-size: 14px; font-weight: 600; color: var(--ink-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .supply-time { font-size: 11px; color: var(--ink-tertiary); flex: none; white-space: nowrap; }
+  .supply-content { font-size: 13px; color: var(--ink-secondary); line-height: 1.5; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .supply-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+  .supply-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; background: #f0f0f0; display: block; }
+
+  /* 交易信息区（价格 + 起订量）—— 全部供应卡 */
+  .supply-trade { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; padding: 8px 10px; background: #FAF9F6; border-radius: 8px; }
+  .supply-trade .trade-left { display: flex; align-items: baseline; gap: 4px; min-width: 0; }
+  .supply-trade .trade-label { font-size: 11px; color: var(--ink-tertiary); flex: none; }
+  .supply-trade .trade-price { font-size: 14px; font-weight: 700; color: #F5222D; line-height: 1; white-space: nowrap; }
+  .supply-trade .trade-mianyi { font-size: 14px; font-weight: 600; color: var(--ink-secondary); }
+  .supply-trade .trade-moq { flex: none; font-size: 12px; font-weight: 500; color: #1677FF; background: #E6F1FB; border-radius: 999px; padding: 4px 10px; white-space: nowrap; }
+
+  /* 悬浮发布按钮（发求购） */
+  .fab { position: absolute; right: 16px; bottom: 140px; z-index: 30; }
+  .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: var(--color-accent); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; box-shadow: 0 6px 16px rgba(245,166,35,.42); transition: transform .15s ease; cursor: pointer; }
+  .fab-btn:active { transform: scale(.95); }
+  .fab-btn svg { width: 16px; height: 16px; flex: none; }
+  .fab-text { font-size: 9px; font-weight: 700; line-height: 1; letter-spacing: .5px; }
+
+  /* 首页 Tab 滚动回顶箭头 */
+  .tab-ic-wrap { position: relative; width: 22px; height: 22px; }
+  .tab .ic-home, .tab .ic-arrow { position: absolute; inset: 0; width: 22px; height: 22px; transition: opacity .25s ease, transform .25s ease; }
+  .tab .ic-arrow { opacity: 0; transform: scale(.5); }
+  .tab.arrow-mode .ic-home { opacity: 0; transform: scale(.5); }
+  .tab.arrow-mode .ic-arrow { opacity: 1; transform: scale(1); }
+
+  /* 底部 Tab Bar */
+  .tabbar { height: 56px; flex: none; background: #fff; border-top: 1px solid var(--border-weak); display: flex; padding-bottom: 6px; }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink-tertiary); font-size: 10.5px; }
+  .tab.active { color: var(--color-primary); }
+  .tab .ic { width: 22px; height: 22px; }
+  .tab.active .ic { stroke: var(--color-primary); }
+  .tab.active .tab-ic-wrap { background: var(--tab-active-bg); border-radius: 50%; padding: 3px; }
+  .tab .badge-dot { top: 2px; right: 50%; transform: translateX(14px); }
+  .toast { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,.78); color: #fff; font-size: 13px; padding: 10px 16px; border-radius: 8px; z-index: 60; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .toast.show { opacity: 1; }
+</style>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'c605e9c56c584d32ba06aac042bba710'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+<div class="phone">
+  <!-- 状态栏 -->
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div>
+  </div>
+
+  <!-- 顶部标题栏 -->
+  <div class="topbar">
+    <div class="brand">
+      <img class="brand-logo" src="logo.png" alt="鞋贸汇" onerror="this.style.display='none';document.getElementById('blf').style.display='flex';" />
+      <span id="blf" class="brand-logo-fallback" style="display:none">鞋</span>
+      <span class="brand-name">鞋贸汇</span>
+    </div>
+    <div class="search-mini" style="flex:1; height:34px; background:var(--bg-page); border-radius:var(--r-pill); display:flex; align-items:center; gap:6px; padding:0 12px; color:var(--ink-tertiary); font-size:12px;"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>搜供应 / 找货源</div>
+    <div class="icon-circle"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge-dot">2</span></div>
+  </div>
+
+  <!-- 滚动内容 -->
+  <div class="scroll">
+    <!-- Banner - 双行（与卖家端一致） -->
+    <div class="banner">
+      <div class="deco"></div><div class="deco2"></div>
+      <p class="b-sub">申泽优品.精选奥莱</p>
+      <div class="b-main">9月专属，全城最底价</div>
+    </div>
+
+    <!-- 热门供应（新增，横排紧凑预览卡） -->
+    <div class="sec-head">
+      <div class="sec-title">热门供应</div>
+      <div class="sec-more">更多 ›</div>
+    </div>
+    <div class="hot-scroll" id="hotSupply"></div>
+
+    <!-- 全部供应（新增，一卡一行，时间倒序） -->
+    <div class="sec-head">
+      <div class="sec-title">全部供应</div>
+    </div>
+    <div class="waterfall" id="allSupply"></div>
+  </div>
+
+  <!-- 底部 Tab Bar -->
+  <div class="tabbar">
+    <div class="tab active" id="tabHome">
+      <span class="tab-ic-wrap">
+        <svg class="ic ic-home" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>
+        <svg class="ic ic-arrow" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </span>首页
+    </div>
+    <div class="tab" onclick="location.href='b_supply.html'">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>货源
+    </div>
+    <div class="tab" onclick="location.href='b2_mine.html'">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的
+    </div>
+  </div>
+
+  <!-- 悬浮发布按钮（发询价） -->
+  <div class="fab" id="fab">
+    <div class="fab-btn" onclick="location.href='b2_inquiry_form.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span class="fab-text">发询价</span>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+</div>
+<script src="seed-helpers.js"></script>
+<script>
+(function(){
+  var AV_COLORS = ['#1677FF','#F5A623','#52C41A','#722ED1','#EB2F96','#13C2C2','#FA8C16','#2F54EB'];
+
+  /* 供应数据（字段参照「货源」页：头像/名称/时间/文字/九宫格） */
+  var SUPPLIERS = [
+    {name:'深圳优品供应链', initial:'深', color:0, time:'刚刚', content:'【工厂直供】头层牛皮自动扣皮带，支持来图定制，48 小时出样。常年稳定供货欧美商超，可贴牌可中性包装，欢迎询盘拿样。', imgs:['belt','sneakers','suitcase','canvas','hiking','sandals','boots','ballet','ski'], price:{min:'18.5'}, moq:'500 条'},
+    {name:'温州鞋业联盟', initial:'温', color:1, time:'刚刚', content:'跑步鞋、训练鞋现货供应，EVA 中底 + 透气网面，月产能 30 万双，支持小单快反与一件代发，交期稳定。', imgs:['sneakers','canvas','hiking','boots','ballet','sandals'], price:{min:'45',max:'68'}, moq:'1000 双'},
+    {name:'广州箱包工贸', initial:'广', color:2, time:'刚刚', content:'ABS + PC 硬壳拉杆箱，静音万向轮，20/24/28 寸齐全，出口品质，可定制 Logo 与颜色，支持 OEM/ODM。', imgs:['suitcase','belt','canvas','boots'], price:{min:'86'}, moq:'300 件'},
+    {name:'义乌小商品集采', initial:'义', color:3, time:'10分钟前', content:'帆布鞋、板鞋多款式常年供货，环保印染，支持混批，适合非洲及中东渠道，价格优势明显。', imgs:['canvas','sneakers','sandals','boots','ballet','hiking','belt','suitcase','ski'], price:{start:true,min:'22'}, moq:'2000 双'},
+    {name:'泉州运动装备', initial:'泉', color:4, time:'1小时前', content:'篮球鞋高弹缓震，工厂直销，支持 OEM/ODM，交期稳定，欢迎询盘拿样，批量优惠。', imgs:['sneakers','boots','hiking'], price:{min:'58',max:'72'}, moq:'800 双'},
+    {name:'成都皮具定制', initial:'成', color:5, time:'3小时前', content:'真皮钱包、皮带全品类定制，头层皮料，针扣 / 自动扣均可，支持企业礼品定制与来图加工。', imgs:[], price:null, moq:'200 件'},
+    {name:'青岛户外用品', initial:'青', color:6, time:'昨天', content:'登山鞋、徒步鞋防滑大底，Vibram 同级，提供耐磨测试报告，长期合作优先，支持贴牌。', imgs:['hiking','boots','sneakers','canvas','sandals','ski'], price:{min:'92'}, moq:'500 双'},
+    {name:'东莞服饰供应链', initial:'东', color:7, time:'2天前', content:'T 恤、衬衫基础款常年供货，精梳棉，支持印花绣花，快速打样，适合电商铺货与跨境分销。', imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'], price:{start:true,min:'9.8'}, moq:'5000 件'},
+    {name:'佛山童鞋制造', initial:'佛', color:0, time:'2天前', content:'儿童运动鞋软底护足，环保材质，支持卡通图案定制，出口欧美母婴渠道，可小单试单。', imgs:['sneakers','ballet','canvas'], price:{min:'35'}, moq:'600 双'},
+    {name:'厦门运动护具', initial:'厦', color:1, time:'3天前', content:'护膝护腕运动护具，透气弹力面料，支持来样加工与品牌贴牌，交期稳定。', imgs:['boots','hiking','sneakers'], price:{min:'12.5'}, moq:'300 副'},
+    {name:'宁波服装出口', initial:'宁', color:2, time:'3天前', content:'卫衣、冲锋衣常年供货，防风防水面料，支持小单快反与一件代发，适合跨境铺货。', imgs:['suitcase','canvas','belt'], price:{min:'39'}, moq:'400 件'},
+    {name:'杭州丝巾工坊', initial:'杭', color:3, time:'4天前', content:'真丝丝巾、围巾高端定制，支持印花与刺绣，适合礼赠与跨境电商，起订量低。', imgs:['ballet','canvas','sandals'], price:{start:true,min:'15'}, moq:'100 条'},
+    {name:'苏州箱包设计', initial:'苏', color:4, time:'5天前', content:'时尚双肩包、手提包设计打样，真皮 / 帆布可选，支持原创设计贴牌与来图定制。', imgs:['suitcase','belt','canvas'], price:{min:'68'}, moq:'200 个'},
+    {name:'汕头内衣供应链', initial:'汕', color:5, time:'5天前', content:'运动内衣、瑜伽服高弹面料，支持尺码定制与快速打样，适合跨境电商品牌。', imgs:['sneakers','hiking','ballet'], price:{min:'25'}, moq:'500 件'},
+    {name:'泉州拖鞋工厂', initial:'泉', color:6, time:'6天前', content:'EVA 拖鞋、凉拖量大价优，防滑耐磨，适合商超与地摊批发，支持混色混码。', imgs:['sandals','boots','canvas'], price:{min:'8.5'}, moq:'3000 双'},
+    {name:'广州饰品工贸', initial:'广', color:7, time:'6天前', content:'时尚饰品、项链耳环合金 / 不锈钢材质，支持来图定制，混批发货，跨境热销。', imgs:['ballet','belt','ski'], price:{start:true,min:'6.8'}, moq:'500 件'},
+    {name:'温州打火机厂', initial:'温', color:0, time:'7天前', content:'防风打火机、创意打火机出口品质，CE 认证，支持 OEM 定制与中性包装。', imgs:['sneakers','suitcase','boots'], price:{min:'3.2'}, moq:'2000 个'},
+    {name:'深圳3C配件', initial:'深', color:1, time:'7天前', content:'手机壳、数据线、充电器全品类供货，支持 LOGO 定制，跨境爆款，交期快。', imgs:['canvas','hiking','sandals','belt','ski'], price:{min:'11'}, moq:'1000 个'}
+  ];
+
+  var RANK = {'刚刚':0,'10分钟前':1,'1小时前':2,'3小时前':3,'昨天':4,'2天前':5,'3天前':6,'4天前':7,'5天前':8,'6天前':9,'7天前':10};
+  function byTimeDesc(a,b){ return (RANK[a.time]||99) - (RANK[b.time]||99); }
+
+  // 给每个供应分配唯一 id,卡片点击直接进详情
+  SUPPLIERS.forEach(function(d,i){ d._id = 'SP_HOME_' + SeedHelpers.pad(i+1); });
+
+  function tradeHtml(d, withMoq){
+    var priceHtml;
+    if(d.price){
+      var val = '¥'+d.price.min+'元';
+      if(d.price.max) val += '-'+d.price.max+'元';
+      if(d.price.start) val += '/起';
+      priceHtml = '<span class="trade-label">价格</span><span class="trade-price">'+val+'</span>';
+    } else {
+      priceHtml = '<span class="trade-price trade-mianyi">价格面议</span>';
+    }
+    var moq = withMoq ? '<span class="trade-moq">起订 '+d.moq+'</span>' : '';
+    return '<div class="supply-trade"><div class="trade-left">'+priceHtml+'</div>'+moq+'</div>';
+  }
+
+  function hotSupplyCard(d){
+    var el = document.createElement('div');
+    el.className = 'hs-card';
+    el.style.cursor = 'pointer';
+    el.onclick = function(){ location.href = 's2_supply_detail.html?id=' + d._id + '&role=buyer'; };
+    var hero = d.imgs && d.imgs.length ? d.imgs[0] : '';
+    var thumb = hero ? '<div class="thumb"><img src="img/'+hero+'.jpg" alt=""></div>'
+                     : '<div class="thumb" style="background:#EAF3FF"></div>';
+    el.innerHTML =
+      thumb +
+      '<div class="body">' +
+        '<div class="supply-head">' +
+          '<div class="avatar sm" style="background:'+AV_COLORS[d.color%8]+'">'+d.initial+'</div>' +
+          '<div class="supply-info"><div class="supply-name">'+d.name+'</div><div class="supply-time">'+d.time+'</div></div>' +
+        '</div>' +
+        '<div class="supply-content">'+d.content+'</div>' +
+        tradeHtml(d, false) +
+      '</div>';
+    return el;
+  }
+
+  function supplyCard(d){
+    var el = document.createElement('div');
+    el.className = 'supply-card';
+    el.style.cursor = 'pointer';
+    el.onclick = function(){ location.href = 's2_supply_detail.html?id=' + d._id + '&role=buyer'; };
+    var grid = '';
+    if(d.imgs && d.imgs.length){
+      grid = '<div class="supply-grid">'+ d.imgs.map(function(i){ return '<img src="img/'+i+'.jpg" alt="">'; }).join('') +'</div>';
+    }
+    el.innerHTML =
+      '<div class="supply-head">' +
+        '<div class="avatar" style="background:'+AV_COLORS[d.color%8]+'">'+d.initial+'</div>' +
+        '<div class="supply-info"><div class="supply-name">'+d.name+'</div><div class="supply-time">'+d.time+'</div></div>' +
+      '</div>' +
+      '<div class="supply-content">'+d.content+'</div>' +
+      tradeHtml(d, true) +
+      grid;
+    return el;
+  }
+
+  /* 热门供应：前 3 条 */
+  var hot = document.getElementById('hotSupply');
+  SUPPLIERS.slice(0,3).forEach(function(d){ hot.appendChild(hotSupplyCard(d)); });
+
+  /* 全部供应：全部，按时间倒序 */
+  var all = document.getElementById('allSupply');
+  SUPPLIERS.slice().sort(byTimeDesc).forEach(function(d){ all.appendChild(supplyCard(d)); });
+
+  /* 把本页供应数据 seed 到 localStorage,详情页可定位到对应 id */
+  (function seed(){
+    var seedData = SUPPLIERS.map(function(d){
+      return {
+        id: d._id,
+        title: d.name,
+        category: SeedHelpers.leafToCat(d.leaf || (d.imgs && d.imgs[0]) || ''),
+        desc: d.content,
+        images: (d.imgs||[]).map(function(i){ return 'img/'+i+'.jpg'; }),
+        priceLabel: SeedHelpers.formatPrice(d.price, d.moq),
+        time: SeedHelpers.timeToISO(d.time)
+      };
+    });
+    SeedHelpers.seedSupplies(seedData);
+  })();
+
+  /* 首页滚动回顶箭头 */
+  var scroller = document.querySelector('.scroll');
+  var tabHome = document.getElementById('tabHome');
+  if (scroller && tabHome) {
+    var animating = false;
+    var onScroll = function(){
+      if (animating) return;
+      if (scroller.scrollTop > scroller.clientHeight) {
+        tabHome.classList.add('arrow-mode');
+      } else {
+        tabHome.classList.remove('arrow-mode');
+      }
+    };
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    tabHome.addEventListener('click', function(){
+      if (tabHome.classList.contains('arrow-mode')) {
+        animating = true;
+        var start = scroller.scrollTop, to = 0, dur = 360, t0 = performance.now();
+        (function step(now){
+          var p = Math.min(1, (now - t0) / dur);
+          var e = 1 - Math.pow(1 - p, 3);
+          scroller.scrollTop = start + (to - start) * e;
+          if (p < 1) requestAnimationFrame(step);
+          else { animating = false; onScroll(); }
+        })(performance.now());
+      }
+    });
+  }
+})();
+function toast(msg){ var t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(t._tm); t._tm=setTimeout(function(){ t.classList.remove('show'); },1600); }
+</script>
+</body>
+</html>

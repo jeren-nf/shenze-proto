@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 我的询价</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+  .scroll { flex:1; overflow-y:auto; background:var(--bg-page); padding:14px 0 24px; }
+  .card { margin:0 14px 12px; background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:14px; cursor:pointer; }
+  .card:active { background:var(--bg-hover); }
+  .row1 { display:flex; align-items:flex-start; gap:8px; }
+  .ttl { font-size:16px; font-weight:700; color:var(--ink-primary); line-height:1.4; flex:1; }
+  .tag-rej { flex:none; font-size:11px; font-weight:600; color:var(--color-error-text); background:var(--color-error-bg); border:1px solid var(--color-error); border-radius:var(--r-sm); padding:2px 7px; }
+  .cat { font-size:12px; color:var(--ink-tertiary); margin-top:6px; }
+  .time { font-size:12px; color:var(--ink-tertiary); margin-top:4px; }
+  .ops { display:flex; gap:8px; margin-top:12px; justify-content:flex-end; }
+  .ob { height:32px; padding:0 14px; border-radius:var(--r-md); font-size:13px; font-weight:600; border:1px solid transparent; display:inline-flex; align-items:center; }
+  .ob-edit { background:var(--color-accent); color:#fff; }
+  .ob-del { background:#fff; color:var(--ink-secondary); border-color:var(--border-strong); }
+  .empty { text-align:center; padding:80px 24px; color:var(--ink-tertiary); }
+  .empty .et { font-size:15px; margin-bottom:16px; }
+  .empty .eb { display:inline-block; height:40px; padding:0 22px; background:var(--color-primary); color:#fff; border-radius:var(--r-md); font-size:14px; font-weight:600; line-height:40px; }
+  .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+  <div class="subheader">
+    <div class="subback" onclick="location.href='b2_mine.html'">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">我的询价</div>
+  </div>
+  <div class="scroll" id="scroll"></div>
+</div>
+
+<script>
+  function img(h){ return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl('+h+',60%,72%)"/><stop offset="1" stop-color="hsl('+((h+40)%360)+',65%,55%)"/></linearGradient></defs><rect width="200" height="200" fill="url(%23g)"/></svg>'); }
+  var KEY = 'b2_inquiries';
+  var list = [];
+  try { list = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){}
+  // 只保留用户自己发布的(排除种入的 mock)
+  list = list.filter(function(x){ return !x._seeded; });
+  if(!list.length){
+    list = [
+      { id:'BQ_SEED1', title:'急需500双跑步鞋 尼日利亚', category:'鞋类 > 运动鞋 > 跑步鞋', desc:'黑色白色混色。', images:[img(200)], qty:'500 双', region:'尼日利亚', time:'2026-08-18 09:30', status:'ok' },
+      { id:'BQ_SEED2', title:'采购男士纯棉T恤 1万件', category:'服装 > 男装 > T恤', desc:'180g精梳棉。', images:[], qty:'10000 件', region:'肯尼亚', time:'2026-08-15 14:10', status:'rejected' },
+      { id:'BQ_SEED3', title:'求购商务双肩包 2000个', category:'箱包 > 双肩包 > 商务双肩包', desc:'15.6寸笔记本仓。', images:[], qty:'2000 个', region:'南非', time:'2026-08-12 11:00', status:'ok' }
+    ];
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){}
+  }
+  var scroll = document.getElementById('scroll');
+  function render(){
+    if(!list.length){
+      scroll.innerHTML = '<div class="empty"><div class="et">暂无询价信息，去发布</div><div class="eb" onclick="location.href=\'b2_inquiry_form.html\'">去发布</div></div>';
+      return;
+    }
+    scroll.innerHTML = list.map(function(w){
+      var rej = w.status==='rejected' ? '<span class="tag-rej">审核不通过</span>' : '';
+      var ops = w.status==='rejected'
+        ? '<div class="ops"><div class="ob ob-edit" onclick="event.stopPropagation();editIt(\''+w.id+'\')">重新编辑</div><div class="ob ob-del" onclick="event.stopPropagation();delIt(\''+w.id+'\')">删除</div></div>'
+        : '<div class="ops"><div class="ob ob-del" onclick="event.stopPropagation();delIt(\''+w.id+'\')">删除</div></div>';
+      return '<div class="card" onclick="location.href=\'b2_inquiry_detail.html?id='+w.id+'\'">'+
+        '<div class="row1"><div class="ttl">'+w.title+'</div>'+rej+'</div>'+
+        '<div class="cat">'+w.category+'</div>'+
+        '<div class="time">'+w.time+'</div>'+ ops +'</div>';
+    }).join('');
+  }
+  function editIt(id){ location.href = 'b2_inquiry_form.html?edit='+id; }
+  function delIt(id){
+    list = list.filter(function(x){ return x.id!==id; });
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){}
+    toast('已删除'); render();
+  }
+  function toast(msg){
+    var t = document.getElementById('toast');
+    if(!t){ t = document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('show'); }, 1700);
+  }
+  render();
+</script>
+</body>
+</html>

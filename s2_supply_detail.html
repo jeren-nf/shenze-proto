@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 供应详情</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+
+  .scroll { flex:1; overflow-y:auto; background:var(--bg-page); }
+  .gallery { width:100%; aspect-ratio:1/1; background:var(--bg-hover); overflow-x:auto; display:flex; scroll-snap-type:x mandatory; }
+  .gallery img { height:100%; width:100%; object-fit:cover; flex:none; scroll-snap-align:center; }
+  .gallery .ph { min-width:100%; display:flex; align-items:center; justify-content:center; color:var(--ink-tertiary); font-size:14px; }
+
+  .body { padding:16px; }
+  .title { font-size:18px; font-weight:700; color:var(--ink-primary); line-height:1.4; }
+  .price { font-size:20px; font-weight:700; color:var(--color-primary); margin:10px 0; }
+  .cats { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; }
+  .cat-tag { font-size:12px; color:var(--tag-blue-text); background:var(--tag-blue-bg); border-radius:var(--r-sm); padding:3px 8px; }
+  .meta { font-size:12px; color:var(--ink-tertiary); margin-bottom:12px; }
+  .desc { font-size:14px; color:var(--ink-secondary); line-height:1.7; white-space:pre-wrap; background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:12px; }
+
+  .fixed-bar { flex:none; background:#fff; border-top:1px solid var(--border-weak); padding:10px 16px 14px; display:flex; align-items:center; gap:12px; }
+  .fav-btn { width:48px; height:48px; border:1px solid var(--border-strong); border-radius:var(--r-md); display:flex; align-items:center; justify-content:center; background:#fff; }
+  .fav-btn svg { width:24px; height:24px; }
+  .fav-btn.on svg { fill:#F5A623; stroke:#F5A623; }
+  .fav-btn.off svg { fill:none; stroke:var(--ink-tertiary); }
+  .fav-btn .lbl { display:none; }
+  .interested-btn { flex:1; height:48px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-md); font-size:16px; font-weight:600; }
+  .interested-btn:active { background:var(--color-primary-active); }
+
+  /* 感兴趣弹窗 */
+  .mask { position:absolute; inset:0; background:rgba(0,0,0,.4); opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:40; }
+  .mask.show { opacity:1; pointer-events:auto; }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:18px 18px 0 0; transform:translateY(100%); transition:transform .26s cubic-bezier(.18,.89,.32,1.1); z-index:41; padding:8px 16px 20px; }
+  .sheet.show { transform:translateY(0); }
+  .sheet-head { display:flex; align-items:flex-start; justify-content:space-between; padding:8px 0 4px; }
+  .sheet-head .t { font-size:17px; font-weight:700; color:var(--ink-primary); }
+  .sheet-head .s { font-size:12px; color:var(--ink-tertiary); margin-top:4px; }
+  .sheet-close { width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--ink-tertiary); cursor:pointer; }
+  .finp { width:100%; height:44px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:0 12px; font-size:14px; color:var(--ink-primary); background:#fff; outline:none; margin-top:12px; }
+  .finp::placeholder { color:var(--ink-tertiary); }
+  .finp:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+  .submit { width:100%; height:46px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-md); font-size:15px; font-weight:600; margin-top:18px; }
+
+  .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+  <div class="subheader">
+    <div class="subback" onclick="history.back()">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">供应详情</div>
+  </div>
+
+  <div class="scroll">
+    <div class="gallery" id="gallery"></div>
+    <div class="body">
+      <div class="title" id="d_title"></div>
+      <div class="price" id="d_price"></div>
+      <div class="cats" id="d_cats"></div>
+      <div class="meta" id="d_meta"></div>
+      <div class="desc" id="d_desc"></div>
+    </div>
+  </div>
+
+  <div class="fixed-bar" id="fixedBar"></div>
+
+  <!-- 感兴趣弹窗 -->
+  <div class="mask" id="intMask" onclick="closeInt()"></div>
+  <div class="sheet" id="intSheet">
+    <div class="sheet-head">
+      <div>
+        <div class="t">提交联系方式</div>
+        <div class="s">平台服务人员将双向对接供求双方</div>
+      </div>
+      <div class="sheet-close" onclick="closeInt()">×</div>
+    </div>
+    <input id="intPhone" class="finp" placeholder="请输入手机号" />
+    <input id="intWa" class="finp" placeholder="请输入WhatsApp号码" />
+    <button class="submit" onclick="submitInt()">提交</button>
+  </div>
+</div>
+
+<script>
+  function img(h){ return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl('+h+',60%,72%)"/><stop offset="1" stop-color="hsl('+((h+40)%360)+',65%,55%)"/></linearGradient></defs><rect width="360" height="360" fill="url(%23g)"/></svg>'); }
+  var MOCK = [
+    { id:'SP_DEMO1', title:'2026新款跑步鞋批发', category:'鞋类 > 运动鞋 > 跑步鞋', desc:'采用飞织鞋面，EVA 中底，轻量透气。\n支持混色混码，起订量 300 双，7-15 天交货。', images:[img(200),img(210),img(190)], price:{label:'¥45 - ¥68'}, time:'2026-08-10 14:20' },
+    { id:'SP_DEMO2', title:'商务正装皮鞋 OEM', category:'鞋类 > 皮鞋 > 正装皮鞋', desc:'头层牛皮，固特异工艺，支持定制 LOGO。', images:[img(30),img(45)], price:{label:'¥120/起（200起订）'}, time:'2026-08-08 09:05' },
+    { id:'SP_DEMO3', title:'纯棉圆领T恤 多色', category:'服装 > 男装 > T恤', desc:'180g 精梳棉，32 支，环保印染，支持来样定制。', images:[img(120)], price:{label:'面议'}, time:'2026-08-05 16:40' }
+  ];
+
+  var id = new URLSearchParams(location.search).get('id');
+  var role = new URLSearchParams(location.search).get('role') === 'buyer' ? 'buyer' : 'seller';
+  var from = new URLSearchParams(location.search).get('from');
+  var data = null;
+  try { var my = JSON.parse(localStorage.getItem('s2_supplies'))||[]; data = my.filter(function(x){return x.id===id;})[0]; } catch(e){}
+  if(!data){ data = MOCK.filter(function(x){return x.id===id;})[0]; }
+  if(!data){ data = MOCK[0]; }
+
+  // 渲染
+  var g = document.getElementById('gallery');
+  if(data.images && data.images.length){
+    g.innerHTML = data.images.map(function(s){ return '<img src="'+s+'"/>'; }).join('');
+  } else { g.innerHTML = '<div class="ph">暂无图片</div>'; }
+  document.getElementById('d_title').textContent = data.title;
+  document.getElementById('d_price').textContent = data.price.label;
+  document.getElementById('d_cats').innerHTML = data.category.split(' > ').map(function(c){ return '<span class="cat-tag">'+c+'</span>'; }).join('');
+  document.getElementById('d_meta').textContent = '发布时间：'+data.time;
+  document.getElementById('d_desc').textContent = data.desc;
+
+  // 是否本人（用户自己发布的;排除种入的 mock 数据 _seeded:true）
+  var isOwner = false;
+  try { isOwner = (JSON.parse(localStorage.getItem('s2_supplies'))||[]).some(function(x){return x.id===id && !x._seeded;}); } catch(e){}
+
+  // 收藏状态
+  var fav = []; try { fav = JSON.parse(localStorage.getItem('fav_supplies'))||[]; } catch(e){}
+  var favOn = fav.some(function(x){ return x.id===id; });
+
+  // 底部按钮按入口来源 + 身份组合:
+  //   from=my_supply  → 我的供应进入,无按钮(只读管理视图)
+  //   from=fav_supply → 我收藏的 供应 Tab 进入,只显示收藏(已是 on,点击取消)
+  //   其他(首页/商机 正常入口):
+  //     isOwner → 无按钮
+  //     role=buyer → 收藏 + 感兴趣
+  //     role=seller(默认) → 只收藏
+  var bar = document.getElementById('fixedBar');
+  var favHtml = '<div class="fav-btn '+(favOn?'on':'off')+'" id="favBtn" onclick="toggleFav()">'+
+    '<svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.3 6.2 21l1.6-6.9L2.5 9.2l7-.6L12 2.5l2.5 6.1 7 .6-5.3 4.9 1.6 6.9z"/></svg></div>';
+  var intHtml = (role==='buyer') ? '<button class="interested-btn" onclick="openInt()">感兴趣</button>' : '';
+
+  if(from === 'my_supply'){
+    bar.style.display = 'none';
+  } else if(from === 'fav_supply'){
+    // 强制显示收藏(即使是自己发的也允许取消收藏)
+    bar.innerHTML = favHtml;
+  } else if(isOwner){
+    bar.style.display = 'none';
+  } else {
+    bar.innerHTML = favHtml + intHtml;
+  }
+
+  function toggleFav(){
+    var fav = []; try { fav = JSON.parse(localStorage.getItem('fav_supplies'))||[]; } catch(e){}
+    var i = fav.findIndex(function(x){ return x.id===id; });
+    var btn = document.getElementById('favBtn');
+    if(i>=0){ fav.splice(i,1); btn.className='fav-btn off'; toast('已取消收藏'); }
+    else { fav.unshift({id:id, time:Date.now()}); btn.className='fav-btn on'; toast('收藏成功'); }
+    try { localStorage.setItem('fav_supplies', JSON.stringify(fav)); } catch(e){}
+  }
+
+  // 感兴趣弹窗
+  function openInt(){ document.getElementById('intMask').classList.add('show'); document.getElementById('intSheet').classList.add('show'); }
+  function closeInt(){ document.getElementById('intMask').classList.remove('show'); document.getElementById('intSheet').classList.remove('show'); }
+  function submitInt(){
+    var p = document.getElementById('intPhone').value.trim();
+    var w = document.getElementById('intWa').value.trim();
+    if(!p && !w){ toast('请至少填写一项联系方式'); return; }
+    var list = []; try { list = JSON.parse(localStorage.getItem('interested_supplies'))||[]; } catch(e){}
+    // 重复意向检测:已提交过的同一供应不再接受
+    var exist = list.find(function(x){ return x.id===id; });
+    if(exist){
+      var d = new Date(exist.time);
+      var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      closeInt();
+      toast('您已在'+ds+'已提交感兴趣的意向，请勿重复提交');
+      return;
+    }
+    list.unshift({ id:id, contact:{phone:p, whatsapp:w}, time:Date.now() });
+    try { localStorage.setItem('interested_supplies', JSON.stringify(list)); } catch(e){}
+    closeInt(); toast('提交成功，平台将尽快为您对接');
+  }
+
+  function toast(msg){
+    var t = document.getElementById('toast');
+    if(!t){ t = document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('show'); }, 1700);
+  }
+</script>
+</body>
+</html>

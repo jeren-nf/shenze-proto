@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>货源 · 买家端</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:40px; box-shadow:0 12px 40px rgba(0,0,0,.12); overflow:hidden; position:relative; display:flex; flex-direction:column; margin:24px auto; }
+  body { background:#E9EDF2; }
+
+  /* 导航栏 */
+  .navbar { flex:none; height:50px; background:#fff; display:flex; align-items:center; padding:0 8px; border-bottom:1px solid var(--border-weak); position:relative; }
+  .nav-back { width:40px; height:40px; display:flex; align-items:center; justify-content:center; border:none; background:transparent; }
+  .nav-back svg { width:24px; height:24px; stroke:var(--ink-primary); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .nav-title { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+
+  /* 搜索 + 筛选栏 */
+  .filterbar { flex:none; display:flex; align-items:center; gap:8px; padding:8px 12px; background:#fff; border-bottom:1px solid var(--border-weak); }
+  .search-input { flex:1; height:34px; background:var(--bg-page); border-radius:999px; display:flex; align-items:center; padding:0 12px; color:var(--ink-tertiary); font-size:13px; gap:6px; }
+  .search-input svg { width:16px; height:16px; stroke:var(--ink-tertiary); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+  .search-input input { border:none; background:transparent; outline:none; flex:1; font-size:13px; color:var(--ink-primary); font-family:inherit; }
+  .filter-entry { display:flex; align-items:center; gap:4px; flex:none; height:34px; padding:0 12px; border:1px solid #1677FF; color:#1677FF; background:#fff; border-radius:999px; font-size:13px; font-family:inherit; white-space:nowrap; cursor:pointer; }
+  .filter-entry svg { width:15px; height:15px; stroke:#1677FF; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* 滚动区 */
+  .scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:10px 12px; }
+  .ptr { height:0; overflow:hidden; display:flex; align-items:center; justify-content:center; color:var(--ink-tertiary); font-size:12px; transition:height .2s; }
+  .list { display:block; }
+  .loadmore { text-align:center; color:var(--ink-tertiary); font-size:12px; padding:14px 0; }
+
+  /* 供应卡片 */
+  .supply-card { background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:12px; margin-bottom:10px; }
+  .supply-head { display:flex; align-items:center; gap:10px; }
+  .avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:15px; flex:none; }
+  .supply-info { flex:1; display:flex; align-items:center; justify-content:space-between; min-width:0; gap:8px; }
+  .supply-name { font-size:14px; font-weight:600; color:var(--ink-primary); }
+  .supply-time { font-size:11px; color:var(--ink-tertiary); flex:none; white-space:nowrap; }
+  .supply-content { font-size:13px; color:var(--ink-secondary); line-height:1.5; margin-top:8px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .supply-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:8px; }
+  .supply-grid img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:6px; background:#f0f0f0; display:block; }
+
+  /* 交易信息区（价格 + 起订量） */
+  .supply-trade { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:8px; padding:8px 10px; background:#FAF9F6; border-radius:8px; }
+  .supply-trade .trade-left { display:flex; align-items:baseline; gap:4px; min-width:0; }
+  .supply-trade .trade-label { font-size:11px; color:var(--ink-tertiary); flex:none; }
+  .supply-trade .trade-price { font-size:14px; font-weight:700; color:#F5222D; line-height:1; white-space:nowrap; }
+  .supply-trade .trade-mianyi { font-size:14px; font-weight:600; color:var(--ink-secondary); }
+  .supply-trade .trade-moq { flex:none; font-size:12px; font-weight:500; color:#1677FF; background:#E6F1FB; border-radius:999px; padding:4px 10px; white-space:nowrap; }
+
+  /* 底部筛选面板 */
+
+
+  /* 底部主导航 Tab（首页 / 货源 / 我的） */
+  .botbar { height:56px; flex:none; background:#fff; border-top:1px solid var(--border-weak); display:flex; padding-bottom:6px; }
+  .btab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:var(--ink-tertiary); font-size:10.5px; cursor:pointer; }
+  .btab.active { color:var(--color-primary); }
+  .btab .ic { width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .btab.active .ic { stroke:var(--color-primary); background:var(--tab-active-bg); border-radius:50%; padding:3px; }
+
+  /* Toast */
+  .toast { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.78); color:#fff; font-size:13px; padding:10px 16px; border-radius:8px; z-index:60; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <!-- 导航栏 -->
+  <div class="navbar">
+    <button class="nav-back" onclick="goHome()" aria-label="返回">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="nav-title">货源</div>
+  </div>
+
+  <!-- 搜索 + 品类筛选 -->
+  <div class="filterbar">
+    <div class="search-input">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="搜索货源关键词" oninput="applyFilter()">
+    </div>
+    <button class="filter-entry" type="button" aria-label="品类筛选">
+      <svg viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+      品类筛选
+    </button>
+  </div>
+
+  <!-- 滚动列表（仅供应） -->
+  <div class="scroll" id="scroll">
+    <div class="ptr" id="ptr">下拉刷新</div>
+    <div class="list" id="list-gongying"></div>
+    <div class="loadmore" id="loadmore">上拉加载更多</div>
+  </div>
+
+  <!-- 底部 Tab：首页 / 货源 / 我的 -->
+  <div class="botbar">
+    <div class="btab" onclick="location.href='b2_home.html'">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>首页
+    </div>
+    <div class="btab active">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg>货源
+    </div>
+    <div class="btab" onclick="location.href='b2_mine.html'">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="seed-helpers.js"></script>
+<script>
+/* ---------- 数据（供应） ---------- */
+const AV_COLORS = ['#1677FF','#F5A623','#52C41A','#722ED1','#EB2F96','#13C2C2','#FA8C16','#2F54EB'];
+const GONGYING = [
+  {name:'深圳优品供应链',initial:'深',color:0,time:'刚刚',leaf:'zidong',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{min:'18.5'},moq:'500 条',content:'【工厂直供】头层牛皮自动扣皮带，支持来图定制，48 小时出样。常年稳定供货欧美商超，可贴牌可中性包装，欢迎询盘拿样。'},
+  {name:'温州鞋业联盟',initial:'温',color:1,time:'10分钟前',leaf:'train',imgs:['sneakers','canvas','hiking','boots','ballet','sandals'],price:{min:'45',max:'68'},moq:'1000 双',content:'跑步鞋、训练鞋现货供应，EVA 中底 + 透气网面，月产能 30 万双，支持小单快反与一件代发，交期稳定。'},
+  {name:'广州箱包工贸',initial:'广',color:2,time:'1小时前',leaf:'yingke',imgs:['suitcase','belt','canvas','boots'],price:{min:'86'},moq:'300 件',content:'ABS + PC 硬壳拉杆箱，静音万向轮，20/24/28 寸齐全，出口品质，可定制 Logo 与颜色，支持 OEM/ODM。'},
+  {name:'义乌小商品集采',initial:'义',color:3,time:'3小时前',leaf:'fanbu',imgs:['canvas','sneakers','sandals','boots','ballet','hiking','belt','suitcase','ski'],price:{start:true,min:'22'},moq:'2000 双',content:'帆布鞋、板鞋多款式常年供货，环保印染，支持混批，适合非洲及中东渠道，价格优势明显。'},
+  {name:'泉州运动装备',initial:'泉',color:4,time:'昨天',leaf:'basket',imgs:['sneakers','boots','hiking'],price:{min:'58',max:'72'},moq:'800 双',content:'篮球鞋高弹缓震，工厂直销，支持 OEM/ODM，交期稳定，欢迎询盘拿样，批量优惠。'},
+  {name:'成都皮具定制',initial:'成',color:5,time:'2天前',leaf:'zhenkou',imgs:[],price:null,moq:'200 件',content:'真皮钱包、皮带全品类定制，头层皮料，针扣 / 自动扣均可，支持企业礼品定制与来图加工。'},
+  {name:'青岛户外用品',initial:'青',color:6,time:'3天前',leaf:'dengshan',imgs:['hiking','boots','sneakers','canvas','sandals','ski'],price:{min:'92'},moq:'500 双',content:'登山鞋、徒步鞋防滑大底，Vibram 同级，提供耐磨测试报告，长期合作优先，支持贴牌。'},
+  {name:'东莞服饰供应链',initial:'东',color:7,time:'刚刚',leaf:'tshirt',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{start:true,min:'9.8'},moq:'5000 件',content:'T 恤、衬衫基础款常年供货，精梳棉，支持印花绣花，快速打样，适合电商铺货与跨境分销。'}
+];
+
+/* 给每条供应分配唯一 id,卡片点击直接进详情 */
+GONGYING.forEach(function(d,i){ d._id = 'SP_SUPP_' + SeedHelpers.pad(i+1); });
+
+function supplyCard(d){
+  const el = document.createElement('div');
+  el.className = 'supply-card';
+  el.dataset.leaf = d.leaf;
+  el.style.cursor = 'pointer';
+  el.onclick = function(){ location.href = 's2_supply_detail.html?id=' + d._id + '&role=buyer'; };
+  let priceHtml;
+  if(d.price){
+    let val = '¥'+d.price.min+'元';
+    if(d.price.max) val += '-'+d.price.max+'元';
+    if(d.price.start) val += '/起';
+    priceHtml = '<span class="trade-label">价格</span><span class="trade-price">'+val+'</span>';
+  } else {
+    priceHtml = '<span class="trade-price trade-mianyi">价格面议</span>';
+  }
+  const trade = '<div class="supply-trade"><div class="trade-left">'+priceHtml+'</div><span class="trade-moq">起订 '+d.moq+'</span></div>';
+  let grid = '';
+  if(d.imgs && d.imgs.length){
+    grid = '<div class="supply-grid">'+ d.imgs.map(i=>'<img src="img/'+i+'.jpg" alt="">').join('') +'</div>';
+  }
+  el.innerHTML =
+    '<div class="supply-head">'+
+      '<div class="avatar" style="background:'+AV_COLORS[d.color%AV_COLORS.length]+'">'+d.initial+'</div>'+
+      '<div class="supply-info"><div class="supply-name">'+d.name+'</div><div class="supply-time">'+d.time+'</div></div>'+
+    '</div>'+
+    '<div class="supply-content">'+d.content+'</div>'+
+    trade +
+    grid;
+  return el;
+}
+
+/* 时间倒序 */
+var SUPPLY_RANK = {'刚刚':0,'10分钟前':1,'1小时前':2,'3小时前':3,'昨天':4,'2天前':5,'3天前':6};
+GONGYING.sort(function(a,b){ return (SUPPLY_RANK[a.time]!==undefined?SUPPLY_RANK[a.time]:99) - (SUPPLY_RANK[b.time]!==undefined?SUPPLY_RANK[b.time]:99); });
+
+const listG = document.getElementById('list-gongying');
+GONGYING.forEach(d=> listG.appendChild(supplyCard(d)));
+
+/* 把本页供应数据 seed 到 localStorage,详情页可定位到对应 id */
+(function seed(){
+  var seedData = GONGYING.map(function(d){
+    return {
+      id: d._id,
+      title: d.name,
+      category: SeedHelpers.leafToCat(d.leaf),
+      desc: d.content,
+      images: (d.imgs||[]).map(function(i){ return 'img/'+i+'.jpg'; }),
+      priceLabel: SeedHelpers.formatPrice(d.price, d.moq),
+      time: SeedHelpers.timeToISO(d.time)
+    };
+  });
+  SeedHelpers.seedSupplies(seedData);
+})();
+
+
+function applyFilter(){
+  const q = document.getElementById('searchInput').value.trim();
+  document.querySelectorAll('#list-gongying .supply-card').forEach(card=>{
+    const matchKw = !q || card.textContent.includes(q);
+    card.style.display = matchKw ? '' : 'none';
+  });
+}
+
+/* 下拉刷新 + 上拉加载 */
+const scroll = document.getElementById('scroll');
+const ptr = document.getElementById('ptr');
+let refreshing = false, loading = false;
+let startY = 0, pulling = false;
+scroll.addEventListener('touchstart', e=>{ if(scroll.scrollTop<=0){ startY = e.touches[0].clientY; pulling = true; } }, {passive:true});
+scroll.addEventListener('touchmove', e=>{ if(pulling){ const dy = e.touches[0].clientY - startY; if(dy>0 && scroll.scrollTop<=0){ ptr.style.height = Math.min(dy*0.5,60)+'px'; ptr.textContent = dy*0.5>50 ? '释放刷新' : '下拉刷新'; } } }, {passive:true});
+scroll.addEventListener('touchend', ()=>{ if(pulling){ if(parseInt(ptr.style.height)>50){ doRefresh(); } else { ptr.style.height='0'; } pulling=false; } });
+let wheelAcc = 0;
+scroll.addEventListener('wheel', e=>{ if(scroll.scrollTop<=0 && e.deltaY<0){ wheelAcc += -e.deltaY; if(wheelAcc>140 && !refreshing){ wheelAcc=0; doRefresh(); } } else { wheelAcc=0; } }, {passive:true});
+function doRefresh(){
+  refreshing = true; ptr.style.height='40px'; ptr.textContent='刷新中…';
+  setTimeout(()=>{
+    const fresh = Object.assign({}, GONGYING[0]); fresh.name='（刷新）'+fresh.name;
+    listG.insertBefore(supplyCard(fresh), listG.firstChild);
+    applyFilter();
+    ptr.textContent='刷新成功 ✓'; ptr.style.height='32px';
+    setTimeout(()=>{ ptr.style.height='0'; refreshing=false; }, 500);
+  }, 800);
+}
+scroll.addEventListener('scroll', ()=>{
+  if(scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 50){
+    if(!loading && !refreshing) doLoadMore();
+  }
+});
+let loadCount = 0;
+function doLoadMore(){
+  loading = true;
+  const lm = document.getElementById('loadmore'); lm.textContent='加载中…';
+  setTimeout(()=>{
+    for(let i=0;i<6;i++){
+      const d = GONGYING[(loadCount*6+i) % GONGYING.length];
+      listG.appendChild(supplyCard(d));
+    }
+    loadCount++;
+    lm.textContent='上拉加载更多';
+    loading = false;
+    applyFilter();
+  }, 700);
+}
+
+/* 导航 / 搜索 / Toast */
+function goHome(){ window.location.href = 'b2_home.html'; }
+function focusSearch(){ document.getElementById('searchInput').focus(); }
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=> t.classList.remove('show'), 1600);
+}
+
+// recomputeChecks() removed (no-op)
+</script>
+</body>
+</html>

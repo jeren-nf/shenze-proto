@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 发供应</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+  .subright { position:absolute; right:12px; top:0; bottom:0; display:flex; align-items:center; }
+  .pub-btn { height:32px; padding:0 18px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-pill); font-size:14px; font-weight:600; }
+  .pub-btn:active { background:var(--color-primary-active); }
+
+  .scroll { flex:1; overflow-y:auto; overflow-x:hidden; background:var(--bg-page); padding:14px 0 24px; }
+  .card { margin:0 14px 12px; background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:14px; }
+
+  .flabel { font-size:13px; color:var(--ink-secondary); margin-bottom:8px; display:block; }
+  .flabel .req { color:var(--color-error); margin-left:2px; }
+  .finp { width:100%; height:44px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:0 12px; font-size:14px; color:var(--ink-primary); background:#fff; outline:none; }
+  .finp::placeholder { color:var(--ink-tertiary); }
+  .finp:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+
+  .select { width:100%; height:44px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:0 12px; display:flex; align-items:center; justify-content:space-between; background:#fff; cursor:pointer; }
+  .select:active { border-color:var(--color-primary); }
+  .sel-label { font-size:14px; color:var(--ink-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sel-label.ph { color:var(--ink-tertiary); }
+  .sel-arr { width:18px; height:18px; stroke:var(--ink-tertiary); flex:none; }
+
+  .farea { width:100%; min-height:96px; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:10px 12px; font-size:14px; color:var(--ink-primary); resize:none; outline:none; font-family:inherit; }
+  .farea:focus { border-color:var(--color-primary); box-shadow:0 0 0 2px var(--color-primary-bg); }
+  .farea-wrap { position:relative; }
+  .fcount { position:absolute; right:10px; bottom:8px; font-size:11px; color:var(--ink-tertiary); }
+
+  /* 九宫格上传 */
+  .upload-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .u-cell { aspect-ratio:1/1; border-radius:var(--r-md); overflow:hidden; position:relative; background:var(--bg-hover); }
+  .u-add { border:1px dashed var(--border-strong); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; cursor:pointer; color:var(--ink-tertiary); }
+  .u-add svg { width:24px; height:24px; stroke:var(--ink-tertiary); }
+  .u-add .u-tip { font-size:11px; }
+  .u-cell img { width:100%; height:100%; object-fit:cover; display:block; }
+  .u-del { position:absolute; top:3px; right:3px; width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,.55); color:#fff; font-size:13px; line-height:18px; text-align:center; cursor:pointer; }
+  .u-ph { position:absolute; left:6px; bottom:5px; font-size:10px; color:var(--ink-tertiary); }
+
+  /* 价格组件 */
+  .pmodes { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .pmode { flex:1; min-width:64px; height:34px; border:1px solid var(--border-strong); border-radius:var(--r-pill); display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--ink-secondary); cursor:pointer; background:#fff; }
+  .pmode.on { background:var(--color-primary); border-color:var(--color-primary); color:#fff; font-weight:600; }
+  .pm-row { display:none; }
+  .pm-row.show { display:block; }
+  .pm-row .finp { margin-bottom:8px; }
+  .pm-hint { font-size:12px; color:var(--ink-tertiary); padding:6px 0; }
+
+  /* 底部弹窗（品类选择器） */
+  .mask { position:absolute; inset:0; background:rgba(0,0,0,.4); opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:40; }
+  .mask.show { opacity:1; pointer-events:auto; }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:18px 18px 0 0; transform:translateY(100%); transition:transform .26s cubic-bezier(.18,.89,.32,1.1); z-index:41; padding:8px 0 16px; height:82%; display:flex; flex-direction:column; }
+  .sheet.show { transform:translateY(0); }
+  .sheet-bar { width:38px; height:4px; border-radius:2px; background:var(--border-strong); margin:6px auto 6px; }
+  .sheet-search { padding:0 16px 10px; }
+  .sheet-search input { width:100%; height:40px; border:1px solid var(--border-strong); border-radius:var(--r-pill); padding:0 14px; font-size:14px; outline:none; background:var(--bg-hover); }
+  .sheet-search input:focus { border-color:var(--color-primary); background:#fff; }
+  .tree { flex:1; overflow-y:auto; padding:0 16px 8px; }
+  .lv1 { font-size:15px; color:var(--ink-primary); padding:12px 2px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border-weak); }
+  .lv1 .chev { width:18px; height:18px; stroke:var(--ink-tertiary); transition:transform .2s; }
+  .lv1.open .chev { transform:rotate(90deg); }
+  .lv2 { padding:10px 2px 10px 18px; font-size:14px; color:var(--ink-secondary); cursor:pointer; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; justify-content:space-between; }
+  .lv2 .chev { width:16px; height:16px; stroke:var(--ink-tertiary); transition:transform .2s; }
+  .lv2.open .chev { transform:rotate(90deg); }
+  .lv3 { padding:10px 2px 10px 36px; font-size:14px; color:var(--ink-primary); cursor:pointer; border-bottom:1px solid var(--border-weak); }
+  .lv3.sel { color:var(--color-primary); font-weight:600; }
+  .lv3:active { background:var(--bg-hover); }
+  .sheet-foot { flex:none; padding:10px 16px 4px; }
+  .sheet-foot .confirm { width:100%; height:44px; background:var(--color-primary); color:#fff; border:none; border-radius:var(--r-md); font-size:15px; font-weight:600; }
+  .empty { text-align:center; color:var(--ink-tertiary); font-size:13px; padding:30px 0; }
+
+  .toast { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.82); color:#fff; font-size:13px; padding:10px 16px; border-radius:var(--r-md); z-index:99; max-width:78%; text-align:center; opacity:0; transition:opacity .2s ease; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="subheader">
+    <div class="subback" onclick="location.href='s2_home.html'">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">发供应</div>
+    <div class="subright"><button class="pub-btn" onclick="publish()">发布</button></div>
+  </div>
+
+  <div class="scroll">
+    <!-- 标题 -->
+    <div class="card">
+      <label class="flabel">供应标题<span class="req">*</span></label>
+      <input id="f_title" class="finp" placeholder="请输入供应标题（如：2026新款运动鞋批发）" />
+    </div>
+
+    <!-- 品类 -->
+    <div class="card">
+      <label class="flabel">商品品类<span class="req">*</span></label>
+      <div class="select" onclick="openCat()">
+        <span id="f_cat" class="sel-label ph">请选择商品品类</span>
+        <svg class="sel-arr" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    </div>
+
+    <!-- 描述 -->
+    <div class="card">
+      <label class="flabel">描述</label>
+      <div class="farea-wrap">
+        <textarea id="f_desc" class="farea" maxlength="500" placeholder="请详细描述您的供应信息（如：材质、尺寸、颜色、起订量等）"></textarea>
+        <div class="fcount"><span id="f_desc_n">0</span>/500</div>
+      </div>
+    </div>
+
+    <!-- 图片 -->
+    <div class="card">
+      <label class="flabel">图片</label>
+      <div class="upload-grid" id="uploadGrid"></div>
+    </div>
+
+    <!-- 价格 -->
+    <div class="card">
+      <label class="flabel">价格</label>
+      <div class="pmodes">
+        <div class="pmode" data-mode="fixed" onclick="setMode('fixed')">标定价</div>
+        <div class="pmode" data-mode="from" onclick="setMode('from')">起</div>
+        <div class="pmode" data-mode="range" onclick="setMode('range')">区间</div>
+        <div class="pmode on" data-mode="nego" onclick="setMode('nego')">面议</div>
+      </div>
+      <div class="pm-row" id="pm_fixed"><input id="p_fixed" class="finp" type="number" placeholder="请输入具体价格（元）" /></div>
+      <div class="pm-row" id="pm_from">
+        <input id="p_from_qty" class="finp" type="number" placeholder="起订量（件/双）" />
+        <input id="p_from_price" class="finp" type="number" placeholder="单价（元）" />
+      </div>
+      <div class="pm-row" id="pm_range">
+        <input id="p_range_min" class="finp" type="number" placeholder="最低价（元）" />
+        <input id="p_range_max" class="finp" type="number" placeholder="最高价（元）" />
+      </div>
+      <div class="pm-row show" id="pm_nego"><div class="pm-hint">买卖双方沟通后议价，价格面议。</div></div>
+    </div>
+  </div>
+
+  <!-- 品类选择器 -->
+  <div class="mask" id="catMask" onclick="closeCat()"></div>
+  <div class="sheet" id="catSheet">
+    <div class="sheet-bar"></div>
+    <div class="sheet-search"><input id="catSearch" placeholder="搜索品类" oninput="renderTree()" /></div>
+    <div class="tree" id="catTree"></div>
+    <div class="sheet-foot"><button class="confirm" onclick="confirmCat()">确认</button></div>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/*" multiple style="display:none" />
+</div>
+
+<script>
+/* ---------- 品类树 ---------- */
+var CATEGORY_TREE = [
+  { name:'鞋类', children:[
+    { name:'运动鞋', children:['跑步鞋','篮球鞋','休闲运动鞋','足球鞋'] },
+    { name:'皮鞋', children:['正装皮鞋','休闲皮鞋','乐福鞋'] },
+    { name:'凉鞋/拖鞋', children:['沙滩凉鞋','人字拖','洞洞鞋'] },
+    { name:'靴子', children:['马丁靴','雪地靴','工装靴'] }
+  ]},
+  { name:'服装', children:[
+    { name:'男装', children:['T恤','衬衫','夹克','卫衣','西服'] },
+    { name:'女装', children:['连衣裙','上衣','半身裙','风衣'] },
+    { name:'童装', children:['童装T恤','童装外套'] }
+  ]},
+  { name:'箱包', children:[
+    { name:'双肩包', children:['商务双肩包','潮流双肩包'] },
+    { name:'手提包', children:['通勤托特包','晚宴手包'] },
+    { name:'行李箱', children:['登机箱','托运箱'] }
+  ]},
+  { name:'配件', children:[
+    { name:'袜子', children:['运动袜','船袜','长筒袜'] },
+    { name:'帽子', children:['棒球帽','渔夫帽','针织帽'] },
+    { name:'腰带', children:['商务皮带','休闲腰带'] }
+  ]},
+  { name:'家纺', children:[
+    { name:'床品', children:['四件套','被芯','枕芯'] },
+    { name:'毛巾', children:['面巾','浴巾'] }
+  ]}
+];
+var openL1 = {}, openL2 = {}, pickedPath = null;
+
+function renderTree(){
+  var q = (document.getElementById('catSearch').value || '').trim().toLowerCase();
+  var html = '';
+  CATEGORY_TREE.forEach(function(l1, i){
+    var match = !q || l1.name.toLowerCase().indexOf(q) >= 0;
+    if(q && !match) return;
+    html += '<div class="lv1'+(openL1[i]?' open':'')+'" onclick="toggleL1('+i+')">'+l1.name+
+      '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>';
+    if(openL1[i]){
+      l1.children.forEach(function(l2, j){
+        html += '<div class="lv2'+(openL2[i+'_'+j]?' open':'')+'" onclick="toggleL2('+i+','+j+')">'+l2.name+
+          '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>';
+        if(openL2[i+'_'+j]){
+          l2.children.forEach(function(l3){
+            var path = l1.name+' > '+l2.name+' > '+l3;
+            html += '<div class="lv3'+(pickedPath===path?' sel':'')+'" onclick="pick(\''+path.replace(/'/g,"\\'")+'\')">'+l3+'</div>';
+          });
+        }
+      });
+    }
+  });
+  document.getElementById('catTree').innerHTML = html || '<div class="empty">未找到匹配品类</div>';
+}
+function toggleL1(i){ openL1[i] = !openL1[i]; renderTree(); }
+function toggleL2(i,j){ openL2[i+'_'+j] = !openL2[i+'_'+j]; renderTree(); }
+function pick(p){ pickedPath = p; renderTree(); }
+
+function openCat(){ document.getElementById('catMask').classList.add('show'); document.getElementById('catSheet').classList.add('show'); }
+function closeCat(){ document.getElementById('catMask').classList.remove('show'); document.getElementById('catSheet').classList.remove('show'); }
+function confirmCat(){
+  if(!pickedPath){ toast('请选择品类'); return; }
+  var el = document.getElementById('f_cat');
+  el.textContent = pickedPath; el.classList.remove('ph');
+  closeCat();
+}
+
+/* ---------- 价格模式 ---------- */
+function setMode(m){
+  document.querySelectorAll('.pmode').forEach(function(e){ e.classList.toggle('on', e.dataset.mode===m); });
+  ['fixed','from','range','nego'].forEach(function(k){ document.getElementById('pm_'+k).classList.toggle('show', k===m); });
+}
+
+/* ---------- 描述字数 ---------- */
+document.getElementById('f_desc').addEventListener('input', function(){
+  document.getElementById('f_desc_n').textContent = this.value.length;
+});
+
+/* ---------- 九宫格上传 ---------- */
+var images = [];
+function renderUpload(){
+  var g = document.getElementById('uploadGrid'); var html = '';
+  images.forEach(function(src, idx){
+    html += '<div class="u-cell"><img src="'+src+'"/><div class="u-del" onclick="delImg('+idx+')">×</div></div>';
+  });
+  if(images.length < 9){
+    html += '<div class="u-cell u-add" onclick="document.getElementById(\'fileInput\').click()">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><div class="u-tip">添加图片（最多9张）</div></div>';
+  }
+  g.innerHTML = html;
+}
+function delImg(i){ images.splice(i,1); renderUpload(); }
+document.getElementById('fileInput').addEventListener('change', function(){
+  var files = Array.prototype.slice.call(this.files);
+  files.forEach(function(f){
+    if(images.length >= 9) return;
+    var r = new FileReader();
+    r.onload = function(e){ images.push(e.target.result); renderUpload(); };
+    r.readAsDataURL(f);
+  });
+  this.value = '';
+});
+renderUpload();
+
+/* ---------- 发布 ---------- */
+function priceObj(){
+  var m = document.querySelector('.pmode.on').dataset.mode;
+  if(m==='fixed'){ var v=document.getElementById('p_fixed').value; return {type:'fixed', label:'¥'+(v||'0'), values:{fixed:v}}; }
+  if(m==='from'){ var q=document.getElementById('p_from_qty').value, p=document.getElementById('p_from_price').value; return {type:'from', label:'¥'+(p||'0')+'/起（'+(q||'0')+'起订）', values:{qty:q,price:p}}; }
+  if(m==='range'){ var a=document.getElementById('p_range_min').value, b=document.getElementById('p_range_max').value; return {type:'range', label:'¥'+(a||'0')+' - ¥'+(b||'0'), values:{min:a,max:b}}; }
+  return {type:'nego', label:'面议', values:{}};
+}
+var EDIT_ID = new URLSearchParams(location.search).get('edit');
+function initEdit(){
+  if(!EDIT_ID) return;
+  var list=[]; try{ list=JSON.parse(localStorage.getItem('s2_supplies'))||[]; }catch(e){}
+  var s = list.filter(function(x){return x.id===EDIT_ID;})[0];
+  if(!s) return;
+  document.getElementById('f_title').value = s.title||'';
+  var catEl = document.getElementById('f_cat');
+  if(s.category){ catEl.textContent=s.category; catEl.classList.remove('ph'); }
+  document.getElementById('f_desc').value = s.desc||'';
+  document.getElementById('f_desc_n').textContent = (s.desc||'').length;
+  if(s.images) images = s.images.slice();
+  renderUpload();
+  if(s.price){
+    var m = s.price.type||'nego'; setMode(m); var v=s.price.values||{};
+    if(m==='fixed') document.getElementById('p_fixed').value = v.fixed||'';
+    if(m==='from'){ document.getElementById('p_from_qty').value=v.qty||''; document.getElementById('p_from_price').value=v.price||''; }
+    if(m==='range'){ document.getElementById('p_range_min').value=v.min||''; document.getElementById('p_range_max').value=v.max||''; }
+  }
+  document.querySelector('.subtitle').textContent = '编辑供应';
+}
+function publish(){
+  var title = document.getElementById('f_title').value.trim();
+  var cat = document.getElementById('f_cat').textContent;
+  if(!title){ toast('请填写供应标题'); return; }
+  if(cat === '请选择商品品类' || !cat){ toast('请选择商品品类'); return; }
+  var now = new Date();
+  var pad = function(n){ return n<10?'0'+n:''+n; };
+  var time = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+  var supply = {
+    id: EDIT_ID || ('SP'+now.getTime()),
+    title: title,
+    category: cat,
+    desc: document.getElementById('f_desc').value.trim(),
+    images: images.slice(),
+    price: priceObj(),
+    time: time,
+    status: 'pending'
+  };
+  var KEY = 's2_supplies';
+  var list = []; try { list = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){}
+  if(EDIT_ID){
+    var idx = list.findIndex(function(x){ return x.id===EDIT_ID; });
+    if(idx>=0) list[idx] = supply; else list.unshift(supply);
+  } else { list.unshift(supply); }
+  try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){}
+  try { localStorage.setItem('s2_last_supply', JSON.stringify(supply)); } catch(e){}
+  toast('发布成功');
+  setTimeout(function(){ location.href = 's2_supply_success.html'; }, 700);
+}
+
+/* ---------- toast ---------- */
+function toast(msg){
+  var t = document.getElementById('toast');
+  if(!t){ t = document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('show'); }, 1700);
+}
+
+  renderTree();
+  initEdit();
+</script>
+</body>
+</html>

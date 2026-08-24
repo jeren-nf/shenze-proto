@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 我收藏的</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+
+  .tabs { flex:none; display:flex; background:#fff; border-bottom:1px solid var(--border-weak); }
+  .tab { flex:1; text-align:center; height:46px; line-height:46px; font-size:15px; color:var(--ink-secondary); position:relative; cursor:pointer; }
+  .tab.on { color:var(--color-primary); font-weight:700; }
+  .tab.on::after { content:''; position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:40px; height:3px; border-radius:2px; background:var(--color-primary); }
+
+  .scroll { flex:1; overflow-y:auto; background:var(--bg-page); padding:14px 0 24px; }
+
+  /* 求购卡片（单图） */
+  .iq-card { margin:0 14px 12px; background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:12px; display:flex; gap:12px; cursor:pointer; }
+  .iq-card:active { background:var(--bg-hover); }
+  .iq-thumb { width:72px; height:72px; border-radius:var(--r-md); overflow:hidden; flex:none; background:var(--bg-hover); }
+  .iq-thumb img { width:100%; height:100%; object-fit:cover; }
+  .iq-info { flex:1; min-width:0; }
+  .iq-title { font-size:15px; font-weight:700; color:var(--ink-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .iq-cat { font-size:12px; color:var(--ink-tertiary); margin:4px 0; }
+  .iq-line { font-size:12px; color:var(--ink-secondary); }
+
+  /* 供应卡片（九宫格） */
+  .sp-card { margin:0 14px 12px; background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:12px; cursor:pointer; }
+  .sp-card:active { background:var(--bg-hover); }
+  .sp-title { font-size:15px; font-weight:700; color:var(--ink-primary); }
+  .sp-cat { font-size:12px; color:var(--ink-tertiary); margin:4px 0; }
+  .sp-price { font-size:14px; font-weight:700; color:var(--color-primary); margin-bottom:8px; }
+  .sp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .sp-grid .g { aspect-ratio:1/1; border-radius:6px; overflow:hidden; background:var(--bg-hover); }
+  .sp-grid .g img { width:100%; height:100%; object-fit:cover; }
+  .sp-time { font-size:12px; color:var(--ink-tertiary); margin-top:8px; }
+
+  .empty { text-align:center; padding:70px 24px; color:var(--ink-tertiary); font-size:14px; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+  <div class="subheader">
+    <div class="subback" onclick="location.href='s2_mine.html'">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle">我收藏的</div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" id="tabIq" onclick="switchTab('iq')">求购</div>
+    <div class="tab" id="tabSp" onclick="switchTab('sp')">供应</div>
+  </div>
+  <div class="scroll" id="scroll"></div>
+</div>
+
+<script>
+  function img(h){ return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl('+h+',60%,72%)"/><stop offset="1" stop-color="hsl('+((h+40)%360)+',65%,55%)"/></linearGradient></defs><rect width="200" height="200" fill="url(%23g)"/></svg>'); }
+  var MOCK_SUPPLY = [
+    { id:'SP_DEMO1', title:'2026新款跑步鞋批发', category:'鞋类 > 运动鞋 > 跑步鞋', price:{label:'¥45 - ¥68'}, images:[img(200),img(210),img(190)], time:'2026-08-10 14:20' },
+    { id:'SP_DEMO2', title:'商务正装皮鞋 OEM', category:'鞋类 > 皮鞋 > 正装皮鞋', price:{label:'¥120/起（200起订）'}, images:[img(30),img(45)], time:'2026-08-08 09:05' },
+    { id:'SP_DEMO3', title:'纯棉圆领T恤 多色', category:'服装 > 男装 > T恤', price:{label:'面议'}, images:[img(120)], time:'2026-08-05 16:40' }
+  ];
+  var MOCK_INQUIRY = [
+    { id:'BQ_DEMO1', title:'急需500双跑步鞋 尼日利亚', category:'鞋类 > 运动鞋 > 跑步鞋', qty:'500 双', region:'尼日利亚', images:[img(200),img(215)], time:'2026-08-12 10:30' },
+    { id:'BQ_DEMO2', title:'采购男士纯棉T恤 1万件', category:'服装 > 男装 > T恤', qty:'10000 件', region:'肯尼亚', images:[img(120)], time:'2026-08-09 15:12' },
+    { id:'BQ_DEMO3', title:'求购商务双肩包 2000个', category:'箱包 > 双肩包 > 商务双肩包', qty:'2000 个', region:'南非', images:[img(260)], time:'2026-08-06 11:48' }
+  ];
+
+  function resolveSupply(id){
+    var my = []; try { my = JSON.parse(localStorage.getItem('s2_supplies'))||[]; } catch(e){}
+    return my.filter(function(x){return x.id===id;})[0] || MOCK_SUPPLY.filter(function(x){return x.id===id;})[0];
+  }
+  function resolveInquiry(id){
+    var my = []; try { my = JSON.parse(localStorage.getItem('b2_inquiries'))||[]; } catch(e){}
+    return my.filter(function(x){return x.id===id;})[0] || MOCK_INQUIRY.filter(function(x){return x.id===id;})[0];
+  }
+
+  var cur = 'iq';
+  function switchTab(t){ cur = t; document.getElementById('tabIq').classList.toggle('on', t==='iq'); document.getElementById('tabSp').classList.toggle('on', t==='sp'); render(); }
+
+  function render(){
+    var scroll = document.getElementById('scroll');
+    if(cur==='iq'){
+      var fav = []; try { fav = JSON.parse(localStorage.getItem('fav_inquiries'))||[]; } catch(e){}
+      fav.sort(function(a,b){ return b.time-a.time; });
+      if(!fav.length){ scroll.innerHTML = '<div class="empty">暂无收藏的求购信息</div>'; return; }
+      scroll.innerHTML = fav.map(function(f){
+        var d = resolveInquiry(f.id); if(!d) return '';
+        var thumb = (d.images&&d.images[0]) ? '<img src="'+d.images[0]+'"/>' : '';
+        return '<div class="iq-card" onclick="location.href=\'b2_inquiry_detail.html?id='+d.id+'\'">'+
+          '<div class="iq-thumb">'+thumb+'</div>'+
+          '<div class="iq-info"><div class="iq-title">'+d.title+'</div>'+
+          '<div class="iq-cat">'+d.category+'</div>'+
+          '<div class="iq-line">求购数量：'+d.qty+'</div>'+
+          '<div class="iq-line">销售地区：'+d.region+'</div>'+
+          '<div class="iq-line">'+d.time+'</div></div></div>';
+      }).join('');
+    } else {
+      var fav = []; try { fav = JSON.parse(localStorage.getItem('fav_supplies'))||[]; } catch(e){}
+      fav.sort(function(a,b){ return b.time-a.time; });
+      if(!fav.length){ scroll.innerHTML = '<div class="empty">暂无收藏的供应信息</div>'; return; }
+      scroll.innerHTML = fav.map(function(f){
+        var d = resolveSupply(f.id); if(!d) return '';
+        var grid = (d.images&&d.images.length) ? '<div class="sp-grid">'+d.images.map(function(s){ return '<div class="g"><img src="'+s+'"/></div>'; }).join('')+'</div>' : '';
+        return '<div class="sp-card" onclick="location.href=\'s2_supply_detail.html?id='+d.id+'&from=fav_supply\'">'+
+          '<div class="sp-title">'+d.title+'</div>'+
+          '<div class="sp-cat">'+d.category+'</div>'+
+          '<div class="sp-price">'+d.price.label+'</div>'+ grid +
+          '<div class="sp-time">'+d.time+'</div></div>';
+      }).join('');
+    }
+  }
+  render();
+</script>
+</body>
+</html>

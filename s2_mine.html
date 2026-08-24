@@ -92,10 +92,12 @@
   .tab .ic { width:22px; height:22px; }
   .tab.active .ic { stroke:var(--color-primary); background:var(--tab-active-bg); border-radius:50%; padding:3px; }
 
+</div>
   /* ===== 底部半屏 Sheet 弹窗（关注微信/客户服务/语言 通用） ===== */
-  .sheet-mask { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:90; opacity:0; pointer-events:none; transition:opacity .25s ease; }
+  /* 遮罩与弹窗定位在 .phone 内部（absolute），始终被手机框包裹 */
+  .sheet-mask { position:absolute; inset:0; background:rgba(0,0,0,.5); z-index:90; opacity:0; pointer-events:none; transition:opacity .25s ease; border-radius:34px; }
   .sheet-mask.show { opacity:1; pointer-events:auto; }
-  .sheet { position:fixed; left:0; right:0; bottom:0; background:#fff; border-radius:16px 16px 0 0; z-index:91; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); max-height:80vh; overflow-y:auto; padding-bottom:env(safe-area-inset-bottom, 20px); box-shadow:0 -8px 24px rgba(0,0,0,.12); }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:16px 16px 0 0; z-index:91; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); max-height:78%; overflow-y:auto; padding-bottom:env(safe-area-inset-bottom, 20px); box-shadow:0 -8px 24px rgba(0,0,0,.12); }
   .sheet.show { transform:translateY(0); }
   .sheet-handle { width:36px; height:4px; background:#E5E7EB; border-radius:2px; margin:8px auto 0; }
   .sheet-head { position:relative; padding:14px 16px 8px; display:flex; align-items:center; justify-content:center; }
@@ -338,7 +340,6 @@
       <div class="lang-check">✓</div>
     </div>
   </div>
-</div>
 
 <script>
 (function(){

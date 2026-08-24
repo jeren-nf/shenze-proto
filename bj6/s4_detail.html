@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 供求详情</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .statusbar .right { display:flex; gap:6px; align-items:center; }
+  .topbar { height:48px; flex:none; display:flex; align-items:center; gap:12px; padding:0 16px; background:#fff; }
+  .topbar .loc { display:flex; align-items:center; gap:2px; font-size:15px; font-weight:700; }
+  .back { display:flex; align-items:center; }
+  .icon-circle { width:34px; height:34px; border-radius:50%; background:var(--bg-page); display:flex; align-items:center; justify-content:center; position:relative; }
+  .scroll { flex:1; overflow-y:auto; padding-bottom:8px; }
+  .carousel { height:220px; background:linear-gradient(135deg,#1677FF,#4096FF); position:relative; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.9); }
+  .carousel .dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:6px; }
+  .carousel .dots i { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.5); }
+  .carousel .dots i.on { background:#fff; width:16px; border-radius:3px; }
+  .feed-price { color:var(--color-accent-active); font-weight:700; font-size:18px; }
+  .feed-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .feed-top { display:flex; align-items:center; gap:8px; }
+  .feed-avatar { width:32px; height:32px; border-radius:50%; background:var(--color-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px; flex:none; }
+  .feed-name { font-size:13px; font-weight:600; }
+  .feed-meta { font-size:11px; color:var(--ink-tertiary); }
+  .row-card { background:#fff; border-radius:var(--r-md); padding:14px; margin:0 16px 12px; border:1px solid var(--border-weak); }
+  .muted { color:var(--ink-tertiary); }
+  .fixed-bar { background:#fff; border-top:1px solid var(--border-weak); padding:10px 16px; display:flex; gap:12px; flex:none; }
+  .fixed-bar .btn { flex:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="back"><svg class="ic" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <div class="loc" style="font-size:16px">供求详情</div>
+    <div class="icon-circle" style="margin-left:auto"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5 8.6 10.5"/></svg></div>
+  </div>
+
+  <div class="scroll">
+    <div class="carousel">
+      <svg class="ic" viewBox="0 0 24 24" style="stroke:#fff;width:40px;height:40px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+      <div class="dots"><i class="on"></i><i></i><i></i></div>
+    </div>
+
+    <div style="background:#fff;padding:14px 16px">
+      <h3 style="margin:0 0 8px;font-size:17px">ISO 9001 工业轴承 批量供应</h3>
+      <div style="display:flex;align-items:baseline;gap:6px"><span class="feed-price">¥8.50</span><span class="muted" style="font-size:12px">/ 套 · 起订 1000 套</span></div>
+      <div class="feed-tags"><span class="tag tag-blue">机械</span><span class="tag tag-blue">轴承</span><span class="tag tag-orange">进行中</span></div>
+    </div>
+
+    <div class="row-card">
+      <div style="font-weight:700;margin-bottom:10px;font-size:14px">供应商信息</div>
+      <div class="feed-top">
+        <div class="feed-avatar">浙</div>
+        <div><div class="feed-name">浙江精工轴承有限公司</div><div class="feed-meta">中国 · 浙江 · 已认证企业</div></div>
+        <span class="tag tag-green" style="margin-left:auto">已认证</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:12px;color:var(--ink-secondary)"><span>联系人</span><span>张经理</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px;color:var(--ink-secondary)"><span>联系电话</span><span class="tnum">138****8000</span></div>
+    </div>
+
+    <div class="row-card">
+      <div style="font-weight:700;margin-bottom:8px;font-size:14px">供应描述</div>
+      <p class="muted" style="font-size:13px;margin:0;line-height:1.7">本厂专业生产深沟球轴承与圆锥滚子轴承，年产 2000 万套，通过 ISO 9001 与 CE 认证，支持来图来样定制，可提供 FOB / CIF 报价，交货周期 15–30 天。</p>
+    </div>
+    <div style="height:8px"></div>
+  </div>
+
+  <div class="fixed-bar">
+    <button class="btn btn-default" style="flex:1">
+      <svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>留言
+    </button>
+    <button class="btn btn-primary" style="flex:1.6">
+      <svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#fff"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 3.2 2 2 0 0 1 4 1h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.9-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.8 2Z"/></svg>立即沟通
+    </button>
+  </div>
+</div>
+</body>
+</html>

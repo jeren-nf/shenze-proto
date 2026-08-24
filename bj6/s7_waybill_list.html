@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 运单列表</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .statusbar .right { display:flex; gap:6px; align-items:center; }
+  .topbar { height:48px; flex:none; display:flex; align-items:center; gap:12px; padding:0 16px; background:#fff; }
+  .topbar .loc { display:flex; align-items:center; gap:2px; font-size:15px; font-weight:700; }
+  .back { display:flex; align-items:center; }
+  .scroll { flex:1; overflow-y:auto; padding-bottom:8px; }
+  .chips { display:flex; gap:8px; padding:10px 16px; background:#fff; }
+  .chip { flex:none; padding:6px 14px; border-radius:var(--r-pill); background:var(--bg-page); font-size:13px; color:var(--ink-secondary); }
+  .chip.on { background:var(--color-primary-bg); color:var(--color-primary); font-weight:600; }
+  .row-card { background:#fff; border-radius:var(--r-md); padding:14px; margin:0 16px 12px; border:1px solid var(--border-weak); }
+  .wb-no { font-size:13px; font-weight:700; }
+  .muted { color:var(--ink-tertiary); }
+  .btn-text { background:transparent; color:var(--color-primary); height:auto; padding:0; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="back"><svg class="ic" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <div class="loc" style="font-size:16px">运单列表</div>
+  </div>
+
+  <div class="scroll">
+    <div class="chips">
+      <span class="chip on">全部</span>
+      <span class="chip">运输中</span>
+      <span class="chip">已签收</span>
+      <span class="chip">异常</span>
+    </div>
+
+    <div class="row-card">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span class="wb-no">SF7392846510</span>
+        <span class="tag tag-orange">运输中</span>
+      </div>
+      <div class="muted" style="font-size:12px;margin:6px 0">工业轴承 1000 套 · 空运 · 上海 → 汉堡</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-weak);padding-top:10px;margin-top:4px">
+        <span class="muted" style="font-size:12px">更新于 2026-08-04 14:20</span>
+        <span class="btn-text">物流跟踪 ›</span>
+      </div>
+    </div>
+
+    <div class="row-card">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span class="wb-no">SF7381902773</span>
+        <span class="tag tag-green">已签收</span>
+      </div>
+      <div class="muted" style="font-size:12px;margin:6px 0">新能源汽车连接件 500 套 · 海运 · 上海 → 仁川</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-weak);padding-top:10px;margin-top:4px">
+        <span class="muted" style="font-size:12px">签收于 2026-07-28 09:46</span>
+        <span class="btn-text">物流跟踪 ›</span>
+      </div>
+    </div>
+
+    <div class="row-card">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span class="wb-no">SF7409123855</span>
+        <span class="tag tag-red">异常</span>
+      </div>
+      <div class="muted" style="font-size:12px;margin:6px 0">防水透气面料 200 卷 · 空运 · 上海 → 洛杉矶</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-weak);padding-top:10px;margin-top:4px">
+        <span style="font-size:12px;color:var(--color-error-text)">清关单证缺失 · 待补充</span>
+        <span class="btn-text">物流跟踪 ›</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

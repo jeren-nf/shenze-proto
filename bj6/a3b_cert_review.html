@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 管理后台 / 认证审核详情</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  /* ===== 后台布局骨架（复用 a1_dashboard.html） ===== */
+  .admin { display: flex; min-height: 100vh; }
+  .sidebar { width: 224px; flex: none; background: #fff; border-right: 1px solid var(--border-weak); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+  .brand { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-5) var(--sp-4); border-bottom: 1px solid var(--border-weak); }
+  .brand-mark { width: 36px; height: 36px; border-radius: var(--r-md); flex: none; background: linear-gradient(135deg, #F5A623, #FFB340); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; font-family: var(--font-cn); box-shadow: var(--shadow-hover); }
+  .brand-name { font-size: 15px; font-weight: 700; color: var(--ink-primary); line-height: 1.2; }
+  .brand-sub { font-size: 11px; color: var(--ink-tertiary); }
+  .nav { padding: var(--sp-3) var(--sp-2); overflow-y: auto; flex: 1; }
+  .nav-group-title { font-size: 11px; color: var(--ink-tertiary); padding: var(--sp-3) var(--sp-3) var(--sp-1); font-weight: 600; letter-spacing: .04em; }
+  .nav-item { display: flex; align-items: center; gap: var(--sp-3); height: 40px; padding: 0 var(--sp-3); border-radius: var(--r-md); color: var(--ink-secondary); font-size: 14px; position: relative; margin-bottom: 2px; transition: background .15s ease, color .15s ease; }
+  .nav-item:hover { background: var(--bg-hover); color: var(--ink-primary); }
+  .nav-item.active { background: var(--color-primary-bg); color: var(--color-primary-active); font-weight: 600; }
+  .nav-item.active::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--color-primary); }
+  .nav-item .ic { width: 18px; height: 18px; }
+  .nav-item.active .ic { stroke: var(--color-primary-active); }
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .topbar { height: 60px; flex: none; background: #fff; border-bottom: 1px solid var(--border-weak); display: flex; align-items: center; gap: var(--sp-4); padding: 0 var(--sp-5); position: sticky; top: 0; z-index: 10; }
+  .search { flex: 1; max-width: 420px; height: 38px; display: flex; align-items: center; gap: var(--sp-2); background: var(--bg-page); border: 1px solid transparent; border-radius: var(--r-md); padding: 0 var(--sp-3); color: var(--ink-tertiary); font-size: 13px; transition: all .15s ease; }
+  .search:focus-within { background: #fff; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-bg); }
+  .search input { border: none; background: transparent; outline: none; flex: 1; font-family: inherit; font-size: 13px; color: var(--ink-primary); }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: var(--sp-5); }
+  .icon-btn { position: relative; width: 38px; height: 38px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; transition: background .15s; }
+  .icon-btn:hover { background: var(--bg-hover); }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; cursor: pointer; }
+  .avatar-verified { position: relative; }
+  .avatar-verified::after { content: "✓"; position: absolute; right: -2px; bottom: -2px; width: 14px; height: 14px; background: var(--color-primary); color: #fff; border: 2px solid #fff; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; }
+  .content { padding: var(--sp-5); }
+  .page-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--sp-5); }
+  .page-title { font-size: var(--fs-h1); font-weight: 700; }
+  .crumb { font-size: 12px; color: var(--ink-tertiary); margin-bottom: 4px; }
+  .crumb b { color: var(--ink-secondary); font-weight: 600; }
+
+  /* ===== 本页扩展（§8.8 抽屉/面板形式） ===== */
+  .review { display: flex; gap: var(--sp-4); align-items: flex-start; }
+  .review-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--sp-4); }
+  .review-side { width: 320px; flex: none; position: sticky; top: 84px; }
+  .panel { padding: var(--sp-4) var(--sp-5) var(--sp-5); }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--sp-4); padding-bottom: var(--sp-3); border-bottom: 1px solid var(--border-weak); }
+  .panel-title { font-size: var(--fs-h2); font-weight: 600; }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4) var(--sp-5); }
+  .info-grid .full { grid-column: 1 / -1; }
+  .info-row .k { font-size: 12px; color: var(--ink-tertiary); margin-bottom: 4px; }
+  .info-row .v { font-size: 14px; color: var(--ink-primary); font-weight: 500; }
+  .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+  .doc-card { border: 1px solid var(--border-weak); border-radius: var(--r-md); overflow: hidden; }
+  .doc-thumb { height: 160px; background: repeating-linear-gradient(135deg,#f5f7fa,#f5f7fa 12px,#eef2f7 12px,#eef2f7 24px); display: flex; align-items: center; justify-content: center; color: var(--ink-tertiary); }
+  .doc-foot { display: flex; align-items: center; justify-content: space-between; padding: var(--sp-2) var(--sp-3); font-size: 12px; border-top: 1px solid var(--border-weak); }
+  .side-actions { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .side-actions .btn { width: 100%; height: 44px; }
+  .req-note { font-size: 12px; color: var(--ink-tertiary); margin-bottom: var(--sp-2); }
+  .req-note b { color: var(--color-error); }
+  textarea.inp { height: 120px; padding: var(--sp-3); resize: vertical; line-height: 1.6; width: 100%; font-family: inherit; }
+  .reason-block { margin-top: var(--sp-4); }
+  .side-tip { font-size: 12px; color: var(--ink-tertiary); display: flex; gap: 6px; align-items: flex-start; }
+</style>
+</head>
+<body>
+<div class="admin">
+  <!-- ============ 侧边栏 ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">申</div>
+      <div>
+        <div class="brand-name">申泽跨境贸易</div>
+        <div class="brand-sub">Shenze Trade Platform</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-group-title">概览</div>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>工作台</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>用户管理</a>
+      <div class="nav-group-title">交易管理</div>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7h18l-1.5 11.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 7Z"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>询盘管理</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>供应管理</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg>品类管理</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 9h4l3 3v6h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>物流订单</a>
+      <div class="nav-group-title">审核与风控</div>
+      <a class="nav-item active"><svg class="ic" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7l8-4Z"/></svg>企业认证审核<span class="badge-dot" style="position:static;margin-left:auto;border:none;">5</span></a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>敏感词管理</a>
+      <div class="nav-group-title">内容与权限</div>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2-1.5Z"/><path d="M18 4v16"/></svg>小学堂管理</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 11a3 3 0 1 0 0-6"/><path d="M21 20a5 5 0 0 0-5-5"/></svg>权限矩阵</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 14.1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 7l-.1-.1A2 2 0 1 1 7.3 4.1l.1.1A1.7 1.7 0 0 0 10 3.4V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1A2 2 0 1 1 19.9 7l-.1.1A1.7 1.7 0 0 0 21 9.9V10a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.4 1Z"/></svg>系统设置</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="search">
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="搜索供应商、询盘、订单号…" />
+      </div>
+      <div class="topbar-right">
+        <div class="icon-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge-dot">3</span></div>
+        <div class="icon-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="avatar avatar-verified" title="管理员">管</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <div class="crumb">审核与风控 / 企业认证审核 / <b>审核详情</b></div>
+          <div class="page-title">深圳市恒通跨境供应链有限公司 <span class="tag tag-orange" style="vertical-align:middle;margin-left:8px;">待审核</span></div>
+        </div>
+        <a class="btn btn-default" href="a3_merchant.html">返回列表</a>
+      </div>
+
+      <div class="review">
+        <!-- 左：企业资料 -->
+        <div class="review-main">
+          <section class="card panel">
+            <div class="panel-head"><div class="panel-title">企业基础信息</div></div>
+            <div class="info-grid">
+              <div class="info-row"><div class="k">企业名称</div><div class="v">深圳市恒通跨境供应链有限公司</div></div>
+              <div class="info-row"><div class="k">统一社会信用代码</div><div class="v tnum">91440300MA5Q8X2K9</div></div>
+              <div class="info-row"><div class="k">法定代表人</div><div class="v">周建国</div></div>
+              <div class="info-row"><div class="k">注册资本</div><div class="v tnum">¥ 5,000,000</div></div>
+              <div class="info-row"><div class="k">注册地址</div><div class="v">深圳市前海深港合作区前湾一路 1 号</div></div>
+              <div class="info-row"><div class="k">成立日期</div><div class="v tnum">2019-03-12</div></div>
+              <div class="info-row"><div class="k">联系人</div><div class="v">周建国 · 138****6621</div></div>
+              <div class="info-row"><div class="k">经营范围</div><div class="v">供应链管理服务；货物及技术进出口</div></div>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="panel-head"><div class="panel-title">资质证件</div><span class="tag tag-blue">2 份</span></div>
+            <div class="doc-grid">
+              <div class="doc-card">
+                <div class="doc-thumb"><svg class="ic ic-lg" viewBox="0 0 24 24" style="stroke:var(--ink-tertiary)"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m4 16 5-4 4 3 3-2 4 3"/></svg></div>
+                <div class="doc-foot"><span>营业执照</span><a class="btn-text" style="font-size:12px;">预览</a></div>
+              </div>
+              <div class="doc-card">
+                <div class="doc-thumb"><svg class="ic ic-lg" viewBox="0 0 24 24" style="stroke:var(--ink-tertiary)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></div>
+                <div class="doc-foot"><span>法人身份证</span><a class="btn-text" style="font-size:12px;">预览</a></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- 右：操作面板 -->
+        <aside class="review-side">
+          <section class="card panel">
+            <div class="panel-head"><div class="panel-title">审核操作</div></div>
+            <div class="side-actions">
+              <button class="btn btn-primary" onclick="alert('已通过该企业的认证申请。')">
+                <svg class="ic" viewBox="0 0 24 24" style="stroke:#fff;width:18px;height:18px"><path d="M20 6 9 17l-5-5"/></svg>通过认证
+              </button>
+
+              <div class="reason-block">
+                <div class="req-note">驳回时须填写原因<b>*</b></div>
+                <textarea class="inp" id="rejectReason" placeholder="请填写驳回原因，例如：营业执照模糊不清晰 / 经营范围与平台类目不符…"></textarea>
+              </div>
+              <button class="btn btn-accent" id="rejectBtn" disabled style="opacity:.5;" onclick="submitReject()">
+                提交驳回
+              </button>
+
+              <div class="side-tip"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--ink-tertiary)"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>驳回原因将同步通知商家，请客观填写。</div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  var r = document.getElementById('rejectReason');
+  var btn = document.getElementById('rejectBtn');
+  r.addEventListener('input', function () {
+    if (r.value.trim().length > 0) { btn.disabled = false; btn.style.opacity = '1'; }
+    else { btn.disabled = true; btn.style.opacity = '.5'; }
+  });
+  function submitReject() {
+    if (!r.value.trim()) { alert('请先填写驳回原因（必填）。'); return; }
+    if (confirm('确认驳回该企业认证？原因：\n' + r.value.trim())) {
+      alert('已提交驳回，商家将收到通知。');
+    }
+  }
+</script>
+</body>
+</html>

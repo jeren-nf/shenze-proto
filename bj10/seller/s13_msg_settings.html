@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 消息与设置</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .statusbar .right { display:flex; gap:6px; align-items:center; }
+  .topbar { height:48px; flex:none; display:flex; align-items:center; gap:12px; padding:0 16px; background:#fff; }
+  .topbar .loc { display:flex; align-items:center; gap:2px; font-size:15px; font-weight:700; }
+  .scroll { flex:1; overflow-y:auto; padding-bottom:8px; }
+  .sec-title { font-size:13px; color:var(--ink-tertiary); font-weight:600; padding:14px 16px 6px; }
+  .menu { margin:0 16px; background:#fff; border-radius:var(--r-md); border:1px solid var(--border-weak); overflow:hidden; }
+  .menu-item { display:flex; align-items:center; gap:12px; padding:14px; border-bottom:1px solid var(--border-weak); }
+  .menu-item:last-child { border-bottom:none; }
+  .menu-item .mi-ic { width:34px; height:34px; border-radius:9px; background:var(--color-primary-bg); display:flex; align-items:center; justify-content:center; position:relative; }
+  .menu-item .mi-ic .ic { stroke:var(--color-primary); }
+  .menu-item .arrow { margin-left:auto; }
+  .badge-dot { position:absolute; top:-2px; right:-2px; min-width:16px; height:16px; padding:0 4px; background:var(--color-error); color:#fff; border-radius:999px; font-size:10px; font-weight:600; display:flex; align-items:center; justify-content:center; border:2px solid #fff; }
+  .switch { width:44px; height:24px; border-radius:999px; background:var(--color-primary); position:relative; flex:none; }
+  .switch.off { background:var(--border-strong); }
+  .switch::after { content:""; position:absolute; top:2px; left:22px; width:20px; height:20px; border-radius:50%; background:#fff; transition:.2s; }
+  .switch.off::after { left:2px; }
+  .tabbar { height:56px; flex:none; background:#fff; border-top:1px solid var(--border-weak); display:flex; padding-bottom:6px; }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:var(--ink-tertiary); font-size:10.5px; }
+  .tab.active { color:var(--color-primary); }
+  .tab .ic { width:22px; height:22px; }
+  .tab.active .ic { stroke:var(--color-primary); }
+  .tab .badge-dot { top:2px; right:50%; transform:translateX(14px); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="loc" style="font-size:16px">消息与设置</div>
+  </div>
+
+  <div class="scroll">
+    <div class="sec-title">消息分类</div>
+    <div class="menu">
+      <div class="menu-item">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge-dot">2</span></div>
+        <span style="font-size:14px">系统通知</span>
+        <svg class="ic arrow" viewBox="0 0 24 24" style="stroke:var(--ink-tertiary);width:18px;height:18px"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <span style="font-size:14px">询盘消息</span>
+        <svg class="ic arrow" viewBox="0 0 24 24" style="stroke:var(--ink-tertiary);width:18px;height:18px"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.4 8.4 0 0 1-3.9-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5Z"/></svg></div>
+        <span style="font-size:14px">在线客服</span>
+        <svg class="ic arrow" viewBox="0 0 24 24" style="stroke:var(--ink-tertiary);width:18px;height:18px"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+    </div>
+
+    <div class="sec-title">通知开关</div>
+    <div class="menu">
+      <div class="menu-item">
+        <span style="font-size:14px">新询盘提醒</span>
+        <div class="switch" style="margin-left:auto"></div>
+      </div>
+      <div class="menu-item">
+        <span style="font-size:14px">系统通知</span>
+        <div class="switch" style="margin-left:auto"></div>
+      </div>
+      <div class="menu-item">
+        <span style="font-size:14px">物流状态变更</span>
+        <div class="switch off" style="margin-left:auto"></div>
+      </div>
+    </div>
+
+    <div class="sec-title">客服与帮助</div>
+    <div class="menu">
+      <div class="menu-item">
+        <div class="mi-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.4 8.4 0 0 1-3.9-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5Z"/></svg></div>
+        <span style="font-size:14px">联系人工客服</span>
+        <svg class="ic arrow" viewBox="0 0 24 24" style="stroke:var(--ink-tertiary);width:18px;height:18px"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>首页</div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>供应</div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>询盘</div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>消息</div>
+    <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 发布供应</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .statusbar .right { display:flex; gap:6px; align-items:center; }
+  .topbar { height:48px; flex:none; display:flex; align-items:center; gap:12px; padding:0 16px; background:#fff; }
+  .topbar .loc { display:flex; align-items:center; gap:2px; font-size:15px; font-weight:700; }
+  .back { display:flex; align-items:center; }
+  .scroll { flex:1; overflow-y:auto; padding-bottom:8px; }
+  .btn-block { width:100%; }
+  .form-card { margin:12px 16px; background:#fff; border-radius:var(--r-md); padding:14px; border:1px solid var(--border-weak); }
+  .field { margin:0 0 14px; }
+  .field:last-child { margin-bottom:0; }
+  .field label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+  .req { color:var(--color-error); margin-left:2px; }
+  .input, .select, .textarea { width:100%; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:10px 12px; font-size:14px; color:var(--ink-primary); background:#fff; }
+  .select-wrap { position:relative; }
+  .select-wrap .chev { position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none; }
+  .textarea { min-height:90px; resize:none; font-family:inherit; line-height:1.6; }
+  .hint { color:var(--color-error); font-size:12px; margin:6px 16px 0; }
+  .upload-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:12px 16px; }
+  .up-cell { aspect-ratio:1; border:1px dashed var(--border-strong); border-radius:var(--r-md); background:#fff; display:flex; align-items:center; justify-content:center; color:var(--ink-tertiary); font-size:13px; overflow:hidden; }
+  .up-cell.add { font-size:26px; color:var(--color-primary); }
+  .up-cell.fill { border-style:solid; background:var(--color-primary-bg); color:var(--color-primary); font-weight:600; font-size:12px; }
+  .fixed-bar { background:#fff; border-top:1px solid var(--border-weak); padding:10px 16px; display:flex; gap:12px; flex:none; }
+  .fixed-bar .btn { flex:1; }
+  .tabbar { height:56px; flex:none; background:#fff; border-top:1px solid var(--border-weak); display:flex; padding-bottom:6px; }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:var(--ink-tertiary); font-size:10.5px; }
+  .tab.active { color:var(--color-primary); }
+  .tab .ic { width:22px; height:22px; }
+  .tab.active .ic { stroke:var(--color-primary); }
+  .tab .badge-dot { top:2px; right:50%; transform:translateX(14px); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="back"><svg class="ic" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <div class="loc" style="font-size:16px">发布供应</div>
+  </div>
+
+  <div class="scroll">
+    <div class="form-card">
+      <div class="field">
+        <label>供应品类<span class="req">*</span></label>
+        <div class="select-wrap">
+          <select class="select"><option>机械设备</option><option>汽车配件</option><option>电子电器</option><option>服装纺织</option><option>家居建材</option></select>
+          <svg class="ic chev" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="field"><label>供应标题<span class="req">*</span></label><input class="input" placeholder="一句话说明核心卖点，如：ISO认证工业轴承批发"/></div>
+      <div class="field"><label>供应描述<span class="req">*</span></label><textarea class="textarea" placeholder="请描述规格、产能、认证、起订量、交货周期等"></textarea></div>
+      <div class="field"><label>商品图片<span class="req">*</span></label></div>
+      <div class="upload-grid">
+        <div class="up-cell fill">图1</div>
+        <div class="up-cell fill">图2</div>
+        <div class="up-cell fill">图3</div>
+        <div class="up-cell fill">图4</div>
+        <div class="up-cell add">+</div>
+      </div>
+      <div class="field">
+        <label>价格<span class="req">*</span></label>
+        <div style="display:flex;gap:10px">
+          <div class="select-wrap" style="flex:2">
+            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-tertiary);font-size:14px">￥</span>
+            <input class="input" style="padding-left:26px" placeholder="0.00"/>
+          </div>
+          <div class="select-wrap" style="flex:1">
+            <select class="select"><option>件</option><option>套</option><option>吨</option><option>箱</option></select>
+            <svg class="ic chev" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="hint">请填写带 * 的必填项，图片最多 9 张</div>
+    </div>
+  </div>
+
+  <div class="fixed-bar">
+    <button class="btn btn-default">存草稿</button>
+    <button class="btn btn-primary">发布供应</button>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>首页</div>
+    <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>供应</div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>询盘</div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>消息</div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>我的</div>
+  </div>
+</div>
+</body>
+</html>

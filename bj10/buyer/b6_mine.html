@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 我的（EN）</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background: #E9EDF2; display: flex; justify-content: center; padding: 32px 0; }
+  .phone { width: 390px; height: 844px; background: var(--bg-page); border-radius: 44px; box-shadow: 0 24px 60px rgba(0,0,0,0.18); overflow: hidden; position: relative; border: 10px solid #111; display: flex; flex-direction: column; }
+  .statusbar { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 13px; font-weight: 600; }
+
+  .scroll { flex: 1; overflow-y: auto; }
+  .header { background: linear-gradient(120deg, var(--color-primary), var(--color-primary-hover)); padding: 16px; color: #fff; display: flex; align-items: center; gap: 14px; }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; font-family: var(--font-en); flex: none; }
+  .h-name { font-size: 18px; font-weight: 700; font-family: var(--font-en); }
+  .h-sub { font-size: 12px; opacity: .9; margin-top: 3px; font-family: var(--font-en); }
+  .h-badge { display: inline-flex; align-items: center; gap: 4px; margin-top: 8px; background: var(--color-accent); color: #fff; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: var(--r-pill); font-family: var(--font-en); }
+
+  .stats { display: flex; background: #fff; border-bottom: 1px solid var(--border-weak); }
+  .stat { flex: 1; text-align: center; padding: 14px 0; border-right: 1px solid var(--border-weak); }
+  .stat:last-child { border-right: none; }
+  .stat b { display: block; font-size: 18px; font-weight: 800; font-family: var(--font-en); }
+  .stat span { font-size: 11px; color: var(--ink-tertiary); font-family: var(--font-en); }
+
+  .sec { background: #fff; margin: 12px 16px; border-radius: var(--r-lg); border: 1px solid var(--border-weak); overflow: hidden; }
+  .sec-title { padding: 12px 16px; font-size: 13px; font-weight: 700; color: var(--ink-tertiary); border-bottom: 1px solid var(--border-weak); font-family: var(--font-en); }
+  .menu-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border-weak); font-family: var(--font-en); }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item .mi-ic { width: 34px; height: 34px; border-radius: 10px; background: var(--color-primary-bg); display: flex; align-items: center; justify-content: center; flex: none; }
+  .menu-item .mi-ic svg { width: 18px; height: 18px; stroke: var(--color-primary); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .menu-item .mi-label { font-size: 14px; font-weight: 500; flex: 1; }
+  .menu-item .mi-val { font-size: 12px; color: var(--ink-tertiary); }
+  .menu-item .mi-arrow { color: var(--ink-tertiary); }
+  .menu-item .mi-arrow svg { width: 16px; height: 16px; stroke: var(--ink-tertiary); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .lang-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border-weak); }
+  .lang-row .mi-ic { width: 34px; height: 34px; border-radius: 10px; background: var(--color-accent-bg); display: flex; align-items: center; justify-content: center; flex: none; }
+  .lang-row .mi-ic svg { width: 18px; height: 18px; stroke: var(--color-accent-active); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .lang-row .mi-label { font-size: 14px; font-weight: 500; flex: 1; font-family: var(--font-en); }
+  .lang-toggle { display: inline-flex; background: var(--bg-page); border-radius: var(--r-pill); padding: 2px; font-size: 11px; font-weight: 600; }
+  .lang-toggle span { padding: 5px 10px; border-radius: var(--r-pill); cursor: pointer; color: var(--ink-tertiary); }
+  .lang-toggle span.on { background: #fff; color: var(--color-primary); box-shadow: var(--shadow-hover); }
+
+  .tabbar { height: 56px; flex: none; background: #fff; border-top: 1px solid var(--border-weak); display: flex; padding-bottom: 6px; }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink-tertiary); font-size: 10.5px; font-family: var(--font-en); }
+  .tab.active { color: var(--color-primary); }
+  .tab .ic { width: 22px; height: 22px; }
+  .tab.active .ic { stroke: var(--color-primary); }
+  .tab .badge-dot { top: 2px; right: 50%; transform: translateX(14px); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div style="display:flex;gap:6px;align-items:center;"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="scroll">
+    <div class="header">
+      <div class="avatar">B</div>
+      <div>
+        <div class="h-name" data-en="Buyer_8821" data-zh="买家_8821">Buyer_8821</div>
+        <div class="h-sub" data-en="Shenzhen, China" data-zh="中国·深圳">Shenzhen, China</div>
+        <span class="h-badge" data-en="✓ Email Verified" data-zh="✓ 邮箱已认证">✓ Email Verified</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b class="tnum">12</b><span data-en="RFQs" data-zh="询盘">RFQs</span></div>
+      <div class="stat"><b class="tnum">3</b><span data-en="Orders" data-zh="订单">Orders</span></div>
+      <div class="stat"><b class="tnum">28</b><span data-en="Favorites" data-zh="收藏">Favorites</span></div>
+      <div class="stat"><b class="tnum">5</b><span data-en="Messages" data-zh="消息">Messages</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title" data-en="My Business" data-zh="我的业务">My Business</div>
+      <div class="menu-item"><div class="mi-ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div><div class="mi-label" data-en="My RFQs" data-zh="我的询盘">My RFQs</div><span class="mi-val tnum">12</span><div class="mi-arrow"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div></div>
+      <div class="menu-item"><div class="mi-ic"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg></div><div class="mi-label" data-en="Orders" data-zh="订单">Orders</div><span class="mi-val tnum">3</span><div class="mi-arrow"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div></div>
+      <div class="menu-item"><div class="mi-ic"><svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4 2 7L12 17l-6.5 5 2-7L2 9h7Z"/></svg></div><div class="mi-label" data-en="Favorites" data-zh="收藏">Favorites</div><span class="mi-val tnum">28</span><div class="mi-arrow"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div></div>
+      <div class="menu-item"><div class="mi-ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="mi-label" data-en="Messages" data-zh="消息">Messages</div><span class="mi-val tnum">5</span><div class="mi-arrow"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title" data-en="Preferences" data-zh="偏好设置">Preferences</div>
+      <div class="menu-item"><div class="mi-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/></svg></div><div class="mi-label" data-en="Settings" data-zh="设置">Settings</div><div class="mi-arrow"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div></div>
+      <div class="lang-row">
+        <div class="mi-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+        <div class="mi-label" data-en="Language" data-zh="语言">Language</div>
+        <div class="lang-toggle" id="langToggle">
+          <span class="on" data-lang="en">EN</span><span data-lang="zh">中</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab" onclick="location.href='b2_home.html'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg><span data-en="Home" data-zh="首页">Home</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg><span data-en="RFQ" data-zh="询盘">RFQ</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-en="Messages" data-zh="消息">Messages</span><span class="badge-dot">3</span></div>
+    <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span data-en="Account" data-zh="我的">Account</span></div>
+  </div>
+</div>
+
+<script>
+  var toggle = document.getElementById('langToggle');
+  toggle.addEventListener('click', function (e) {
+    var t = e.target.closest('span'); if (!t) return;
+    var lang = t.getAttribute('data-lang');
+    toggle.querySelectorAll('span').forEach(function(s){ s.classList.toggle('on', s === t); });
+    document.querySelectorAll('[data-en]').forEach(function (el) {
+      el.innerHTML = lang === 'zh' ? el.getAttribute('data-zh') : el.getAttribute('data-en');
+    });
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    try { localStorage.setItem('shenze_lang', lang); } catch (_) {}
+  });
+  try {
+    var saved = localStorage.getItem('shenze_lang');
+    if (saved === 'zh') toggle.querySelector('[data-lang="zh"]').click();
+  } catch (_) {}
+</script>
+</body>
+</html>

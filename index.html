@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>申泽跨境贸易 · 原型导航</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#0F172A;color:#e2e8f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;}
+  .wrap{max-width:720px;width:100%;text-align:center;}
+  h1{font-size:28px;font-weight:800;color:#fff;margin-bottom:8px;}
+  .sub{color:#94a3b8;font-size:14px;line-height:1.7;margin-bottom:36px;}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  a.card{display:block;background:#1e293b;border:1px solid #334155;border-radius:16px;padding:28px 20px;text-decoration:none;color:#e2e8f0;transition:.15s;}
+  a.card:hover{border-color:#1677FF;transform:translateY(-3px);background:#243044;}
+  a.card .t{font-size:18px;font-weight:700;color:#f1f5f9;}
+  a.card .d{font-size:13px;color:#94a3b8;margin-top:8px;line-height:1.6;}
+  a.card .tag{display:inline-block;margin-top:14px;font-size:11px;color:#5eead4;background:#0d3b36;padding:3px 10px;border-radius:8px;}
+  .foot{margin-top:40px;font-size:12px;color:#64748b;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>申泽跨境贸易 · UI 原型</h1>
+  <div class="sub">跨境贸易服务平台（管理后台 / 卖家端小程序 / 买家端小程序）<br>以下为两套原型版本，点击进入。</div>
+  <div class="cards">
+    <a class="card" href="bj6/index.html">
+      <div class="t">扁平总览版（bj6）</div>
+      <div class="d">32 页扁平结构 · 全部页面同级目录 · 通用 UI 原型总览</div>
+      <span class="tag">ui-prototype</span>
+    </a>
+    <a class="card" href="bj10/index.html">
+      <div class="t">嵌套 FR 编号版（bj10）</div>
+      <div class="d">seller / buyer / admin 三目录嵌套 · 带 FR 功能编号</div>
+      <span class="tag">FR-numbered</span>
+    </a>
+  </div>
+  <div class="foot">由 WorkBuddy 整理并部署 · 静态原型，无需后端</div>
+</div>
+</body>
+</html>

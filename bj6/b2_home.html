@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 买家端小程序首页（EN）</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background: #E9EDF2; display: flex; justify-content: center; padding: 32px 0; }
+  .phone { width: 390px; height: 844px; background: var(--bg-page); border-radius: 44px; box-shadow: 0 24px 60px rgba(0,0,0,0.18); overflow: hidden; position: relative; border: 10px solid #111; display: flex; flex-direction: column; }
+  .statusbar { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 13px; font-weight: 600; }
+  .topbar { height: 48px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #fff; }
+  .topbar .loc { font-size: 15px; font-weight: 700; }
+  .search-mini { flex: 1; height: 34px; background: var(--bg-page); border-radius: var(--r-pill); display: flex; align-items: center; gap: 6px; padding: 0 12px; color: var(--ink-tertiary); font-size: 12px; font-family: var(--font-en); }
+  .lang-toggle { display: inline-flex; background: var(--bg-page); border-radius: var(--r-pill); padding: 2px; font-size: 11px; font-weight: 600; }
+  .lang-toggle span { padding: 4px 8px; border-radius: var(--r-pill); cursor: pointer; color: var(--ink-tertiary); }
+  .lang-toggle span.on { background: #fff; color: var(--color-primary); box-shadow: var(--shadow-hover); }
+
+  .scroll { flex: 1; overflow-y: auto; padding-bottom: 8px; }
+  .banner { margin: 12px 16px; height: 96px; border-radius: var(--r-lg); background: linear-gradient(120deg, #1677FF, #4096FF); color: #fff; padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .banner h3 { margin: 0; font-size: 17px; font-weight: 700; font-family: var(--font-en); }
+  .banner p { margin: 4px 0 0; font-size: 12px; opacity: .9; font-family: var(--font-en); }
+  .banner .deco { position: absolute; right: -20px; top: -20px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,.12); }
+  .banner .deco2 { position: absolute; right: 40px; bottom: -40px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.1); }
+
+  .grid-card { margin: 0 16px 12px; background: #fff; border-radius: var(--r-lg); padding: 16px 8px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 0; }
+  .grid-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .grid-ic { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+  .gi-blue { background: var(--color-primary-bg); }
+  .gi-orange { background: var(--color-accent-bg); }
+  .gi-green { background: var(--color-success-bg); }
+  .gi-red { background: var(--color-error-bg); }
+  .grid-item span { font-size: 11px; color: var(--ink-secondary); font-family: var(--font-en); }
+
+  .sec-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 16px; margin-top: 4px; }
+  .sec-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 6px; font-family: var(--font-en); }
+  .sec-title::before { content: ""; width: 4px; height: 15px; background: var(--color-primary); border-radius: 2px; }
+  .sec-more { font-size: 12px; color: var(--ink-tertiary); font-family: var(--font-en); }
+
+  .feed { margin: 0 16px 12px; background: #fff; border-radius: var(--r-md); border: 1px solid var(--border-weak); padding: 14px; }
+  .feed-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .feed-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; flex: none; font-family: var(--font-en); }
+  .feed-name { font-size: 13px; font-weight: 600; font-family: var(--font-en); }
+  .feed-meta { font-size: 11px; color: var(--ink-tertiary); font-family: var(--font-en); }
+  .feed h4 { margin: 0 0 6px; font-size: 15px; font-weight: 600; font-family: var(--font-en); }
+  .feed-desc { font-size: 13px; color: var(--ink-secondary); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-family: var(--font-en); }
+  .feed-tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+  .feed-foot { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-weak); padding-top: 10px; margin-top: 4px; }
+  .feed-price { color: var(--color-accent-active); font-weight: 700; font-size: 15px; font-family: var(--font-en); }
+  .feed-price small { font-size: 11px; color: var(--ink-tertiary); font-weight: 400; }
+  .feed-stat { font-size: 11px; color: var(--ink-tertiary); font-family: var(--font-en); }
+
+  .tabbar { height: 56px; flex: none; background: #fff; border-top: 1px solid var(--border-weak); display: flex; padding-bottom: 6px; }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink-tertiary); font-size: 10.5px; font-family: var(--font-en); }
+  .tab.active { color: var(--color-primary); }
+  .tab .ic { width: 22px; height: 22px; }
+  .tab.active .ic { stroke: var(--color-primary); }
+  .tab .badge-dot { top: 2px; right: 50%; transform: translateX(14px); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div style="display:flex;gap:6px;align-items:center;"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="loc" data-en="Global Sourcing" data-zh="全球采购">Global Sourcing</div>
+    <div class="search-mini"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span data-en="Search suppliers / RFQs" data-zh="搜索供应商 / 询盘">Search suppliers / RFQs</span></div>
+    <div class="lang-toggle" id="langToggle">
+      <span class="on" data-lang="en">EN</span><span data-lang="zh">中</span>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <div class="banner">
+      <div class="deco"></div><div class="deco2"></div>
+      <h3 data-en="Summer Sourcing Festival" data-zh="夏促采购季">Summer Sourcing Festival</h3>
+      <p data-en="Post an RFQ, get matched with verified suppliers" data-zh="发布询盘，智能匹配认证供应商">Post an RFQ, get matched with verified suppliers</p>
+    </div>
+
+    <div class="grid-card">
+      <div class="grid">
+        <div class="grid-item"><div class="grid-ic gi-orange"><svg class="ic" viewBox="0 0 24 24" style="stroke:var(--color-accent-active)"><path d="M12 5v14M5 12h14"/></svg></div><span data-en="Post RFQ" data-zh="发布询盘">Post RFQ</span></div>
+        <div class="grid-item"><div class="grid-ic gi-blue"><svg class="ic ic-active" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span data-en="My RFQs" data-zh="我的询盘">My RFQs</span></div>
+        <div class="grid-item"><div class="grid-ic gi-blue"><svg class="ic ic-active" viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 9h4l3 3v6h-7z"/></svg></div><span data-en="Logistics" data-zh="物流">Logistics</span></div>
+        <div class="grid-item"><div class="grid-ic gi-green"><svg class="ic" viewBox="0 0 24 24" style="stroke:var(--color-success-text)"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2-1.5Z"/></svg></div><span data-en="Academy" data-zh="小学堂">Academy</span></div>
+        <div class="grid-item"><div class="grid-ic gi-blue"><svg class="ic ic-active" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div><span data-en="Orders" data-zh="订单">Orders</span></div>
+        <div class="grid-item"><div class="grid-ic gi-blue"><svg class="ic ic-active" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/></svg></div><span data-en="Suppliers" data-zh="供应商">Suppliers</span></div>
+        <div class="grid-item"><div class="grid-ic gi-red"><svg class="ic" viewBox="0 0 24 24" style="stroke:var(--color-error-text)"><path d="M12 2l3 7h7l-5.5 4 2 7L12 17l-6.5 5 2-7L2 9h7Z"/></svg></div><span data-en="Favorites" data-zh="收藏">Favorites</span></div>
+        <div class="grid-item"><div class="grid-ic gi-red"><svg class="ic" viewBox="0 0 24 24" style="stroke:var(--color-error-text)"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.4 8.4 0 0 1-3.9-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5Z"/></svg></div><span data-en="Support" data-zh="客服">Support</span></div>
+      </div>
+    </div>
+
+    <div class="sec-head">
+      <div class="sec-title" data-en="Recommended Suppliers" data-zh="推荐供应商">Recommended Suppliers</div>
+      <div class="sec-more" data-en="More ›" data-zh="更多 ›">More ›</div>
+    </div>
+
+    <div class="feed">
+      <div class="feed-top">
+        <div class="feed-avatar">S</div>
+        <div><div class="feed-name">Shenzhen Precision Co.</div><div class="feed-meta">China · Machinery · Verified</div></div>
+        <span class="tag tag-green" style="margin-left:auto;" data-en="Verified" data-zh="已认证">Verified</span>
+      </div>
+      <h4>Bearings &amp; Precision Components</h4>
+      <div class="feed-desc">ISO 9001 &amp; CE certified manufacturer. MOQ 5,000 sets, FOB Shenzhen, lead time 15 days.</div>
+      <div class="feed-tags"><span class="tag tag-blue">Machinery</span><span class="tag tag-blue">Bulk</span><span class="tag tag-orange">Open</span></div>
+      <div class="feed-foot">
+        <div class="feed-price">Target $120K <small>/ order</small></div>
+        <div class="feed-stat">👁 1.2k · 💬 36 quotes</div>
+      </div>
+    </div>
+
+    <div class="feed">
+      <div class="feed-top">
+        <div class="feed-avatar" style="background:var(--color-accent)">N</div>
+        <div><div class="feed-name">Ningbo Auto Parts</div><div class="feed-meta">China · Automotive · Verified</div></div>
+        <span class="tag tag-green" style="margin-left:auto;" data-en="Verified" data-zh="已认证">Verified</span>
+      </div>
+      <h4>EV OEM Components</h4>
+      <div class="feed-desc">IATF 16949 certified. Supports tooling development and pilot production, scalable to mass production.</div>
+      <div class="feed-tags"><span class="tag tag-blue">Automotive</span><span class="tag tag-blue">OEM</span><span class="tag tag-orange">Open</span></div>
+      <div class="feed-foot">
+        <div class="feed-price">Target $210K <small>/ yr</small></div>
+        <div class="feed-stat">👁 860 · 💬 21 quotes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg><span data-en="Home" data-zh="首页">Home</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg><span data-en="RFQ" data-zh="询盘">RFQ</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-en="Messages" data-zh="消息">Messages</span><span class="badge-dot">3</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span data-en="Account" data-zh="我的">Account</span></div>
+  </div>
+</div>
+
+<script>
+  // §10 国际化：默认英文，可即时切换中文（记忆偏好）
+  var toggle = document.getElementById('langToggle');
+  toggle.addEventListener('click', function (e) {
+    var t = e.target.closest('span'); if (!t) return;
+    var lang = t.getAttribute('data-lang');
+    toggle.querySelectorAll('span').forEach(function(s){ s.classList.toggle('on', s === t); });
+    document.querySelectorAll('[data-en]').forEach(function (el) {
+      el.textContent = lang === 'zh' ? el.getAttribute('data-zh') : el.getAttribute('data-en');
+    });
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    try { localStorage.setItem('shenze_lang', lang); } catch (_) {}
+  });
+  // 记忆偏好
+  try {
+    var saved = localStorage.getItem('shenze_lang');
+    if (saved === 'zh') toggle.querySelector('[data-lang="zh"]').click();
+  } catch (_) {}
+</script>
+</body>
+</html>

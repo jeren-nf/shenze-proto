@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 地址管理</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .statusbar .right { display:flex; gap:6px; align-items:center; }
+  .topbar { height:48px; flex:none; display:flex; align-items:center; gap:12px; padding:0 16px; background:#fff; }
+  .topbar .loc { display:flex; align-items:center; gap:2px; font-size:15px; font-weight:700; }
+  .back { display:flex; align-items:center; }
+  .icon-circle { width:34px; height:34px; border-radius:50%; background:var(--bg-page); display:flex; align-items:center; justify-content:center; position:relative; }
+  .scroll { flex:1; overflow-y:auto; padding-bottom:8px; }
+  .btn-block { width:100%; }
+  .row-card { background:#fff; border-radius:var(--r-md); padding:14px; margin:0 16px 12px; border:1px solid var(--border-weak); }
+  .muted { color:var(--ink-tertiary); }
+  .btn-text { background:transparent; color:var(--color-primary); height:auto; padding:0; font-weight:400; }
+  .btn-danger-text { background:transparent; color:var(--color-error); height:auto; padding:0; font-weight:400; }
+  .fixed-bar { background:#fff; border-top:1px solid var(--border-weak); padding:10px 16px; display:flex; gap:12px; flex:none; }
+  .fixed-bar .btn { flex:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="back"><svg class="ic" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <div class="loc" style="font-size:16px">地址管理</div>
+    <div class="icon-circle" style="margin-left:auto"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M12 5v14M5 12h14"/></svg></div>
+  </div>
+
+  <div class="scroll">
+    <div class="row-card">
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-weight:700;font-size:14px">Max Trading GmbH</span><span class="muted" style="font-size:13px">138****8000</span><span class="tag tag-orange" style="margin-left:auto">默认</span></div>
+      <div class="muted" style="font-size:13px;margin-top:8px">德国 · 汉堡市 20095<br>Beim Strohhause 26, Hamburg, Germany</div>
+      <div style="display:flex;gap:18px;border-top:1px solid var(--border-weak);padding-top:10px;margin-top:10px;justify-content:flex-end">
+        <span class="btn-text">设为默认</span><span class="btn-text">编辑</span><span class="btn-danger-text">删除</span>
+      </div>
+    </div>
+
+    <div class="row-card">
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-weight:700;font-size:14px">Korea Auto Parts</span><span class="muted" style="font-size:13px">139****2210</span></div>
+      <div class="muted" style="font-size:13px;margin-top:8px">韩国 · 仁川市 22332<br>123 Songdo-dong, Yeonsu-gu, Incheon, Korea</div>
+      <div style="display:flex;gap:18px;border-top:1px solid var(--border-weak);padding-top:10px;margin-top:10px;justify-content:flex-end">
+        <span class="btn-text">设为默认</span><span class="btn-text">编辑</span><span class="btn-danger-text">删除</span>
+      </div>
+    </div>
+
+    <div class="row-card">
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-weight:700;font-size:14px">Liberty Textiles</span><span class="muted" style="font-size:13px">137****6655</span></div>
+      <div class="muted" style="font-size:13px;margin-top:8px">美国 · 洛杉矶市 90012<br>456 Fashion Ave, Los Angeles, CA, USA</div>
+      <div style="display:flex;gap:18px;border-top:1px solid var(--border-weak);padding-top:10px;margin-top:10px;justify-content:flex-end">
+        <span class="btn-text">设为默认</span><span class="btn-text">编辑</span><span class="btn-danger-text">删除</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed-bar">
+    <button class="btn btn-primary btn-block">+ 新增收货地址</button>
+  </div>
+</div>
+</body>
+</html>

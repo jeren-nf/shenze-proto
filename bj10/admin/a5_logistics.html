@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 管理后台 / 物流订单</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  /* ===== 后台布局骨架（复用 a1_dashboard.html） ===== */
+  .admin { display: flex; min-height: 100vh; }
+  .sidebar { width: 224px; flex: none; background: #fff; border-right: 1px solid var(--border-weak); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+  .brand { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-5) var(--sp-4); border-bottom: 1px solid var(--border-weak); }
+  .brand-mark { width: 36px; height: 36px; border-radius: var(--r-md); flex: none; background: linear-gradient(135deg, #F5A623, #FFB340); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; font-family: var(--font-cn); box-shadow: var(--shadow-hover); }
+  .brand-name { font-size: 15px; font-weight: 700; color: var(--ink-primary); line-height: 1.2; }
+  .brand-sub { font-size: 11px; color: var(--ink-tertiary); }
+  .nav { padding: var(--sp-3) var(--sp-2); overflow-y: auto; flex: 1; }
+  .nav-group-title { font-size: 11px; color: var(--ink-tertiary); padding: var(--sp-3) var(--sp-3) var(--sp-1); font-weight: 600; letter-spacing: .04em; }
+  .nav-item { display: flex; align-items: center; gap: var(--sp-3); height: 40px; padding: 0 var(--sp-3); border-radius: var(--r-md); color: var(--ink-secondary); font-size: 14px; position: relative; margin-bottom: 2px; transition: background .15s ease, color .15s ease; }
+  .nav-item:hover { background: var(--bg-hover); color: var(--ink-primary); }
+  .nav-item.active { background: var(--color-primary-bg); color: var(--color-primary-active); font-weight: 600; }
+  .nav-item.active::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--color-primary); }
+  .nav-item .ic { width: 18px; height: 18px; }
+  .nav-item.active .ic { stroke: var(--color-primary-active); }
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .topbar { height: 60px; flex: none; background: #fff; border-bottom: 1px solid var(--border-weak); display: flex; align-items: center; gap: var(--sp-4); padding: 0 var(--sp-5); position: sticky; top: 0; z-index: 10; }
+  .search { flex: 1; max-width: 420px; height: 38px; display: flex; align-items: center; gap: var(--sp-2); background: var(--bg-page); border: 1px solid transparent; border-radius: var(--r-md); padding: 0 var(--sp-3); color: var(--ink-tertiary); font-size: 13px; transition: all .15s ease; }
+  .search:focus-within { background: #fff; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-bg); }
+  .search input { border: none; background: transparent; outline: none; flex: 1; font-family: inherit; font-size: 13px; color: var(--ink-primary); }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: var(--sp-5); }
+  .icon-btn { position: relative; width: 38px; height: 38px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; transition: background .15s; }
+  .icon-btn:hover { background: var(--bg-hover); }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; cursor: pointer; }
+  .avatar-verified { position: relative; }
+  .avatar-verified::after { content: "✓"; position: absolute; right: -2px; bottom: -2px; width: 14px; height: 14px; background: var(--color-primary); color: #fff; border: 2px solid #fff; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; }
+  .content { padding: var(--sp-5); }
+  .page-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--sp-5); }
+  .page-title { font-size: var(--fs-h1); font-weight: 700; }
+  .crumb { font-size: 12px; color: var(--ink-tertiary); margin-bottom: 4px; }
+  .crumb b { color: var(--ink-secondary); font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 12px; color: var(--ink-secondary); font-weight: 600; background: #FAFAFA; padding: 10px var(--sp-3); }
+  th:first-child { border-radius: var(--r-sm) 0 0 var(--r-sm); }
+  th:last-child { border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+  td { padding: 12px var(--sp-3); border-bottom: 1px solid var(--border-weak); font-size: 13px; }
+  tr:hover td { background: var(--bg-page); }
+
+  /* ===== 本页扩展 ===== */
+  .filter-bar { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-5); flex-wrap: wrap; }
+  .inp { height: 38px; border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: 0 var(--sp-3); font-size: 13px; font-family: inherit; color: var(--ink-primary); background: #fff; outline: none; min-width: 160px; }
+  select.inp { cursor: pointer; }
+  .op { display: flex; align-items: center; gap: 12px; }
+  .waybill { font-family: var(--font-en); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="admin">
+  <!-- ============ 侧边栏 ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">申</div>
+      <div>
+        <div class="brand-name">申泽跨境贸易</div>
+        <div class="brand-sub">Shenze Trade Platform</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-group-title">概览</div>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>工作台</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>用户管理</a>
+      <div class="nav-group-title">交易管理</div>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7h18l-1.5 11.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 7Z"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>询盘管理</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>供应管理</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg>品类管理</a>
+      <a class="nav-item active"><svg class="ic" viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 9h4l3 3v6h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>物流订单</a>
+      <div class="nav-group-title">审核与风控</div>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7l8-4Z"/></svg>企业认证审核<span class="badge-dot" style="position:static;margin-left:auto;border:none;">5</span></a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>敏感词管理</a>
+      <div class="nav-group-title">内容与权限</div>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2-1.5Z"/><path d="M18 4v16"/></svg>小学堂管理</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 11a3 3 0 1 0 0-6"/><path d="M21 20a5 5 0 0 0-5-5"/></svg>权限矩阵</a>
+      <a class="nav-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 14.1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 7l-.1-.1A2 2 0 1 1 7.3 4.1l.1.1A1.7 1.7 0 0 0 10 3.4V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1A2 2 0 1 1 19.9 7l-.1.1A1.7 1.7 0 0 0 21 9.9V10a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.4 1Z"/></svg>系统设置</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="search">
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="搜索供应商、询盘、订单号…" />
+      </div>
+      <div class="topbar-right">
+        <div class="icon-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge-dot">3</span></div>
+        <div class="icon-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="avatar avatar-verified" title="管理员">管</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <div class="crumb">交易管理 / <b>物流订单</b></div>
+          <div class="page-title">物流管理</div>
+        </div>
+        <button class="btn btn-primary"><svg class="ic" viewBox="0 0 24 24" style="stroke:#fff;width:18px;height:18px"><path d="M12 5v14M5 12h14"/></svg>新建物流单</button>
+      </div>
+
+      <div class="filter-bar">
+        <input class="inp" placeholder="运单号 / 收件人" />
+        <select class="inp"><option>全部渠道</option><option>空运专线</option><option>海运拼箱</option><option>中欧班列</option><option>国际快递</option></select>
+        <select class="inp"><option>全部状态</option><option>待处理</option><option>运输中</option><option>已签收</option><option>异常</option></select>
+        <select class="inp"><option>全部国家</option><option>美国</option><option>德国</option><option>荷兰</option><option>日本</option></select>
+        <button class="btn btn-default">查询</button>
+      </div>
+
+      <section class="card" style="padding:4px 4px 0;">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:200px;">运单号</th>
+              <th>渠道</th>
+              <th>收件国</th>
+              <th>状态</th>
+              <th>下单时间</th>
+              <th style="width:120px;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="waybill">SZ20260805001</td>
+              <td>空运专线</td>
+              <td>美国</td>
+              <td><span class="tag tag-orange">运输中</span></td>
+              <td class="tnum">2026-08-05 08:30</td>
+              <td><a class="btn-text">详情</a></td>
+            </tr>
+            <tr>
+              <td class="waybill">SZ20260804387</td>
+              <td>海运拼箱</td>
+              <td>德国</td>
+              <td><span class="tag tag-orange">待处理</span></td>
+              <td class="tnum">2026-08-04 19:12</td>
+              <td><a class="btn-text">详情</a></td>
+            </tr>
+            <tr>
+              <td class="waybill">SZ20260804201</td>
+              <td>中欧班列</td>
+              <td>荷兰</td>
+              <td><span class="tag tag-green">已签收</span></td>
+              <td class="tnum">2026-08-04 10:05</td>
+              <td><a class="btn-text">详情</a></td>
+            </tr>
+            <tr>
+              <td class="waybill">SZ20260803992</td>
+              <td>国际快递</td>
+              <td>日本</td>
+              <td><span class="tag tag-red">异常</span></td>
+              <td class="tnum">2026-08-03 15:48</td>
+              <td><a class="btn-text">详情</a></td>
+            </tr>
+            <tr>
+              <td class="waybill">SZ20260803765</td>
+              <td>空运专线</td>
+              <td>美国</td>
+              <td><span class="tag tag-orange">运输中</span></td>
+              <td class="tnum">2026-08-03 09:21</td>
+              <td><a class="btn-text">详情</a></td>
+            </tr>
+            <tr>
+              <td class="waybill">SZ20260802110</td>
+              <td>海运拼箱</td>
+              <td>德国</td>
+              <td><span class="tag tag-green">已签收</span></td>
+              <td class="tnum">2026-08-02 14:33</td>
+              <td><a class="btn-text">详情</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <div class="fs-caption" style="margin-top:12px;">共 6 条记录 · 第 1 / 1 页</div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 发布询盘（EN）</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background: #E9EDF2; display: flex; justify-content: center; padding: 32px 0; }
+  .phone { width: 390px; height: 844px; background: var(--bg-page); border-radius: 44px; box-shadow: 0 24px 60px rgba(0,0,0,0.18); overflow: hidden; position: relative; border: 10px solid #111; display: flex; flex-direction: column; }
+  .statusbar { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 13px; font-weight: 600; }
+  .topbar { height: 48px; flex: none; display: flex; align-items: center; gap: 10px; padding: 0 16px; background: #fff; border-bottom: 1px solid var(--border-weak); }
+  .topbar .back { display: flex; align-items: center; justify-content: center; }
+  .topbar .back svg { width: 22px; height: 22px; stroke: var(--ink-primary); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .topbar .ttl { font-size: 16px; font-weight: 700; font-family: var(--font-en); }
+
+  .scroll { flex: 1; overflow-y: auto; padding: 12px 16px 24px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 7px; font-family: var(--font-en); color: var(--ink-primary); }
+  .field label .req { color: var(--color-error); margin-left: 2px; }
+  .field label .opt { color: var(--color-accent-active); font-weight: 400; font-size: 11px; margin-left: 6px; }
+  .input, .select, .textarea {
+    width: 100%; border: 1px solid var(--border-strong); border-radius: var(--r-md);
+    padding: 0 12px; font-size: 14px; font-family: var(--font-en); color: var(--ink-primary);
+    background: #fff; height: 44px; outline: none; transition: border-color .15s;
+  }
+  .input::placeholder, .textarea::placeholder { color: var(--ink-tertiary); }
+  .input:focus, .select:focus, .textarea:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-border); }
+  .textarea { height: 110px; padding: 12px; line-height: 1.5; resize: none; }
+  .hint { font-size: 11px; color: var(--ink-tertiary); margin-top: 6px; font-family: var(--font-en); }
+  .err { font-size: 11px; color: var(--color-error); margin-top: 6px; font-family: var(--font-en); display: none; }
+  .field.invalid .input, .field.invalid .textarea { border-color: var(--color-error); }
+  .field.invalid .err { display: block; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { height: 34px; padding: 0 14px; border-radius: var(--r-pill); background: #fff; border: 1px solid var(--border-strong); font-size: 13px; color: var(--ink-secondary); font-family: var(--font-en); display: inline-flex; align-items: center; }
+  .chip.on { background: var(--color-primary-bg); border-color: var(--color-primary-border); color: var(--color-primary-active); font-weight: 600; }
+
+  .price-wrap { display: flex; gap: 10px; }
+  .price-wrap .input { flex: 1; }
+  .price-wrap .select { width: 120px; flex: none; }
+
+  .submit-bar { height: 72px; flex: none; background: #fff; border-top: 1px solid var(--border-weak); display: flex; align-items: center; gap: 12px; padding: 0 16px 6px; }
+  .submit-bar .btn { flex: 1; height: 46px; font-size: 15px; border-radius: var(--r-md); }
+  .save-draft { flex: none; width: 96px; height: 46px; }
+
+  .tabbar { height: 56px; flex: none; background: #fff; border-top: 1px solid var(--border-weak); display: flex; padding-bottom: 6px; }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink-tertiary); font-size: 10.5px; font-family: var(--font-en); }
+  .tab.active { color: var(--color-primary); }
+  .tab .ic { width: 22px; height: 22px; }
+  .tab.active .ic { stroke: var(--color-primary); }
+  .tab .badge-dot { top: 2px; right: 50%; transform: translateX(14px); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div style="display:flex;gap:6px;align-items:center;"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="back"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+    <div class="ttl" data-en="Post RFQ" data-zh="发布询盘">Post RFQ</div>
+  </div>
+
+  <div class="scroll">
+    <div class="field" id="f-cat">
+      <label data-en="Category" data-zh="品类">Category<span class="req">*</span></label>
+      <div class="chip-row">
+        <span class="chip on">Machinery</span><span class="chip">Automotive</span><span class="chip">Electronics</span>
+        <span class="chip">Textile</span><span class="chip">Chemicals</span><span class="chip">Building</span>
+      </div>
+      <div class="err" data-en="Please select a category" data-zh="请选择品类">Please select a category</div>
+    </div>
+
+    <div class="field" id="f-title">
+      <label data-en="Title" data-zh="标题">Title<span class="req">*</span></label>
+      <input class="input" type="text" data-ph-en="e.g. Precision ball bearings 6204" data-ph-zh="例如：精密轴承 6204" placeholder="e.g. Precision ball bearings 6204" />
+      <div class="err" data-en="Title is required" data-zh="标题必填">Title is required</div>
+    </div>
+
+    <div class="field" id="f-desc">
+      <label data-en="Description" data-zh="描述">Description<span class="req">*</span></label>
+      <textarea class="textarea" data-ph-en="Specify material, standard, MOQ, lead time..." data-ph-zh="说明材质、标准、起订量、交期…" placeholder="Specify material, standard, MOQ, lead time..."></textarea>
+      <div class="err" data-en="Description is required" data-zh="描述必填">Description is required</div>
+    </div>
+
+    <div class="field" id="f-price">
+      <label data-en="Target Price" data-zh="目标价格">Target Price<span class="opt" data-en="Optional" data-zh="可选">Optional</span></label>
+      <div class="price-wrap">
+        <input class="input" type="number" placeholder="0.00" />
+        <select class="select"><option>USD</option><option>CNY</option><option>EUR</option></select>
+      </div>
+      <div class="hint" data-en="Target price is optional — leave blank if negotiable" data-zh="目标价格可选，可协商请留空">Target price is optional — leave blank if negotiable</div>
+    </div>
+
+    <div class="field" id="f-qty">
+      <label data-en="Quantity &amp; Unit" data-zh="数量与单位">Quantity &amp; Unit<span class="req">*</span></label>
+      <div class="price-wrap">
+        <input class="input" type="number" placeholder="5000" />
+        <select class="select"><option>Sets</option><option>Pcs</option><option>Tons</option><option>Boxes</option><option>Pallets</option></select>
+      </div>
+      <div class="err" data-en="Quantity is required" data-zh="数量必填">Quantity is required</div>
+    </div>
+  </div>
+
+  <div class="submit-bar">
+    <button class="btn btn-default save-draft" data-en="Save Draft" data-zh="存草稿">Save Draft</button>
+    <button class="btn btn-primary" id="submitBtn" data-en="Submit RFQ" data-zh="提交询盘">Submit RFQ</button>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab" onclick="location.href='b2_home.html'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg><span data-en="Home" data-zh="首页">Home</span></div>
+    <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg><span data-en="RFQ" data-zh="询盘">RFQ</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-en="Messages" data-zh="消息">Messages</span><span class="badge-dot">3</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span data-en="Account" data-zh="我的">Account</span></div>
+  </div>
+</div>
+
+<script>
+  // 品类 chips 选择
+  document.querySelectorAll('#f-cat .chip').forEach(function(c){
+    c.addEventListener('click', function(){
+      document.querySelectorAll('#f-cat .chip').forEach(function(x){ x.classList.remove('on'); });
+      c.classList.add('on'); document.getElementById('f-cat').classList.remove('invalid');
+    });
+  });
+  // 必填校验
+  function validate(){
+    var ok = true;
+    ['f-title','f-desc','f-qty'].forEach(function(id){
+      var f = document.getElementById(id);
+      var el = f.querySelector('.input, .textarea');
+      if (!el.value.trim()) { f.classList.add('invalid'); ok = false; }
+      else f.classList.remove('invalid');
+    });
+    if (!document.querySelector('#f-cat .chip.on')) { document.getElementById('f-cat').classList.add('invalid'); ok = false; }
+    return ok;
+  }
+  document.getElementById('submitBtn').addEventListener('click', function(){
+    if (validate()) { this.textContent = 'Submitted ✓'; this.disabled = true; }
+  });
+</script>
+</body>
+</html>

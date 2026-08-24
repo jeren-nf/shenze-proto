@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 我的询盘（EN）</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background: #E9EDF2; display: flex; justify-content: center; padding: 32px 0; }
+  .phone { width: 390px; height: 844px; background: var(--bg-page); border-radius: 44px; box-shadow: 0 24px 60px rgba(0,0,0,0.18); overflow: hidden; position: relative; border: 10px solid #111; display: flex; flex-direction: column; }
+  .statusbar { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 13px; font-weight: 600; }
+  .topbar { height: 48px; flex: none; display: flex; align-items: center; gap: 10px; padding: 0 16px; background: #fff; border-bottom: 1px solid var(--border-weak); }
+  .topbar .back { display: flex; align-items: center; justify-content: center; }
+  .topbar .back svg { width: 22px; height: 22px; stroke: var(--ink-primary); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .topbar .ttl { font-size: 16px; font-weight: 700; font-family: var(--font-en); }
+
+  .filter { flex: none; display: flex; gap: 8px; padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--border-weak); overflow-x: auto; }
+  .filter .f { height: 32px; padding: 0 14px; border-radius: var(--r-pill); background: var(--bg-page); border: 1px solid transparent; font-size: 13px; color: var(--ink-secondary); font-family: var(--font-en); display: inline-flex; align-items: center; flex: none; }
+  .filter .f.on { background: var(--color-primary-bg); color: var(--color-primary-active); font-weight: 600; border-color: var(--color-primary-border); }
+
+  .scroll { flex: 1; overflow-y: auto; padding: 12px 16px; }
+  .rfq { background: #fff; border: 1px solid var(--border-weak); border-radius: var(--r-md); padding: 14px; margin-bottom: 12px; }
+  .rfq-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .rfq-title { font-size: 15px; font-weight: 600; font-family: var(--font-en); }
+  .rfq-cat { font-size: 11px; color: var(--ink-tertiary); font-family: var(--font-en); margin-top: 2px; }
+  .rfq-desc { font-size: 13px; color: var(--ink-secondary); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-family: var(--font-en); margin: 6px 0; }
+  .rfq-meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+  .rfq-foot { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-weak); padding-top: 10px; }
+  .rfq-date { font-size: 11px; color: var(--ink-tertiary); font-family: var(--font-en); }
+  .rfq-ops { display: flex; gap: 14px; }
+  .rfq-ops button { background: none; border: none; font-size: 13px; font-family: var(--font-en); padding: 0; }
+  .op-edit { color: var(--color-primary); font-weight: 600; }
+  .op-del { color: var(--color-error); font-weight: 600; }
+
+  .tabbar { height: 56px; flex: none; background: #fff; border-top: 1px solid var(--border-weak); display: flex; padding-bottom: 6px; }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink-tertiary); font-size: 10.5px; font-family: var(--font-en); }
+  .tab.active { color: var(--color-primary); }
+  .tab .ic { width: 22px; height: 22px; }
+  .tab.active .ic { stroke: var(--color-primary); }
+  .tab .badge-dot { top: 2px; right: 50%; transform: translateX(14px); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div style="display:flex;gap:6px;align-items:center;"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="back"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+    <div class="ttl" data-en="My RFQs" data-zh="我的询盘">My RFQs</div>
+  </div>
+
+  <div class="filter">
+    <span class="f on" data-en="All" data-zh="全部">All</span>
+    <span class="f" data-en="Open" data-zh="进行中">Open</span>
+    <span class="f" data-en="Replied" data-zh="已回复">Replied</span>
+    <span class="f" data-en="Closed" data-zh="已关闭">Closed</span>
+  </div>
+
+  <div class="scroll">
+    <div class="rfq">
+      <div class="rfq-top">
+        <div><div class="rfq-title">Precision Ball Bearings 6204</div><div class="rfq-cat" data-en="Machinery · Posted 2026-07-28" data-zh="机械 · 发布于 2026-07-28">Machinery · Posted 2026-07-28</div></div>
+        <span class="tag tag-orange" data-en="Open" data-zh="进行中">Open</span>
+      </div>
+      <div class="rfq-desc" data-en="Need 5,000 sets GCr15 ABEC-3, FOB Shenzhen, lead time within 20 days. Sample required." data-zh="需 5,000 套 GCr15 ABEC-3，深圳 FOB，交期 20 天内，需样品。">Need 5,000 sets GCr15 ABEC-3, FOB Shenzhen, lead time within 20 days. Sample required.</div>
+      <div class="rfq-meta"><span class="tag tag-blue">Machinery</span><span class="tag tag-blue">5,000 Sets</span><span class="tag tag-green">12 Quotes</span></div>
+      <div class="rfq-foot">
+        <span class="rfq-date" data-en="Updated 2h ago" data-zh="2 小时前更新">Updated 2h ago</span>
+        <div class="rfq-ops"><button class="op-edit" data-en="Edit" data-zh="编辑">Edit</button><button class="op-del" data-en="Take down" data-zh="下架">Take down</button></div>
+      </div>
+    </div>
+
+    <div class="rfq">
+      <div class="rfq-top">
+        <div><div class="rfq-title">EV Charging Connectors</div><div class="rfq-cat" data-en="Automotive · Posted 2026-07-20" data-zh="汽车 · 发布于 2026-07-20">Automotive · Posted 2026-07-20</div></div>
+        <span class="tag tag-green" data-en="Replied" data-zh="已回复">Replied</span>
+      </div>
+      <div class="rfq-desc" data-en="Type 2 connectors, IEC 62196, 32A. Looking for IATF 16949 certified supplier with tooling support." data-zh="Type 2 充电接口，IEC 62196，32A。寻找具备 IATF 16949 认证与开模能力的供应商。">Type 2 connectors, IEC 62196, 32A. Looking for IATF 16949 certified supplier with tooling support.</div>
+      <div class="rfq-meta"><span class="tag tag-blue">Automotive</span><span class="tag tag-blue">OEM</span><span class="tag tag-orange">8 Quotes</span></div>
+      <div class="rfq-foot">
+        <span class="rfq-date" data-en="Updated yesterday" data-zh="昨天更新">Updated yesterday</span>
+        <div class="rfq-ops"><button class="op-edit" data-en="Edit" data-zh="编辑">Edit</button><button class="op-del" data-en="Take down" data-zh="下架">Take down</button></div>
+      </div>
+    </div>
+
+    <div class="rfq">
+      <div class="rfq-top">
+        <div><div class="rfq-title">Stainless Steel Fasteners</div><div class="rfq-cat" data-en="Building · Posted 2026-06-30" data-zh="建筑 · 发布于 2026-06-30">Building · Posted 2026-06-30</div></div>
+        <span class="tag tag-gray" data-en="Closed" data-zh="已关闭">Closed</span>
+      </div>
+      <div class="rfq-desc" data-en="A2-70 M6-M12 bolts, 20 tons monthly. Order placed with Ningbo supplier, deal closed." data-zh="A2-70 M6-M12 螺栓，月需 20 吨。已与宁波供应商成交下单。">A2-70 M6-M12 bolts, 20 tons monthly. Order placed with Ningbo supplier, deal closed.</div>
+      <div class="rfq-meta"><span class="tag tag-blue">Building</span><span class="tag tag-blue">20 Tons</span><span class="tag tag-green">Deal Closed</span></div>
+      <div class="rfq-foot">
+        <span class="rfq-date" data-en="Closed 2026-07-15" data-zh="已于 2026-07-15 关闭">Closed 2026-07-15</span>
+        <div class="rfq-ops"><button class="op-del" data-en="Delete" data-zh="删除">Delete</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab" onclick="location.href='b2_home.html'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg><span data-en="Home" data-zh="首页">Home</span></div>
+    <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg><span data-en="RFQ" data-zh="询盘">RFQ</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-en="Messages" data-zh="消息">Messages</span><span class="badge-dot">3</span></div>
+    <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span data-en="Account" data-zh="我的">Account</span></div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.filter .f').forEach(function(f){
+    f.addEventListener('click', function(){
+      document.querySelectorAll('.filter .f').forEach(function(x){ x.classList.remove('on'); });
+      f.classList.add('on');
+    });
+  });
+</script>
+</body>
+</html>

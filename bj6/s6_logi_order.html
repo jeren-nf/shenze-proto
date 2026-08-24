@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 物流下单</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .statusbar .right { display:flex; gap:6px; align-items:center; }
+  .topbar { height:48px; flex:none; display:flex; align-items:center; gap:12px; padding:0 16px; background:#fff; }
+  .topbar .loc { display:flex; align-items:center; gap:2px; font-size:15px; font-weight:700; }
+  .back { display:flex; align-items:center; }
+  .scroll { flex:1; overflow-y:auto; padding-bottom:8px; }
+  .btn-block { width:100%; }
+  .form-card { margin:12px 16px; background:#fff; border-radius:var(--r-md); padding:14px; border:1px solid var(--border-weak); }
+  .field { margin:0 0 14px; }
+  .field:last-child { margin-bottom:0; }
+  .field label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+  .input, .select { width:100%; border:1px solid var(--border-strong); border-radius:var(--r-md); padding:10px 12px; font-size:14px; color:var(--ink-primary); background:#fff; }
+  .select-wrap { position:relative; }
+  .select-wrap .chev { position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none; }
+  .fee-box { margin:12px 16px; background:linear-gradient(135deg,#1677FF,#4096FF); border-radius:var(--r-md); padding:16px; color:#fff; }
+  .fee-box .row { display:flex; align-items:center; justify-content:space-between; }
+  .fee-box .big { font-size:24px; font-weight:800; }
+  .fee-box .sub { font-size:12px; opacity:.9; }
+  .muted { color:var(--ink-tertiary); }
+  .fixed-bar { background:#fff; border-top:1px solid var(--border-weak); padding:10px 16px; display:flex; gap:12px; flex:none; }
+  .fixed-bar .btn { flex:1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+
+  <div class="topbar">
+    <div class="back"><svg class="ic" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <div class="loc" style="font-size:16px">物流下单</div>
+  </div>
+
+  <div class="scroll">
+    <div class="form-card">
+      <div class="field">
+        <label>选择货物 / 供应</label>
+        <div class="select-wrap">
+          <select class="select"><option>工业轴承 1000 套 · 约 320kg</option><option>新能源汽车连接件 500 套 · 约 180kg</option><option>防水透气面料 200 卷 · 约 540kg</option></select>
+          <svg class="ic chev" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="field">
+        <label>运输渠道</label>
+        <div class="select-wrap">
+          <select class="select"><option>空运（时效优先）</option><option>海运（成本优先）</option></select>
+          <svg class="ic chev" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="fee-box">
+      <div class="row"><span class="sub">实时估算运费</span><span class="sub">空运 · 上海 → 汉堡</span></div>
+      <div class="row" style="margin-top:6px"><span class="big">¥ 1,280</span><span style="text-align:right"><span class="sub">预计时效</span><br><span style="font-size:15px;font-weight:700">5–7 天</span></span></div>
+    </div>
+
+    <div class="form-card">
+      <div class="field">
+        <label>境外收货地址</label>
+        <div class="select-wrap">
+          <select class="select"><option>Max Trading GmbH · 德国汉堡市...</option><option>Korea Auto Parts · 韩国仁川市...</option><option>Liberty Textiles · 美国洛杉矶市...</option></select>
+          <svg class="ic chev" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <p class="muted" style="font-size:12px;margin:0">运费依据货物重量、渠道与目的国实时估算，最终以下单确认金额为准。</p>
+    </div>
+  </div>
+
+  <div class="fixed-bar">
+    <button class="btn btn-primary btn-block">提交物流订单</button>
+  </div>
+</div>
+</body>
+</html>

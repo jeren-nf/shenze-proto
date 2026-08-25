@@ -588,6 +588,7 @@
     document.querySelectorAll('.lang-row').forEach(function(r){ r.classList.remove('on'); });
     var row = document.querySelector('.lang-row[data-lc="'+code+'"]');
     if(row) row.classList.add('on');
+    if(window.I18N) window.I18N.applyI18n(document);
     toast(code === 'zh-CN' ? '已切换为简体中文' : 'Switched to English');
     setTimeout(closeAllSheets, 280);
   }
@@ -609,5 +610,6 @@
   }
 })();
 </script>
+<script src="i18n.js"></script>
 </body>
 </html>

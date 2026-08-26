@@ -68,9 +68,9 @@
 
 </div>
   /* ===== 底部半屏 Sheet 弹窗（关注微信/客户服务/语言 通用） ===== */
-  .sheet-mask { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:90; opacity:0; pointer-events:none; transition:opacity .25s ease; }
+  .sheet-mask { position:absolute; inset:0; background:rgba(0,0,0,.5); z-index:90; opacity:0; pointer-events:none; transition:opacity .25s ease; }
   .sheet-mask.show { opacity:1; pointer-events:auto; }
-  .sheet { position:fixed; left:0; right:0; bottom:0; background:#fff; border-radius:16px 16px 0 0; z-index:91; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); max-height:80vh; overflow-y:auto; padding-bottom:env(safe-area-inset-bottom, 20px); box-shadow:0 -8px 24px rgba(0,0,0,.12); }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:16px 16px 0 0; z-index:91; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); max-height:80vh; overflow-y:auto; padding-bottom:env(safe-area-inset-bottom, 20px); box-shadow:0 -8px 24px rgba(0,0,0,.12); }
   .sheet.show { transform:translateY(0); }
   .sheet-handle { width:36px; height:4px; background:#E5E7EB; border-radius:2px; margin:8px auto 0; }
   .sheet-head { position:relative; padding:14px 16px 8px; display:flex; align-items:center; justify-content:center; }
@@ -177,6 +177,7 @@
     <div class="menu logout" id="logoutMenu">
       <div class="menu-item" id="logoutBtn"><span class="lt">退出登录</span></div>
     </div>
+  </div><!-- /scroll -->
   <!-- ===== 半屏 Sheet 弹窗（点击 mask 可关闭） ===== -->
 <div class="sheet-mask" id="sheet-mask" onclick="if(event.target===this) closeAllSheets()"></div>
 
@@ -288,101 +289,11 @@
   </div>
 </div>
 
-<!-- ===== 半屏 Sheet 弹窗（点击 mask 可关闭） ===== -->
-<div class="sheet-mask" id="sheet-mask" onclick="if(event.target===this) closeAllSheets()"></div>
-
-<!-- 关注微信 -->
-<div class="sheet" id="sheet-wx">
-  <div class="sheet-handle"></div>
-  <div class="sheet-head">
-    <div class="sheet-title">关注微信</div>
-    <button class="sheet-close" type="button" aria-label="关闭" onclick="closeSheet('sheet-wx')">×</button>
-  </div>
-  <div class="sheet-body">
-    <div class="wx-name">跨境贸易服务平台</div>
-    <div class="wx-qr">
-      <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
-        <rect width="25" height="25" fill="#fff"/>
-        <rect x="0" y="0" width="7" height="7" fill="#111"/>
-        <rect x="1" y="1" width="5" height="5" fill="#fff"/>
-        <rect x="2" y="2" width="3" height="3" fill="#111"/>
-        <rect x="18" y="0" width="7" height="7" fill="#111"/>
-        <rect x="19" y="1" width="5" height="5" fill="#fff"/>
-        <rect x="20" y="2" width="3" height="3" fill="#111"/>
-        <rect x="0" y="18" width="7" height="7" fill="#111"/>
-        <rect x="1" y="19" width="5" height="5" fill="#fff"/>
-        <rect x="2" y="20" width="3" height="3" fill="#111"/>
-        <g fill="#111">
-          <rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="1" height="1"/><rect x="11" y="0" width="1" height="1"/><rect x="13" y="0" width="1" height="1"/><rect x="15" y="0" width="1" height="1"/><rect x="16" y="0" width="1" height="1"/>
-          <rect x="8" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="12" y="1" width="1" height="1"/><rect x="14" y="1" width="1" height="1"/><rect x="17" y="1" width="1" height="1"/>
-          <rect x="9" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="13" y="2" width="1" height="1"/><rect x="16" y="2" width="1" height="1"/>
-          <rect x="8" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="14" y="3" width="1" height="1"/><rect x="15" y="3" width="1" height="1"/>
-          <rect x="9" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="16" y="4" width="1" height="1"/><rect x="17" y="4" width="1" height="1"/>
-          <rect x="8" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="14" y="5" width="1" height="1"/>
-          <rect x="9" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="15" y="6" width="1" height="1"/><rect x="16" y="6" width="1" height="1"/><rect x="17" y="6" width="1" height="1"/>
-          <rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="14" y="8" width="1" height="1"/><rect x="16" y="8" width="1" height="1"/>
-          <rect x="8" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="13" y="9" width="1" height="1"/><rect x="15" y="9" width="1" height="1"/><rect x="16" y="9" width="1" height="1"/>
-          <rect x="9" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="17" y="10" width="1" height="1"/>
-          <rect x="8" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="13" y="11" width="1" height="1"/><rect x="15" y="11" width="1" height="1"/><rect x="16" y="11" width="1" height="1"/>
-          <rect x="9" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="14" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="17" y="12" width="1" height="1"/>
-          <rect x="8" y="13" width="1" height="1"/><rect x="10" y="13" width="1" height="1"/><rect x="13" y="13" width="1" height="1"/><rect x="16" y="13" width="1" height="1"/>
-          <rect x="9" y="14" width="1" height="1"/><rect x="11" y="14" width="1" height="1"/><rect x="12" y="14" width="1" height="1"/><rect x="14" y="14" width="1" height="1"/><rect x="15" y="14" width="1" height="1"/><rect x="17" y="14" width="1" height="1"/>
-          <rect x="8" y="15" width="1" height="1"/><rect x="10" y="15" width="1" height="1"/><rect x="13" y="15" width="1" height="1"/><rect x="16" y="15" width="1" height="1"/>
-          <rect x="9" y="16" width="1" height="1"/><rect x="11" y="16" width="1" height="1"/><rect x="12" y="16" width="1" height="1"/><rect x="14" y="16" width="1" height="1"/><rect x="15" y="16" width="1" height="1"/><rect x="17" y="16" width="1" height="1"/>
-          <rect x="8" y="18" width="1" height="1"/><rect x="10" y="18" width="1" height="1"/><rect x="11" y="18" width="1" height="1"/><rect x="13" y="18" width="1" height="1"/><rect x="15" y="18" width="1" height="1"/><rect x="17" y="18" width="1" height="1"/>
-          <rect x="9" y="19" width="1" height="1"/><rect x="12" y="19" width="1" height="1"/><rect x="14" y="19" width="1" height="1"/><rect x="16" y="19" width="1" height="1"/>
-          <rect x="8" y="20" width="1" height="1"/><rect x="10" y="20" width="1" height="1"/><rect x="13" y="20" width="1" height="1"/><rect x="15" y="20" width="1" height="1"/><rect x="17" y="20" width="1" height="1"/>
-          <rect x="9" y="21" width="1" height="1"/><rect x="11" y="21" width="1" height="1"/><rect x="14" y="21" width="1" height="1"/><rect x="16" y="21" width="1" height="1"/>
-          <rect x="8" y="22" width="1" height="1"/><rect x="12" y="22" width="1" height="1"/><rect x="13" y="22" width="1" height="1"/><rect x="15" y="22" width="1" height="1"/><rect x="17" y="22" width="1" height="1"/>
-          <rect x="9" y="23" width="1" height="1"/><rect x="10" y="23" width="1" height="1"/><rect x="11" y="23" width="1" height="1"/><rect x="14" y="23" width="1" height="1"/><rect x="16" y="23" width="1" height="1"/>
-          <rect x="8" y="24" width="1" height="1"/><rect x="13" y="24" width="1" height="1"/><rect x="15" y="24" width="1" height="1"/><rect x="17" y="24" width="1" height="1"/>
-        </g>
-      </svg>
-    </div>
-    <div class="wx-tip">长按识别二维码关注服务号</div>
-  </div>
-</div>
-
-<!-- 客户服务 -->
-<div class="sheet" id="sheet-cs">
-  <div class="sheet-handle"></div>
-  <div class="sheet-head">
-    <div class="sheet-title">客户服务</div>
-    <button class="sheet-close" type="button" aria-label="关闭" onclick="closeSheet('sheet-cs')">×</button>
-  </div>
-  <div class="sheet-body">
-    <a class="cs-item" href="tel:400-880-8080">
-      <span class="cs-ic"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></span>
-      <span class="cs-text">400-880-8080</span>
-    </a>
-    <a class="cs-item" href="mailto:help@example.com" onclick="copyEmail(event, 'help@example.com')">
-      <span class="cs-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m22 6-10 7L2 6"/></svg></span>
-      <span class="cs-text">help@example.com</span>
-    </a>
-  </div>
-</div>
-
-<!-- 语言 -->
-<div class="sheet" id="sheet-lang">
-  <div class="sheet-handle"></div>
-  <div class="sheet-head">
-    <div class="sheet-title">语言</div>
-    <button class="sheet-close" type="button" aria-label="关闭" onclick="closeSheet('sheet-lang')">×</button>
-  </div>
-  <div class="sheet-body">
-    <div class="lang-row" data-lc="zh-CN" onclick="setLang('zh-CN')">
-      <div class="lang-label">简体中文</div>
-      <div class="lang-check">✓</div>
-    </div>
-    <div class="lang-row" data-lc="en" onclick="setLang('en')">
-      <div class="lang-label">English</div>
-      <div class="lang-check">✓</div>
-    </div>
-  </div>
-
 <script>
 (function(){
   var loggedIn = false;
+  // 语言感知助手：i18n 已加载时按当前语言取翻译，否则回退原文（避免首屏注入早于 i18n 脚本）
+  function tr(s){ return (window.I18N && window.I18N.t) ? window.I18N.t(s) : s; }
   var avatarEl = document.getElementById('avatar');
   var pinfoEl  = document.getElementById('pinfo');
   var fileInput = document.getElementById('avatarFile');
@@ -403,16 +314,16 @@
     if(!loggedIn){
       avatarEl.removeAttribute('data-img');
       avatarEl.innerHTML = '<svg class="cam" viewBox="0 0 24 24" style="width:24px;height:24px" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.6A1 1 0 0 1 11 4h2a1 1 0 0 1 .8.4L15 6h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>';
-      pinfoEl.innerHTML = '<div class="login-row" id="loginRow"><span class="lt">登录</span>'+
+      pinfoEl.innerHTML = '<div class="login-row" id="loginRow"><span class="lt">'+tr('登录')+'</span>'+
         '<svg class="arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="m9 18 6-6-6-6"/></svg></div>';
       document.getElementById('loginRow').onclick = doLogin;
     } else {
       if(!avatarEl.getAttribute('data-img')){
         avatarEl.innerHTML = wechatAvatarSVG();
       }
-      pinfoEl.innerHTML = '<div class="pname" id="pname" contenteditable="true" spellcheck="false">微信用户</div>';
+      pinfoEl.innerHTML = '<div class="pname" id="pname" contenteditable="true" spellcheck="false">'+tr('微信用户')+'</div>';
       var pn = document.getElementById('pname');
-      pn.addEventListener('blur', function(){ if(!pn.textContent.trim()) pn.textContent = '微信用户'; });
+      pn.addEventListener('blur', function(){ if(!pn.textContent.trim()) pn.textContent = tr('微信用户'); });
       pn.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); pn.blur(); } });
     }
     document.getElementById('logoutMenu').style.display = loggedIn ? '' : 'none';
@@ -441,7 +352,7 @@
     var r = new FileReader();
     r.onload = function(e){
       avatarEl.setAttribute('data-img','1');
-      avatarEl.innerHTML = '<img src="'+e.target.result+'" alt="头像">';
+      avatarEl.innerHTML = '<img src="'+e.target.result+'" alt="'+tr('头像')+'">';
     };
     r.readAsDataURL(f);
   };
@@ -456,19 +367,16 @@
     if(!el) return;
     if(sheetMask) sheetMask.classList.add('show');
     el.classList.add('show');
-    var ph = document.querySelector('.phone'); if(ph) ph.style.overflow = 'hidden';
   }
   function closeSheet(id){
     var el = document.getElementById(id);
     if(el) el.classList.remove('show');
     var any = document.querySelector('.sheet.show');
     if(!any && sheetMask){ sheetMask.classList.remove('show'); }
-    var ph = document.querySelector('.phone'); if(ph) ph.style.overflow = '';
   }
   function closeAllSheets(){
     document.querySelectorAll('.sheet.show').forEach(function(s){ s.classList.remove('show'); });
     if(sheetMask) sheetMask.classList.remove('show');
-    var ph = document.querySelector('.phone'); if(ph) ph.style.overflow = '';
   }
   window.openSheet = openSheet;
   window.closeSheet = closeSheet;
@@ -492,15 +400,10 @@
   }
   window.copyEmail = copyEmail;
 
-  /* 语言切换：买家端默认 English；持久化到 localStorage（全局 app_lang） */
-  var APP_LANG = (function(){ try { return localStorage.getItem('app_lang') || 'en'; } catch(e){ return 'en'; } })();
+  /* 语言切换：买家端默认 English；交由 i18n 引擎按 buyer_lang 持久化 */
+  var APP_LANG = (function(){ try { return (window.I18N && window.I18N.curLang()) || 'en'; } catch(e){ return 'en'; } })();
   function setLang(code){
-    APP_LANG = code;
-    try { localStorage.setItem('app_lang', code); } catch(e){}
-    document.querySelectorAll('.lang-row').forEach(function(r){ r.classList.remove('on'); });
-    var row = document.querySelector('.lang-row[data-lc="'+code+'"]');
-    if(row) row.classList.add('on');
-    if(window.I18N) window.I18N.applyI18n(document);
+    if(window.I18N) window.I18N.setLang(code);
     b2Toast(code === 'zh-CN' ? '已切换为简体中文' : 'Switched to English');
     setTimeout(closeAllSheets, 280);
   }

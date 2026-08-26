@@ -140,53 +140,74 @@
 
 <script src="seed-helpers.js"></script>
 <script>
-/* ---------- 数据 ---------- */
+/* ---------- 数据（中英双语，按当前语言取值；不再依赖子串翻译，避免切碎数据） ---------- */
+function isEN(){ return (window.I18N && window.I18N.curLang && window.I18N.curLang()==='en'); }
+function TL(o){ return isEN() ? o.en : o.zh; }
+
 const QIUGOU = [
-  {title:'帆布鞋出口订单',flag:'🇰🇪',region:'肯尼亚',cat:'帆布鞋',leaf:'fanbu',img:'canvas',qty:'50,000 双',time:'8-17',desc:'东非市场，需环保印染工艺，可接长期框架协议。'},
-  {title:'登山徒步鞋',flag:'🇪🇹',region:'埃塞俄比亚',cat:'登山鞋',leaf:'dengshan',img:'hiking',qty:'8,000 双',time:'8-15',desc:'防滑大底，Vibram 同级，要求提供耐磨测试数据。'},
-  {title:'拖鞋凉鞋夏季款',flag:'🇲🇦',region:'摩洛哥',cat:'拖鞋',leaf:'tuoxie',img:'sandals',qty:'120,000 双',time:'8-12',desc:'轻量化 EVA，反倾销合规，支持多色混批。'},
-  {title:'工装安全鞋',flag:'🇹🇿',region:'坦桑尼亚',cat:'安全鞋',leaf:'anquan',img:'boots',qty:'15,000 双',time:'8-16',desc:'钢头防砸，符合 CE EN20345，可贴牌生产。'},
-  {title:'芭蕾舞练功鞋',flag:'🇬🇭',region:'加纳',cat:'芭蕾鞋',leaf:'balei',img:'ballet',qty:'3,000 双',time:'8-10',desc:'弹性面料，支持定制 LOGO 与尺码表。'},
-  {title:'滑雪靴配件',flag:'🇸🇳',region:'塞内加尔',cat:'滑雪靴',leaf:'huaxue',img:'ski',qty:'10,000 套',time:'8-14',desc:'寻找注塑厂商，长期合作，月产能稳定。'},
-  {title:'帆布鞋校园采购',flag:'🇩🇿',region:'阿尔及利亚',cat:'帆布鞋',leaf:'fanbu',img:'canvas',qty:'60,000 双',time:'8-09',desc:'北非连锁渠道，支持贴牌与尺码定制。'},
-  {title:'地中海风凉鞋',flag:'🇹🇳',region:'突尼斯',cat:'凉鞋',leaf:'liangxie',img:'sandals',qty:'40,000 双',time:'刚刚',desc:'轻量化 EVA，多色混批，适合旅游零售。'},
-  {title:'油田劳保工装靴',flag:'🇱🇾',region:'利比亚',cat:'工装靴',leaf:'gongzhuang',img:'boots',qty:'12,000 双',time:'8-05',desc:'钢头防砸防穿刺，符合出口认证。'},
-  {title:'运动休闲鞋',flag:'🇨🇲',region:'喀麦隆',cat:'训练鞋',leaf:'train',img:'sneakers',qty:'35,000 双',time:'8-13',desc:'欧美电商渠道，EVA 中底，支持小单快反。'},
-  {title:'日常防滑拖鞋',flag:'🇨🇮',region:'科特迪瓦',cat:'拖鞋',leaf:'tuoxie',img:'sandals',qty:'90,000 双',time:'8-11',desc:'日常通勤款，防滑耐磨，支持混批。'},
-  {title:'商务拉杆箱',flag:'🇬🇦',region:'加蓬',cat:'硬壳箱',leaf:'yingke',img:'suitcase',qty:'6,000 件',time:'8-08',desc:'出口品质，静音万向轮，可定制 Logo。'},
-  {title:'头层牛皮皮带',flag:'🇦🇴',region:'安哥拉',cat:'自动扣',leaf:'zidong',img:'belt',qty:'20,000 条',time:'8-14',desc:'头层牛皮自动扣，支持礼盒包装。'},
-  {title:'户外登山鞋',flag:'🇲🇿',region:'莫桑比克',cat:'登山鞋',leaf:'dengshan',img:'hiking',qty:'9,000 双',time:'8-07',desc:'高帮防水，适合山地与雨季作业。'},
-  {title:'舞蹈练功鞋',flag:'🇿🇲',region:'赞比亚',cat:'练功鞋',leaf:'liangong',img:'ballet',qty:'4,000 双',time:'8-12',desc:'舞蹈培训机构采购，弹性面料。'},
-  {title:'滑雪靴配件',flag:'🇿🇼',region:'津巴布韦',cat:'滑雪靴',leaf:'huaxue',img:'ski',qty:'8,000 套',time:'8-06',desc:'滑雪装备配套，长期稳定需求。'},
-  {title:'校园帆布鞋',flag:'🇧🇼',region:'博茨瓦纳',cat:'帆布鞋',leaf:'fanbu',img:'canvas',qty:'55,000 双',time:'8-15',desc:'校园集采，帆布鞋多色可选。'},
-  {title:'沙漠徒步运动鞋',flag:'🇳🇦',region:'纳米比亚',cat:'徒步鞋',leaf:'tubu',img:'sneakers',qty:'25,000 双',time:'刚刚',desc:'沙漠地区适用，透气耐磨。'},
-  {title:'雨季防滑凉鞋',flag:'🇺🇬',region:'乌干达',cat:'凉鞋',leaf:'liangxie',img:'sandals',qty:'70,000 双',time:'8-04',desc:'雨季防滑，适合湿滑路面。'},
-  {title:'基建项目工装靴',flag:'🇷🇼',region:'卢旺达',cat:'工装靴',leaf:'gongzhuang',img:'boots',qty:'14,000 双',time:'8-16',desc:'基建项目配套，工装靴批量采购。'},
-  {title:'矿区分销皮带',flag:'🇨🇩',region:'刚果（金）',cat:'针扣',leaf:'zhenkou',img:'belt',qty:'18,000 条',time:'8-03',desc:'矿区劳保配套，针扣皮带。'},
-  {title:'高原徒步鞋',flag:'🇲🇬',region:'马达加斯加',cat:'徒步鞋',leaf:'tubu',img:'sneakers',qty:'7,500 双',time:'8-09',desc:'高原徒步，轻量保暖。'}
+  {flag:'🇰🇪',leaf:'fanbu',img:'canvas',rank:17, zh:{title:'帆布鞋出口订单',cat:'帆布鞋',desc:'东非市场，需环保印染工艺，可接长期框架协议。',region:'肯尼亚',qty:'50,000 双',time:'8-17'}, en:{title:'Canvas Shoes Export Order',cat:'Canvas Shoes',desc:'East African market; eco-friendly dyeing required; long-term framework agreements accepted.',region:'Kenya',qty:'50,000 prs',time:'8-17'}},
+  {flag:'🇪🇹',leaf:'dengshan',img:'hiking',rank:15, zh:{title:'登山徒步鞋',cat:'登山鞋',desc:'防滑大底，Vibram 同级，要求提供耐磨测试数据。',region:'埃塞俄比亚',qty:'8,000 双',time:'8-15'}, en:{title:'Hiking Trekking Shoes',cat:'Hiking Shoes',desc:'Anti-slip outsole, Vibram-equivalent; wear-test data required.',region:'Ethiopia',qty:'8,000 prs',time:'8-15'}},
+  {flag:'🇲🇦',leaf:'tuoxie',img:'sandals',rank:12, zh:{title:'拖鞋凉鞋夏季款',cat:'拖鞋',desc:'轻量化 EVA，反倾销合规，支持多色混批。',region:'摩洛哥',qty:'120,000 双',time:'8-12'}, en:{title:'Slippers & Sandals Summer',cat:'Slippers',desc:'Lightweight EVA, anti-dumping compliant; mixed-color batches supported.',region:'Morocco',qty:'120,000 prs',time:'8-12'}},
+  {flag:'🇹🇿',leaf:'anquan',img:'boots',rank:16, zh:{title:'工装安全鞋',cat:'安全鞋',desc:'钢头防砸，符合 CE EN20345，可贴牌生产。',region:'坦桑尼亚',qty:'15,000 双',time:'8-16'}, en:{title:'Work Safety Shoes',cat:'Safety Shoes',desc:'Steel toe, impact-resistant, CE EN20345 compliant; OEM available.',region:'Tanzania',qty:'15,000 prs',time:'8-16'}},
+  {flag:'🇬🇭',leaf:'balei',img:'ballet',rank:10, zh:{title:'芭蕾舞练功鞋',cat:'芭蕾鞋',desc:'弹性面料，支持定制 LOGO 与尺码表。',region:'加纳',qty:'3,000 双',time:'8-10'}, en:{title:'Ballet Training Shoes',cat:'Ballet Shoes',desc:'Stretch fabric; custom LOGO and size chart supported.',region:'Ghana',qty:'3,000 prs',time:'8-10'}},
+  {flag:'🇸🇳',leaf:'huaxue',img:'ski',rank:14, zh:{title:'滑雪靴配件',cat:'滑雪靴',desc:'寻找注塑厂商，长期合作，月产能稳定。',region:'塞内加尔',qty:'10,000 套',time:'8-14'}, en:{title:'Ski Boot Accessories',cat:'Ski Boots',desc:'Seeking injection-molding partners; long-term cooperation; stable monthly capacity.',region:'Senegal',qty:'10,000 sets',time:'8-14'}},
+  {flag:'🇩🇿',leaf:'fanbu',img:'canvas',rank:9, zh:{title:'帆布鞋校园采购',cat:'帆布鞋',desc:'北非连锁渠道，支持贴牌与尺码定制。',region:'阿尔及利亚',qty:'60,000 双',time:'8-09'}, en:{title:'Canvas Shoes Campus Buy',cat:'Canvas Shoes',desc:'North African retail chains; OEM and size customization supported.',region:'Algeria',qty:'60,000 prs',time:'8-09'}},
+  {flag:'🇹🇳',leaf:'liangxie',img:'sandals',rank:99, zh:{title:'地中海风凉鞋',cat:'凉鞋',desc:'轻量化 EVA，多色混批，适合旅游零售。',region:'突尼斯',qty:'40,000 双',time:'刚刚'}, en:{title:'Mediterranean Sandals',cat:'Sandals',desc:'Lightweight EVA, mixed-color batches; ideal for travel retail.',region:'Tunisia',qty:'40,000 prs',time:'Just now'}},
+  {flag:'🇱🇾',leaf:'gongzhuang',img:'boots',rank:5, zh:{title:'油田劳保工装靴',cat:'工装靴',desc:'钢头防砸防穿刺，符合出口认证。',region:'利比亚',qty:'12,000 双',time:'8-05'}, en:{title:'Oilfield Work Boots',cat:'Work Boots',desc:'Steel toe, impact & puncture resistant; export-certified.',region:'Libya',qty:'12,000 prs',time:'8-05'}},
+  {flag:'🇨🇲',leaf:'train',img:'sneakers',rank:13, zh:{title:'运动休闲鞋',cat:'训练鞋',desc:'欧美电商渠道，EVA 中底，支持小单快反。',region:'喀麦隆',qty:'35,000 双',time:'8-13'}, en:{title:'Casual Sneakers',cat:'Training Shoes',desc:'EU/US e-commerce channels; EVA midsole; small-batch fast replenishment.',region:'Cameroon',qty:'35,000 prs',time:'8-13'}},
+  {flag:'🇨🇮',leaf:'tuoxie',img:'sandals',rank:11, zh:{title:'日常防滑拖鞋',cat:'拖鞋',desc:'日常通勤款，防滑耐磨，支持混批。',region:'科特迪瓦',qty:'90,000 双',time:'8-11'}, en:{title:'Daily Anti-slip Slippers',cat:'Slippers',desc:'Daily commute style; anti-slip, wear-resistant; mixed batches supported.',region:"Côte d'Ivoire",qty:'90,000 prs',time:'8-11'}},
+  {flag:'🇬🇦',leaf:'yingke',img:'suitcase',rank:8, zh:{title:'商务拉杆箱',cat:'硬壳箱',desc:'出口品质，静音万向轮，可定制 Logo。',region:'加蓬',qty:'6,000 件',time:'8-08'}, en:{title:'Business Luggage',cat:'Hard-shell Case',desc:'Export quality, silent spinner wheels; custom LOGO available.',region:'Gabon',qty:'6,000 pcs',time:'8-08'}},
+  {flag:'🇦🇴',leaf:'zidong',img:'belt',rank:14, zh:{title:'头层牛皮皮带',cat:'自动扣',desc:'头层牛皮自动扣，支持礼盒包装。',region:'安哥拉',qty:'20,000 条',time:'8-14'}, en:{title:'Top-grain Leather Belt',cat:'Automatic Buckle',desc:'Top-grain leather automatic buckle; gift box packaging supported.',region:'Angola',qty:'20,000 pcs',time:'8-14'}},
+  {flag:'🇲🇿',leaf:'dengshan',img:'hiking',rank:7, zh:{title:'户外登山鞋',cat:'登山鞋',desc:'高帮防水，适合山地与雨季作业。',region:'莫桑比克',qty:'9,000 双',time:'8-07'}, en:{title:'Outdoor Hiking Shoes',cat:'Hiking Shoes',desc:'High-top waterproof; suited for mountain and rainy-season work.',region:'Mozambique',qty:'9,000 prs',time:'8-07'}},
+  {flag:'🇿🇲',leaf:'liangong',img:'ballet',rank:12, zh:{title:'舞蹈练功鞋',cat:'练功鞋',desc:'舞蹈培训机构采购，弹性面料。',region:'赞比亚',qty:'4,000 双',time:'8-12'}, en:{title:'Dance Training Shoes',cat:'Training Shoes',desc:'For dance schools; stretch fabric.',region:'Zambia',qty:'4,000 prs',time:'8-12'}},
+  {flag:'🇿🇼',leaf:'huaxue',img:'ski',rank:6, zh:{title:'滑雪靴配件',cat:'滑雪靴',desc:'滑雪装备配套，长期稳定需求。',region:'津巴布韦',qty:'8,000 套',time:'8-06'}, en:{title:'Ski Boot Accessories',cat:'Ski Boots',desc:'Ski gear accessories; steady long-term demand.',region:'Zimbabwe',qty:'8,000 sets',time:'8-06'}},
+  {flag:'🇧🇼',leaf:'fanbu',img:'canvas',rank:15, zh:{title:'校园帆布鞋',cat:'帆布鞋',desc:'校园集采，帆布鞋多色可选。',region:'博茨瓦纳',qty:'55,000 双',time:'8-15'}, en:{title:'Campus Canvas Shoes',cat:'Canvas Shoes',desc:'Campus group buy; multiple colors available.',region:'Botswana',qty:'55,000 prs',time:'8-15'}},
+  {flag:'🇳🇦',leaf:'tubu',img:'sneakers',rank:99, zh:{title:'沙漠徒步运动鞋',cat:'徒步鞋',desc:'沙漠地区适用，透气耐磨。',region:'纳米比亚',qty:'25,000 双',time:'刚刚'}, en:{title:'Desert Trail Sneakers',cat:'Trekking Shoes',desc:'Suited to desert regions; breathable and wear-resistant.',region:'Namibia',qty:'25,000 prs',time:'Just now'}},
+  {flag:'🇺🇬',leaf:'liangxie',img:'sandals',rank:4, zh:{title:'雨季防滑凉鞋',cat:'凉鞋',desc:'雨季防滑，适合湿滑路面。',region:'乌干达',qty:'70,000 双',time:'8-04'}, en:{title:'Rainy-season Anti-slip Sandals',cat:'Sandals',desc:'Anti-slip for rainy season; suited to slippery surfaces.',region:'Uganda',qty:'70,000 prs',time:'8-04'}},
+  {flag:'🇷🇼',leaf:'gongzhuang',img:'boots',rank:16, zh:{title:'基建项目工装靴',cat:'工装靴',desc:'基建项目配套，工装靴批量采购。',region:'卢旺达',qty:'14,000 双',time:'8-16'}, en:{title:'Infrastructure Work Boots',cat:'Work Boots',desc:'For infrastructure projects; bulk purchase of work boots.',region:'Rwanda',qty:'14,000 prs',time:'8-16'}},
+  {flag:'🇨🇩',leaf:'zhenkou',img:'belt',rank:3, zh:{title:'矿区分销皮带',cat:'针扣',desc:'矿区劳保配套，针扣皮带。',region:'刚果（金）',qty:'18,000 条',time:'8-03'}, en:{title:'Mining-district Belt',cat:'Pin Buckle',desc:'For mining-district PPE; pin-buckle belt.',region:'DR Congo',qty:'18,000 pcs',time:'8-03'}},
+  {flag:'🇲🇬',leaf:'tubu',img:'sneakers',rank:9, zh:{title:'高原徒步鞋',cat:'徒步鞋',desc:'高原徒步，轻量保暖。',region:'马达加斯加',qty:'7,500 双',time:'8-09'}, en:{title:'Plateau Trekking Shoes',cat:'Trekking Shoes',desc:'High-plateau trekking; lightweight and warm.',region:'Madagascar',qty:'7,500 prs',time:'8-09'}}
 ];
 
 const AV_COLORS = ['#1677FF','#F5A623','#52C41A','#722ED1','#EB2F96','#13C2C2','#FA8C16','#2F54EB'];
 const GONGYING = [
-  {name:'深圳优品供应链',initial:'深',color:0,time:'刚刚',leaf:'zidong',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{min:'18.5'},moq:'500 条',content:'【工厂直供】头层牛皮自动扣皮带，支持来图定制，48 小时出样。常年稳定供货欧美商超，可贴牌可中性包装，欢迎询盘拿样。'},
-  {name:'温州鞋业联盟',initial:'温',color:1,time:'10分钟前',leaf:'train',imgs:['sneakers','canvas','hiking','boots','ballet','sandals'],price:{min:'45',max:'68'},moq:'1000 双',content:'跑步鞋、训练鞋现货供应，EVA 中底 + 透气网面，月产能 30 万双，支持小单快反与一件代发，交期稳定。'},
-  {name:'广州箱包工贸',initial:'广',color:2,time:'1小时前',leaf:'yingke',imgs:['suitcase','belt','canvas','boots'],price:{min:'86'},moq:'300 件',content:'ABS + PC 硬壳拉杆箱，静音万向轮，20/24/28 寸齐全，出口品质，可定制 Logo 与颜色，支持 OEM/ODM。'},
-  {name:'义乌小商品集采',initial:'义',color:3,time:'3小时前',leaf:'fanbu',imgs:['canvas','sneakers','sandals','boots','ballet','hiking','belt','suitcase','ski'],price:{start:true,min:'22'},moq:'2000 双',content:'帆布鞋、板鞋多款式常年供货，环保印染，支持混批，适合非洲及中东渠道，价格优势明显。'},
-  {name:'泉州运动装备',initial:'泉',color:4,time:'昨天',leaf:'basket',imgs:['sneakers','boots','hiking'],price:{min:'58',max:'72'},moq:'800 双',content:'篮球鞋高弹缓震，工厂直销，支持 OEM/ODM，交期稳定，欢迎询盘拿样，批量优惠。'},
-  {name:'成都皮具定制',initial:'成',color:5,time:'2天前',leaf:'zhenkou',imgs:[],price:null,moq:'200 件',content:'真皮钱包、皮带全品类定制，头层皮料，针扣 / 自动扣均可，支持企业礼品定制与来图加工。'},
-  {name:'青岛户外用品',initial:'青',color:6,time:'3天前',leaf:'dengshan',imgs:['hiking','boots','sneakers','canvas','sandals','ski'],price:{min:'92'},moq:'500 双',content:'登山鞋、徒步鞋防滑大底，Vibram 同级，提供耐磨测试报告，长期合作优先，支持贴牌。'},
-  {name:'东莞服饰供应链',initial:'东',color:7,time:'刚刚',leaf:'tshirt',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{start:true,min:'9.8'},moq:'5000 件',content:'T 恤、衬衫基础款常年供货，精梳棉，支持印花绣花，快速打样，适合电商铺货与跨境分销。'}
+  {initial:'深',initialEn:'S',color:0,time:'刚刚',leaf:'zidong',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{min:'18.5'},moq:'500 条', zh:{name:'深圳优品供应链',content:'【工厂直供】头层牛皮自动扣皮带，支持来图定制，48 小时出样。常年稳定供货欧美商超，可贴牌可中性包装，欢迎询盘拿样。'}, en:{name:'Shenzhen Premium Supply Chain',content:'[Factory-direct] Top-grain leather automatic-buckle belts; custom designs from artwork; samples in 48h. Stable EU/US supermarket supply; OEM and neutral packaging; inquiries & samples welcome.'}},
+  {initial:'温',initialEn:'W',color:1,time:'10分钟前',leaf:'train',imgs:['sneakers','canvas','hiking','boots','ballet','sandals'],price:{min:'45',max:'68'},moq:'1000 双', zh:{name:'温州鞋业联盟',content:'跑步鞋、训练鞋现货供应，EVA 中底 + 透气网面，月产能 30 万双，支持小单快反与一件代发，交期稳定。'}, en:{name:'Wenzhou Footwear Alliance',content:'Ready-stock sneakers & training shoes; EVA midsole + breathable mesh; 300k pairs/month; small-batch fast replenishment and drop-shipping; stable lead time.'}},
+  {initial:'广',initialEn:'G',color:2,time:'1小时前',leaf:'yingke',imgs:['suitcase','belt','canvas','boots'],price:{min:'86'},moq:'300 件', zh:{name:'广州箱包工贸',content:'ABS + PC 硬壳拉杆箱，静音万向轮，20/24/28 寸齐全，出口品质，可定制 Logo 与颜色，支持 OEM/ODM。'}, en:{name:'Guangzhou Bags & Luggage',content:'ABS + PC hard-shell luggage; silent spinner wheels; 20/24/28 inch; export quality; custom LOGO & color; OEM/ODM supported.'}},
+  {initial:'义',initialEn:'Y',color:3,time:'3小时前',leaf:'fanbu',imgs:['canvas','sneakers','sandals','boots','ballet','hiking','belt','suitcase','ski'],price:{start:true,min:'22'},moq:'2000 双', zh:{name:'义乌小商品集采',content:'帆布鞋、板鞋多款式常年供货，环保印染，支持混批，适合非洲及中东渠道，价格优势明显。'}, en:{name:'Yiwu Small-goods Sourcing',content:'Canvas & board shoes in many styles, year-round; eco-friendly dyeing; mixed batches; ideal for Africa & Middle East; strong price advantage.'}},
+  {initial:'泉',initialEn:'Q',color:4,time:'昨天',leaf:'basket',imgs:['sneakers','boots','hiking'],price:{min:'58',max:'72'},moq:'800 双', zh:{name:'泉州运动装备',content:'篮球鞋高弹缓震，工厂直销，支持 OEM/ODM，交期稳定，欢迎询盘拿样，批量优惠。'}, en:{name:'Quanzhou Sports Gear',content:'High-rebound basketball shoes; factory-direct; OEM/ODM; stable lead time; inquiries & samples welcome; volume discounts.'}},
+  {initial:'成',initialEn:'C',color:5,time:'2天前',leaf:'zhenkou',imgs:[],price:null,moq:'200 件', zh:{name:'成都皮具定制',content:'真皮钱包、皮带全品类定制，头层皮料，针扣 / 自动扣均可，支持企业礼品定制与来图加工。'}, en:{name:'Chengdu Leather Customization',content:'Genuine leather wallets & belts, full-category customization; top-grain leather; pin-buckle or automatic-buckle; corporate gifts & artwork processing.'}},
+  {initial:'青',initialEn:'Q',color:6,time:'3天前',leaf:'dengshan',imgs:['hiking','boots','sneakers','canvas','sandals','ski'],price:{min:'92'},moq:'500 双', zh:{name:'青岛户外用品',content:'登山鞋、徒步鞋防滑大底，Vibram 同级，提供耐磨测试报告，长期合作优先，支持贴牌。'}, en:{name:'Qingdao Outdoor Goods',content:'Hiking & trekking shoes with anti-slip outsole, Vibram-equivalent; wear-test reports; priority for long-term partners; OEM supported.'}},
+  {initial:'东',initialEn:'D',color:7,time:'刚刚',leaf:'tshirt',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{start:true,min:'9.8'},moq:'5000 件', zh:{name:'东莞服饰供应链',content:'T 恤、衬衫基础款常年供货，精梳棉，支持印花绣花，快速打样，适合电商铺货与跨境分销。'}, en:{name:'Dongguan Apparel Supply Chain',content:'Basic T-shirts & shirts, year-round; combed cotton; printing & embroidery; fast sampling; ideal for e-commerce & cross-border.'}}
 ];
 
 /* 给每条求购/供应分配唯一 id,卡片点击直接进详情 */
 QIUGOU.forEach(function(d,i){ d._id = 'WF_BIZ_' + SeedHelpers.pad(i+1); });
 GONGYING.forEach(function(d,i){ d._id = 'SP_BIZ_' + SeedHelpers.pad(i+1); });
 
-/* 时间倒序 */
-function buyTimeVal(t){ if(t==='刚刚') return 1e6; var m=t.match(/(\d+)-(\d+)/); return m? (parseInt(m[1])*100+parseInt(m[2])) : 0; }
-QIUGOU.sort(function(a,b){ return buyTimeVal(b.time) - buyTimeVal(a.time); });
-var SUPPLY_RANK = {'刚刚':0,'10分钟前':1,'1小时前':2,'3小时前':3,'昨天':4,'2天前':5,'3天前':6};
-GONGYING.sort(function(a,b){ return (SUPPLY_RANK[a.time]!==undefined?SUPPLY_RANK[a.time]:99) - (SUPPLY_RANK[b.time]!==undefined?SUPPLY_RANK[b.time]:99); });
+/* 时间倒序（用 rank 字段，避免中英文时间串影响排序） */
+QIUGOU.sort(function(a,b){ return b.rank - a.rank; });
+GONGYING.sort(function(a,b){ return b.rank - a.rank; });
+
+/* 价格 / 起订量 双语格式化 */
+function priceHtml(d){
+  if(!d.price) return '<span class="trade-price trade-mianyi">'+(isEN()?'Negotiable':'价格面议')+'</span>';
+  var val = '¥'+d.price.min + (isEN()?'':'元');
+  if(d.price.max) val += '-'+d.price.max + (isEN()?'':'元');
+  if(d.price.start) val += isEN()?' MOQ':'/起';
+  var label = isEN() ? '' : '<span class="trade-label">价格</span>';
+  return label + '<span class="trade-price">'+val+'</span>';
+}
+var MOQ_UNIT = {'双':'prs','件':'pcs','条':'pcs','套':'sets'};
+function moqHtml(d){
+  if(isEN()){
+    var m = d.moq.match(/([\d,]+)\s*([双件条套])/);
+    var u = m ? (MOQ_UNIT[m[2]]||'pcs') : 'pcs';
+    var num = m ? m[1] : d.moq;
+    return 'MOQ ' + num + ' ' + u;
+  }
+  return '起订 '+d.moq;
+}
 
 /* 卡片渲染 */
 function qiugouCard(d){
@@ -195,13 +216,14 @@ function qiugouCard(d){
   el.dataset.leaf = d.leaf;
   el.style.cursor = 'pointer';
   el.onclick = function(){ location.href = 'b2_inquiry_detail.html?id=' + d._id; };
+  const t = TL(d);
   el.innerHTML =
-    '<div class="thumb"><img src="img/'+d.img+'.jpg" alt="'+d.cat+'"></div>'+
+    '<div class="thumb"><img src="img/'+d.img+'.jpg" alt="'+t.cat+'"></div>'+
     '<div class="body">'+
-    '<div class="card-head"><h4>'+d.title+'</h4><div class="wf-time">'+d.time+'</div></div>'+
-    '<span class="cat">'+d.cat+'</span>'+
-    '<div class="desc">'+d.desc+'</div>'+
-    '<div class="wf-meta"><div class="qty">采购数量：'+d.qty+'</div><div class="region"><span class="flag">'+d.flag+'</span>'+d.region+'</div></div>'+
+    '<div class="card-head"><h4>'+t.title+'</h4><div class="wf-time">'+t.time+'</div></div>'+
+    '<span class="cat">'+t.cat+'</span>'+
+    '<div class="desc">'+t.desc+'</div>'+
+    '<div class="wf-meta"><div class="qty">'+(isEN()?'Qty: ':'采购数量：')+t.qty+'</div><div class="region"><span class="flag">'+d.flag+'</span>'+t.region+'</div></div>'+
     '</div>';
   return el;
 }
@@ -211,65 +233,63 @@ function supplyCard(d){
   el.dataset.leaf = d.leaf;
   el.style.cursor = 'pointer';
   el.onclick = function(){ location.href = 's2_supply_detail.html?id=' + d._id; };
-  let priceHtml;
-  if(d.price){
-    let val = '¥'+d.price.min+'元';
-    if(d.price.max) val += '-'+d.price.max+'元';
-    if(d.price.start) val += '/起';
-    priceHtml = '<span class="trade-label">价格</span><span class="trade-price">'+val+'</span>';
-  } else {
-    priceHtml = '<span class="trade-price trade-mianyi">价格面议</span>';
-  }
-  const trade = '<div class="supply-trade"><div class="trade-left">'+priceHtml+'</div><span class="trade-moq">起订 '+d.moq+'</span></div>';
+  const t = TL(d);
+  const trade = '<div class="supply-trade"><div class="trade-left">'+priceHtml(d)+'</div><span class="trade-moq">'+moqHtml(d)+'</span></div>';
   let grid = '';
   if(d.imgs && d.imgs.length){
     grid = '<div class="supply-grid">'+ d.imgs.map(i=>'<img src="img/'+i+'.jpg" alt="">').join('') +'</div>';
   }
   el.innerHTML =
     '<div class="supply-head">'+
-      '<div class="avatar" style="background:'+AV_COLORS[d.color%AV_COLORS.length]+'">'+d.initial+'</div>'+
-      '<div class="supply-info"><div class="supply-name">'+d.name+'</div><div class="supply-time">'+d.time+'</div></div>'+
+      '<div class="avatar" style="background:'+AV_COLORS[d.color%AV_COLORS.length]+'">'+(isEN()?d.initialEn:d.initial)+'</div>'+
+      '<div class="supply-info"><div class="supply-name">'+t.name+'</div><div class="supply-time">'+t.time+'</div></div>'+
     '</div>'+
-    '<div class="supply-content">'+d.content+'</div>'+
-    trade +
-    grid;
+    '<div class="supply-content">'+t.content+'</div>'+
+    trade + grid;
   return el;
 }
 
-/* 初始化列表 */
-const listQ = document.getElementById('list-qiugou');
-const listG = document.getElementById('list-gongying');
-QIUGOU.forEach(d=> listQ.appendChild(qiugouCard(d)));
-GONGYING.forEach(d=> listG.appendChild(supplyCard(d)));
+/* 初始化列表（等 i18n 就绪后再渲染，保证按当前语言取值；DOMContentLoaded 时 i18n 已执行） */
+function renderLists(){
+  const listQ = document.getElementById('list-qiugou');
+  const listG = document.getElementById('list-gongying');
+  if(listQ) QIUGOU.forEach(d=> listQ.appendChild(qiugouCard(d)));
+  if(listG) GONGYING.forEach(d=> listG.appendChild(supplyCard(d)));
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderLists);
+else renderLists();
 
-/* 把本页求购/供应数据 seed 到 localStorage,详情页可定位到对应 id */
-(function seed(){
+/* 把本页求购/供应数据 seed 到 localStorage,详情页可定位到对应 id
+   （包在 DOMContentLoaded 里：此时 i18n 已执行，SeedHelpers 语言感知可用，按当前语言写入） */
+document.addEventListener('DOMContentLoaded', function seed(){
   var inqSeed = QIUGOU.map(function(d){
+    var t = TL(d);
     return {
       id: d._id,
-      title: d.title,
-      category: SeedHelpers.qgCatToCat(d.cat),
-      desc: d.desc,
+      title: t.title,
+      category: SeedHelpers.qgCatToCat(t.cat),
+      desc: t.desc,
       images: ['img/'+d.img+'.jpg'],
-      qty: d.qty,
-      region: d.region,
-      time: SeedHelpers.timeToISO(d.time)
+      qty: t.qty,
+      region: t.region,
+      time: SeedHelpers.timeToISO(t.time)
     };
   });
   var supSeed = GONGYING.map(function(d){
+    var t = TL(d);
     return {
       id: d._id,
-      title: d.name,
+      title: t.name,
       category: SeedHelpers.leafToCat(d.leaf),
-      desc: d.content,
+      desc: t.content,
       images: (d.imgs||[]).map(function(i){ return 'img/'+i+'.jpg'; }),
       priceLabel: SeedHelpers.formatPrice(d.price, d.moq),
-      time: SeedHelpers.timeToISO(d.time)
+      time: SeedHelpers.timeToISO(t.time)
     };
   });
   SeedHelpers.seedInquiries(inqSeed);
   SeedHelpers.seedSupplies(supSeed);
-})();
+});
 
 /* Tab 切换（保持滚动位置） */
 let currentTab = 'qiugou';
@@ -308,7 +328,10 @@ scroll.addEventListener('wheel', e=>{ if(scroll.scrollTop<=0 && e.deltaY<0){ whe
 function doRefresh(){
   refreshing = true; ptr.style.height='40px'; ptr.textContent='刷新中…';
   setTimeout(()=>{
-    const fresh = Object.assign({}, QIUGOU[0]); fresh.time='刚刚'; fresh.title='（刷新）'+fresh.title;
+    const base = QIUGOU[0];
+    const fresh = Object.assign({}, base);
+    fresh.zh = Object.assign({}, base.zh, { time:'刚刚', title:'（刷新）'+base.zh.title });
+    fresh.en = Object.assign({}, base.en, { time:'Just now', title:'(Refresh) '+base.en.title });
     const c = qiugouCard(fresh); c.dataset.fresh='1';
     listQ.insertBefore(c, listQ.firstChild);
     applyFilter();

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 跨境小学堂详情</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:#fff; border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+
+  .scroll { flex:1; overflow-y:auto; background:#fff; -webkit-overflow-scrolling:touch; }
+
+  /* 封面大图 */
+  .cover { width:100%; height:200px; object-fit:cover; display:block; background:#EAF3FF; }
+  .cover-wrap { position:relative; }
+  .cover-wrap.video::after { content:""; position:absolute; inset:0; background:rgba(0,0,0,.18); }
+  .cover-play { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:54px; height:54px; border-radius:50%; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; }
+  .cover-play svg { width:26px; height:26px; fill:#fff; margin-left:3px; }
+
+  /* 标题 + 元信息 */
+  .d-title { font-size:20px; font-weight:700; line-height:1.4; margin:16px 16px 10px; color:var(--ink-primary); }
+  .d-meta { display:flex; align-items:center; gap:10px; margin:0 16px 16px; flex-wrap:wrap; }
+  .d-time { font-size:14px; color:var(--ink-tertiary); }
+  .d-cat { font-size:12px; color:var(--ink-secondary); background:#F5F5F5; border-radius:var(--r-sm); padding:3px 10px; }
+
+  /* 正文富文本 */
+  .d-body { margin:0 16px 32px; }
+  .art-p { font-size:16px; line-height:1.8; color:#444; margin:0 0 16px; }
+  .art-h3 { font-size:17px; font-weight:700; color:var(--ink-primary); margin:8px 0 12px; }
+  .art-img { margin:0 0 16px; }
+  .art-img img { width:100%; height:180px; object-fit:cover; border-radius:var(--r-md); display:block; background:#EAF3FF; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+  <div class="subheader">
+    <div class="subback" onclick="history.back()">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle" id="pageTitle">跨境小学堂详情</div>
+  </div>
+
+  <div class="scroll">
+    <div class="cover-wrap" id="coverWrap">
+      <img class="cover" id="cover" alt="" />
+      <div class="cover-play" id="coverPlay" style="display:none"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <h1 class="d-title" id="dTitle"></h1>
+    <div class="d-meta">
+      <span class="d-time" id="dTime"></span>
+      <span class="d-cat" id="dCat"></span>
+    </div>
+    <div class="d-body" id="dBody"></div>
+  </div>
+</div>
+
+<script src="academy-data.js"></script>
+<script src="i18n.js"></script>
+<script>
+(function(){
+  var id = new URLSearchParams(location.search).get('id');
+  var a = ARTS.filter(function(x){ return x.id===id; })[0];
+  if (!a) a = ARTS[0];
+
+  var d = a[A_LANG()];
+
+  document.getElementById('pageTitle').textContent = L({zh:'跨境小学堂详情', en:'Cross-border Mini Academy · Detail'});
+  document.getElementById('cover').src = img(a.h);
+  if (a.type === 'video') document.getElementById('coverPlay').style.display = 'flex';
+
+  document.getElementById('dTitle').textContent = d.title;
+  document.getElementById('dTime').textContent = d.date;
+  document.getElementById('dCat').textContent = catName(a.cat);
+
+  var html = (d.body || []).map(function(b){
+    if (b.t === 'h') return '<h3 class="art-h3">'+b.x+'</h3>';
+    if (b.t === 'img') return '<div class="art-img"><img src="'+img(a.h)+'" alt=""></div>';
+    return '<p class="art-p">'+b.x+'</p>';
+  }).join('');
+  document.getElementById('dBody').innerHTML = html;
+})();
+</script>
+</body>
+</html>

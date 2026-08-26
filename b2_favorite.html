@@ -41,9 +41,9 @@
 <script>
   function img(h){ return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl('+h+',60%,72%)"/><stop offset="1" stop-color="hsl('+((h+40)%360)+',65%,55%)"/></linearGradient></defs><rect width="200" height="200" fill="url(%23g)"/></svg>'); }
   var MOCK_SUPPLY = [
-    { id:'SP_DEMO1', title:'2026新款跑步鞋批发', category:'鞋类 > 运动鞋 > 跑步鞋', price:{label:'¥45 - ¥68'}, images:[img(200),img(210),img(190)], time:'2026-08-10 14:20' },
-    { id:'SP_DEMO2', title:'商务正装皮鞋 OEM', category:'鞋类 > 皮鞋 > 正装皮鞋', price:{label:'¥120/起（200起订）'}, images:[img(30),img(45)], time:'2026-08-08 09:05' },
-    { id:'SP_DEMO3', title:'纯棉圆领T恤 多色', category:'服装 > 男装 > T恤', price:{label:'面议'}, images:[img(120)], time:'2026-08-05 16:40' }
+    { id:'SP_DEMO1', title:'2026 New Running Shoes Wholesale', category:'Footwear > Sneakers > Running Shoes', price:{label:'¥45 - ¥68'}, images:[img(200),img(210),img(190)], time:'2026-08-10 14:20' },
+    { id:'SP_DEMO2', title:'Business Dress Leather Shoes OEM', category:'Footwear > Leather Shoes > Dress Leather Shoes', price:{label:'¥120/from (MOQ 200)'}, images:[img(30),img(45)], time:'2026-08-08 09:05' },
+    { id:'SP_DEMO3', title:'Pure Cotton Crew-neck T-shirt Multi-color', category:"Apparel > Men's > T-Shirt", price:{label:'Negotiable'}, images:[img(120)], time:'2026-08-05 16:40' }
   ];
   function resolveSupply(id){
     var my = []; try { my = JSON.parse(localStorage.getItem('s2_supplies'))||[]; } catch(e){}

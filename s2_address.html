@@ -204,7 +204,7 @@
 
   window.delAddr = function(i){
     var a = list[i];
-    if(!confirm('确定删除「'+a.name+'」的地址吗？')) return;
+    if(!confirm((window.I18N ? window.I18N.t('确定删除「'+a.name+'」的地址吗？') : '确定删除「'+a.name+'」的地址吗？'))) return;
     list.splice(i,1);
     save(list); render();
   };

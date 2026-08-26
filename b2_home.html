@@ -205,28 +205,27 @@
 
   /* 供应数据（字段参照「货源」页：头像/名称/时间/文字/九宫格） */
   var SUPPLIERS = [
-    {name:'深圳优品供应链', initial:'深', color:0, time:'刚刚', content:'【工厂直供】头层牛皮自动扣皮带，支持来图定制，48 小时出样。常年稳定供货欧美商超，可贴牌可中性包装，欢迎询盘拿样。', imgs:['belt','sneakers','suitcase','canvas','hiking','sandals','boots','ballet','ski'], price:{min:'18.5'}, moq:'500 条'},
-    {name:'温州鞋业联盟', initial:'温', color:1, time:'刚刚', content:'跑步鞋、训练鞋现货供应，EVA 中底 + 透气网面，月产能 30 万双，支持小单快反与一件代发，交期稳定。', imgs:['sneakers','canvas','hiking','boots','ballet','sandals'], price:{min:'45',max:'68'}, moq:'1000 双'},
-    {name:'广州箱包工贸', initial:'广', color:2, time:'刚刚', content:'ABS + PC 硬壳拉杆箱，静音万向轮，20/24/28 寸齐全，出口品质，可定制 Logo 与颜色，支持 OEM/ODM。', imgs:['suitcase','belt','canvas','boots'], price:{min:'86'}, moq:'300 件'},
-    {name:'义乌小商品集采', initial:'义', color:3, time:'10分钟前', content:'帆布鞋、板鞋多款式常年供货，环保印染，支持混批，适合非洲及中东渠道，价格优势明显。', imgs:['canvas','sneakers','sandals','boots','ballet','hiking','belt','suitcase','ski'], price:{start:true,min:'22'}, moq:'2000 双'},
-    {name:'泉州运动装备', initial:'泉', color:4, time:'1小时前', content:'篮球鞋高弹缓震，工厂直销，支持 OEM/ODM，交期稳定，欢迎询盘拿样，批量优惠。', imgs:['sneakers','boots','hiking'], price:{min:'58',max:'72'}, moq:'800 双'},
-    {name:'成都皮具定制', initial:'成', color:5, time:'3小时前', content:'真皮钱包、皮带全品类定制，头层皮料，针扣 / 自动扣均可，支持企业礼品定制与来图加工。', imgs:[], price:null, moq:'200 件'},
-    {name:'青岛户外用品', initial:'青', color:6, time:'昨天', content:'登山鞋、徒步鞋防滑大底，Vibram 同级，提供耐磨测试报告，长期合作优先，支持贴牌。', imgs:['hiking','boots','sneakers','canvas','sandals','ski'], price:{min:'92'}, moq:'500 双'},
-    {name:'东莞服饰供应链', initial:'东', color:7, time:'2天前', content:'T 恤、衬衫基础款常年供货，精梳棉，支持印花绣花，快速打样，适合电商铺货与跨境分销。', imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'], price:{start:true,min:'9.8'}, moq:'5000 件'},
-    {name:'佛山童鞋制造', initial:'佛', color:0, time:'2天前', content:'儿童运动鞋软底护足，环保材质，支持卡通图案定制，出口欧美母婴渠道，可小单试单。', imgs:['sneakers','ballet','canvas'], price:{min:'35'}, moq:'600 双'},
-    {name:'厦门运动护具', initial:'厦', color:1, time:'3天前', content:'护膝护腕运动护具，透气弹力面料，支持来样加工与品牌贴牌，交期稳定。', imgs:['boots','hiking','sneakers'], price:{min:'12.5'}, moq:'300 副'},
-    {name:'宁波服装出口', initial:'宁', color:2, time:'3天前', content:'卫衣、冲锋衣常年供货，防风防水面料，支持小单快反与一件代发，适合跨境铺货。', imgs:['suitcase','canvas','belt'], price:{min:'39'}, moq:'400 件'},
-    {name:'杭州丝巾工坊', initial:'杭', color:3, time:'4天前', content:'真丝丝巾、围巾高端定制，支持印花与刺绣，适合礼赠与跨境电商，起订量低。', imgs:['ballet','canvas','sandals'], price:{start:true,min:'15'}, moq:'100 条'},
-    {name:'苏州箱包设计', initial:'苏', color:4, time:'5天前', content:'时尚双肩包、手提包设计打样，真皮 / 帆布可选，支持原创设计贴牌与来图定制。', imgs:['suitcase','belt','canvas'], price:{min:'68'}, moq:'200 个'},
-    {name:'汕头内衣供应链', initial:'汕', color:5, time:'5天前', content:'运动内衣、瑜伽服高弹面料，支持尺码定制与快速打样，适合跨境电商品牌。', imgs:['sneakers','hiking','ballet'], price:{min:'25'}, moq:'500 件'},
-    {name:'泉州拖鞋工厂', initial:'泉', color:6, time:'6天前', content:'EVA 拖鞋、凉拖量大价优，防滑耐磨，适合商超与地摊批发，支持混色混码。', imgs:['sandals','boots','canvas'], price:{min:'8.5'}, moq:'3000 双'},
-    {name:'广州饰品工贸', initial:'广', color:7, time:'6天前', content:'时尚饰品、项链耳环合金 / 不锈钢材质，支持来图定制，混批发货，跨境热销。', imgs:['ballet','belt','ski'], price:{start:true,min:'6.8'}, moq:'500 件'},
-    {name:'温州打火机厂', initial:'温', color:0, time:'7天前', content:'防风打火机、创意打火机出口品质，CE 认证，支持 OEM 定制与中性包装。', imgs:['sneakers','suitcase','boots'], price:{min:'3.2'}, moq:'2000 个'},
-    {name:'深圳3C配件', initial:'深', color:1, time:'7天前', content:'手机壳、数据线、充电器全品类供货，支持 LOGO 定制，跨境爆款，交期快。', imgs:['canvas','hiking','sandals','belt','ski'], price:{min:'11'}, moq:'1000 个'}
+    {name:'Shenzhen Premium Supply Chain', initial:'S', color:0, rank:0, time:'Just now', content:'Factory-direct top-grain leather automatic buckle belts, support custom designs with 48-hour sampling. Steady supply to European and American supermarkets, OEM and neutral packaging available, welcome to inquire.', imgs:['belt','sneakers','suitcase','canvas','hiking','sandals','boots','ballet','ski'], price:{min:'18.5'}, moq:'500 Pcs'},
+    {name:'Wenzhou Footwear Alliance', initial:'W', color:1, rank:0, time:'Just now', content:'Ready stock of running and training shoes, EVA midsole + breathable mesh, monthly capacity 300k pairs, support small-batch quick reorder and dropshipping, stable lead time.', imgs:['sneakers','canvas','hiking','boots','ballet','sandals'], price:{min:'45',max:'68'}, moq:'1000 Pairs'},
+    {name:'Guangzhou Bags & Luggage Trade', initial:'G', color:2, rank:0, time:'Just now', content:'ABS + PC hard-shell luggage, silent spinner wheels, 20/24/28 inch available, export quality, customizable logo and color, OEM/ODM supported.', imgs:['suitcase','belt','canvas','boots'], price:{min:'86'}, moq:'300 Pcs'},
+    {name:'Yiwu Commodity Sourcing', initial:'Y', color:3, rank:1, time:'10 min ago', content:'Canvas and casual shoes in multiple styles year-round, eco-friendly dyeing, support mixed batches, ideal for Africa and Middle East channels, strong price advantage.', imgs:['canvas','sneakers','sandals','boots','ballet','hiking','belt','suitcase','ski'], price:{start:true,min:'22'}, moq:'2000 Pairs'},
+    {name:'Quanzhou Sports Gear', initial:'Q', color:4, rank:2, time:'1 hr ago', content:'Basketball shoes with high-rebound cushioning, factory-direct, OEM/ODM supported, stable lead time, welcome to inquire and request samples, volume discounts.', imgs:['sneakers','boots','hiking'], price:{min:'58',max:'72'}, moq:'800 Pairs'},
+    {name:'Chengdu Leather Custom', initial:'C', color:5, rank:3, time:'3 hrs ago', content:'Full-range custom genuine leather wallets and belts, top-grain material, pin buckle / automatic buckle both available, support corporate gift customization and custom drawings.', imgs:[], price:null, moq:'200 Pcs'},
+    {name:'Qingdao Outdoor Goods', initial:'Q', color:6, rank:4, time:'Yesterday', content:'Hiking and trekking shoes with anti-slip outsoles, Vibram-equivalent, wear-resistance test reports provided, priority for long-term partners, support OEM.', imgs:['hiking','boots','sneakers','canvas','sandals','ski'], price:{min:'92'}, moq:'500 Pairs'},
+    {name:'Dongguan Apparel Supply Chain', initial:'D', color:7, rank:5, time:'2 days ago', content:'Basic T-shirts and shirts year-round, combed cotton, support printing and embroidery, fast sampling, ideal for e-commerce and cross-border distribution.', imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'], price:{start:true,min:'9.8'}, moq:'5000 Pcs'},
+    {name:"Foshan Kids' Shoes Mfg", initial:'F', color:0, rank:5, time:'2 days ago', content:"Kids' sports shoes with soft sole for foot protection, eco-friendly material, support cartoon pattern customization, exported to European and American maternity channels, small trial orders accepted.", imgs:['sneakers','ballet','canvas'], price:{min:'35'}, moq:'600 Pairs'},
+    {name:'Xiamen Sports Protectors', initial:'X', color:1, rank:6, time:'3 hrs ago', content:'Knee and elbow pads with breathable stretch fabric, support sample processing and brand OEM, stable lead time.', imgs:['boots','hiking','sneakers'], price:{min:'12.5'}, moq:'300 Pairs'},
+    {name:'Ningbo Apparel Export', initial:'N', color:2, rank:6, time:'3 hrs ago', content:'Sweatshirts and windbreakers year-round, windproof and waterproof fabric, support small-batch quick reorder and dropshipping, ideal for cross-border distribution.', imgs:['suitcase','canvas','belt'], price:{min:'39'}, moq:'400 Pcs'},
+    {name:'Hangzhou Silk Scarf Studio', initial:'H', color:3, rank:7, time:'4 days ago', content:'Custom high-end real silk scarves and shawls, support printing and embroidery, ideal for gifting and cross-border e-commerce, low MOQ.', imgs:['ballet','canvas','sandals'], price:{start:true,min:'15'}, moq:'100 Pcs'},
+    {name:'Suzhou Bags & Luggage Design', initial:'S', color:4, rank:8, time:'5 days ago', content:'Fashion backpacks and handbags design and sampling, genuine leather / canvas options, support original design OEM and custom drawings.', imgs:['suitcase','belt','canvas'], price:{min:'68'}, moq:'200 Pcs'},
+    {name:'Shantou Underwear Supply Chain', initial:'S', color:5, rank:8, time:'5 days ago', content:'Sports bras and yoga wear with high-stretch fabric, support size customization and fast sampling, ideal for cross-border e-commerce brands.', imgs:['sneakers','hiking','ballet'], price:{min:'25'}, moq:'500 Pcs'},
+    {name:'Quanzhou Slippers Factory', initial:'Q', color:6, rank:9, time:'6 days ago', content:'EVA slippers and sandals at volume prices, anti-slip and wear-resistant, ideal for supermarkets and street-vendor wholesale, support mixed colors and sizes.', imgs:['sandals','boots','canvas'], price:{min:'8.5'}, moq:'3000 Pairs'},
+    {name:'Guangzhou Accessories Trade', initial:'G', color:7, rank:9, time:'6 days ago', content:'Fashion accessories, necklaces and earrings in alloy / stainless steel, support custom drawings, mixed wholesale, hot-selling cross-border.', imgs:['ballet','belt','ski'], price:{start:true,min:'6.8'}, moq:'500 Pcs'},
+    {name:'Wenzhou Lighter Factory', initial:'W', color:0, rank:10, time:'7 days ago', content:'Windproof and creative lighters, export quality, CE certified, support OEM customization and neutral packaging.', imgs:['sneakers','suitcase','boots'], price:{min:'3.2'}, moq:'2000 Pcs'},
+    {name:'Shenzhen 3C Accessories', initial:'S', color:1, rank:10, time:'7 days ago', content:'Phone cases, data cables and chargers in full range, support LOGO customization, cross-border bestsellers, fast lead time.', imgs:['canvas','hiking','sandals','belt','ski'], price:{min:'11'}, moq:'1000 Pcs'}
   ];
 
-  var RANK = {'刚刚':0,'10分钟前':1,'1小时前':2,'3小时前':3,'昨天':4,'2天前':5,'3天前':6,'4天前':7,'5天前':8,'6天前':9,'7天前':10};
-  function byTimeDesc(a,b){ return (RANK[a.time]||99) - (RANK[b.time]||99); }
+  function byTimeDesc(a,b){ return (a.rank||99) - (b.rank||99); }
 
   // 给每个供应分配唯一 id,卡片点击直接进详情
   SUPPLIERS.forEach(function(d,i){ d._id = 'SP_HOME_' + SeedHelpers.pad(i+1); });
@@ -234,14 +233,14 @@
   function tradeHtml(d, withMoq){
     var priceHtml;
     if(d.price){
-      var val = '¥'+d.price.min+'元';
-      if(d.price.max) val += '-'+d.price.max+'元';
-      if(d.price.start) val += '/起';
-      priceHtml = '<span class="trade-label">价格</span><span class="trade-price">'+val+'</span>';
+      var val = '¥'+d.price.min;
+      if(d.price.max) val += '-'+d.price.max;
+      if(d.price.start) val += '/from';
+      priceHtml = '<span class="trade-label">Price</span><span class="trade-price">'+val+'</span>';
     } else {
-      priceHtml = '<span class="trade-price trade-mianyi">价格面议</span>';
+      priceHtml = '<span class="trade-price trade-mianyi">Negotiable</span>';
     }
-    var moq = withMoq ? '<span class="trade-moq">起订 '+d.moq+'</span>' : '';
+    var moq = withMoq ? '<span class="trade-moq">MOQ '+d.moq+'</span>' : '';
     return '<div class="supply-trade"><div class="trade-left">'+priceHtml+'</div>'+moq+'</div>';
   }
 

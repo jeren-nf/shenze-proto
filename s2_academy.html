@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>申泽跨境贸易 · 跨境小学堂列表</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background:#E9EDF2; display:flex; justify-content:center; padding:32px 0; }
+  .phone { width:390px; height:844px; background:var(--bg-page); border-radius:44px; box-shadow:0 24px 60px rgba(0,0,0,.18); overflow:hidden; position:relative; border:10px solid #111; display:flex; flex-direction:column; }
+  .statusbar { flex:none; height:44px; background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:13px; font-weight:600; color:var(--ink-primary); }
+  .subheader { flex:none; height:52px; background:#fff; border-bottom:1px solid var(--border-weak); display:flex; align-items:center; position:relative; }
+  .subback { width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .subback svg { width:24px; height:24px; stroke:var(--ink-primary); }
+  .subtitle { position:absolute; left:0; right:0; text-align:center; font-size:17px; font-weight:600; color:var(--ink-primary); pointer-events:none; }
+
+  .scroll { flex:1; overflow-y:auto; background:var(--bg-page); -webkit-overflow-scrolling:touch; }
+
+  /* 第一行：排序切换（最新 / 热度） */
+  .sortbar { flex:none; display:flex; gap:26px; align-items:center; padding:14px 16px 0; background:#fff; }
+  .sort-tab { position:relative; font-size:15px; font-weight:600; color:var(--ink-tertiary); padding-bottom:9px; cursor:pointer; user-select:none; }
+  .sort-tab.active { color:var(--color-primary); }
+  .sort-tab.active::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; border-radius:2px; background:var(--color-primary); }
+
+  /* 第二行：分类横向滚动 */
+  .catbar { flex:none; display:flex; gap:10px; overflow-x:auto; padding:14px 16px; background:#fff; border-bottom:1px solid var(--border-weak); -webkit-overflow-scrolling:touch; }
+  .catbar::-webkit-scrollbar { display:none; }
+  .cat-chip { flex:none; font-size:13px; padding:7px 14px; border-radius:var(--r-pill); border:1px solid var(--border-strong); color:var(--ink-secondary); background:#fff; cursor:pointer; white-space:nowrap; transition:all .15s ease; }
+  .cat-chip.active { background:var(--color-primary); border-color:var(--color-primary); color:#fff; }
+
+  /* 内容卡片列表 */
+  .art-list { padding:12px 16px 20px; display:flex; flex-direction:column; gap:12px; }
+  .art-card { display:flex; gap:12px; background:#fff; border:1px solid var(--border-weak); border-radius:var(--r-md); padding:12px; cursor:pointer; align-items:flex-start; transition:box-shadow .15s ease; }
+  .art-card:active { box-shadow:var(--shadow-hover); }
+  .art-thumb { width:80px; height:80px; border-radius:8px; overflow:hidden; flex:none; position:relative; background:#EAF3FF; }
+  .art-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .art-thumb.video { background:#1c1c22; }
+  .art-thumb .play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .art-thumb .play svg { width:30px; height:30px; fill:#fff; opacity:.92; }
+  .art-thumb .badge-video { position:absolute; left:6px; bottom:6px; background:rgba(0,0,0,.55); color:#fff; font-size:10px; line-height:1; padding:2px 6px; border-radius:var(--r-pill); }
+  .art-body { flex:1; min-width:0; display:flex; flex-direction:column; }
+  .art-title { font-size:16px; font-weight:700; color:var(--ink-primary); line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .art-sum { font-size:14px; color:var(--ink-tertiary); line-height:1.5; margin-top:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .art-meta { font-size:12px; color:var(--ink-tertiary); margin-top:auto; padding-top:8px; }
+
+  .empty { text-align:center; color:var(--ink-tertiary); font-size:14px; padding:40px 0; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><div class="right"><span>●●●</span><span>📶</span><span>🔋</span></div></div>
+  <div class="subheader">
+    <div class="subback" onclick="history.back()">
+      <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="subtitle" id="pageTitle">跨境小学堂列表</div>
+  </div>
+
+  <div class="scroll">
+    <div class="sortbar">
+      <div class="sort-tab active" id="sortLatest" data-sort="latest">最新</div>
+      <div class="sort-tab" id="sortHot" data-sort="hot">热度</div>
+    </div>
+    <div class="catbar" id="catbar"></div>
+    <div class="art-list" id="list"></div>
+  </div>
+</div>
+
+<script src="academy-data.js"></script>
+<script src="i18n.js"></script>
+<script>
+var curSort = 'latest';
+var curCat = 'all';
+
+function cardHtml(a){
+  var d = a[A_LANG()];
+  var thumb;
+  if (a.type === 'video') {
+    thumb = '<div class="art-thumb video"><div class="play">'+playSvg()+'</div><span class="badge-video">'+L({zh:'视频',en:'Video'})+'</span></div>';
+  } else {
+    thumb = '<div class="art-thumb"><img src="'+img(a.h)+'" alt=""></div>';
+  }
+  return '<div class="art-card" onclick="location.href=\'s2_academy_detail.html?id='+a.id+'\'">'
+    + thumb
+    + '<div class="art-body">'
+      + '<div class="art-title">'+d.title+'</div>'
+      + '<div class="art-sum">'+d.sum+'</div>'
+      + '<div class="art-meta">'+d.date+' · '+catName(a.cat)+'</div>'
+    + '</div>'
+  + '</div>';
+}
+
+function renderList(){
+  var list = ARTS.filter(function(a){ return curCat==='all' || a.cat===curCat; });
+  if (curSort === 'hot') list = list.slice().sort(function(x,y){ return y.hot - x.hot; });
+  else list = list.slice().sort(function(x,y){ return y.ts - x.ts; });
+  var box = document.getElementById('list');
+  if (!list.length) { box.innerHTML = '<div class="empty">'+L({zh:'该分类暂无内容',en:'No content in this category'})+'</div>'; return; }
+  box.innerHTML = list.map(cardHtml).join('');
+}
+
+function renderCats(){
+  var bar = document.getElementById('catbar');
+  bar.innerHTML = '';
+  CATS.forEach(function(c){
+    var el = document.createElement('div');
+    el.className = 'cat-chip' + (c.key===curCat ? ' active' : '');
+    el.textContent = L(c);
+    el.onclick = function(){ curCat = c.key; renderCats(); renderList(); };
+    bar.appendChild(el);
+  });
+}
+
+function renderSorts(){
+  var lt = document.getElementById('sortLatest');
+  var ht = document.getElementById('sortHot');
+  lt.textContent = L({zh:'最新', en:'Latest'});
+  ht.textContent = L({zh:'热度', en:'Popular'});
+  lt.className = 'sort-tab' + (curSort==='latest' ? ' active' : '');
+  ht.className = 'sort-tab' + (curSort==='hot' ? ' active' : '');
+  lt.onclick = function(){ curSort='latest'; renderSorts(); renderList(); };
+  ht.onclick = function(){ curSort='hot'; renderSorts(); renderList(); };
+}
+
+(function init(){
+  document.getElementById('pageTitle').textContent = L({zh:'跨境小学堂列表', en:'Cross-border Mini Academy · List'});
+  renderSorts();
+  renderCats();
+  renderList();
+})();
+</script>
+</body>
+</html>

@@ -53,9 +53,9 @@
   list = list.filter(function(x){ return !x._seeded; });
   if(!list.length){
     list = [
-      { id:'BQ_SEED1', title:'急需500双跑步鞋 尼日利亚', category:'鞋类 > 运动鞋 > 跑步鞋', desc:'黑色白色混色。', images:[img(200)], qty:'500 双', region:'尼日利亚', time:'2026-08-18 09:30', status:'ok' },
-      { id:'BQ_SEED2', title:'采购男士纯棉T恤 1万件', category:'服装 > 男装 > T恤', desc:'180g精梳棉。', images:[], qty:'10000 件', region:'肯尼亚', time:'2026-08-15 14:10', status:'rejected' },
-      { id:'BQ_SEED3', title:'求购商务双肩包 2000个', category:'箱包 > 双肩包 > 商务双肩包', desc:'15.6寸笔记本仓。', images:[], qty:'2000 个', region:'南非', time:'2026-08-12 11:00', status:'ok' }
+      { id:'BQ_SEED1', title:'Urgent: 500 pairs running shoes — Nigeria', category:'Footwear > Sneakers > Running Shoes', desc:'Black and white mixed colors.', images:[img(200)], qty:'500 Pairs', region:'Nigeria', time:'2026-08-18 09:30', status:'ok' },
+      { id:'BQ_SEED2', title:"Purchase 10k men's cotton T-shirts", category:"Apparel > Men's > T-Shirt", desc:'180g combed cotton.', images:[], qty:'10000 Pcs', region:'Kenya', time:'2026-08-15 14:10', status:'rejected' },
+      { id:'BQ_SEED3', title:'Request 2000 business backpacks', category:'Bags & Luggage > Backpacks > Business Backpack', desc:'15.6-inch laptop compartment.', images:[], qty:'2000 Pcs', region:'South Africa', time:'2026-08-12 11:00', status:'ok' }
     ];
     try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){}
   }

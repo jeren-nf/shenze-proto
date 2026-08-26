@@ -113,14 +113,14 @@
 /* ---------- 数据（供应） ---------- */
 const AV_COLORS = ['#1677FF','#F5A623','#52C41A','#722ED1','#EB2F96','#13C2C2','#FA8C16','#2F54EB'];
 const GONGYING = [
-  {name:'深圳优品供应链',initial:'深',color:0,time:'刚刚',leaf:'zidong',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{min:'18.5'},moq:'500 条',content:'【工厂直供】头层牛皮自动扣皮带，支持来图定制，48 小时出样。常年稳定供货欧美商超，可贴牌可中性包装，欢迎询盘拿样。'},
-  {name:'温州鞋业联盟',initial:'温',color:1,time:'10分钟前',leaf:'train',imgs:['sneakers','canvas','hiking','boots','ballet','sandals'],price:{min:'45',max:'68'},moq:'1000 双',content:'跑步鞋、训练鞋现货供应，EVA 中底 + 透气网面，月产能 30 万双，支持小单快反与一件代发，交期稳定。'},
-  {name:'广州箱包工贸',initial:'广',color:2,time:'1小时前',leaf:'yingke',imgs:['suitcase','belt','canvas','boots'],price:{min:'86'},moq:'300 件',content:'ABS + PC 硬壳拉杆箱，静音万向轮，20/24/28 寸齐全，出口品质，可定制 Logo 与颜色，支持 OEM/ODM。'},
-  {name:'义乌小商品集采',initial:'义',color:3,time:'3小时前',leaf:'fanbu',imgs:['canvas','sneakers','sandals','boots','ballet','hiking','belt','suitcase','ski'],price:{start:true,min:'22'},moq:'2000 双',content:'帆布鞋、板鞋多款式常年供货，环保印染，支持混批，适合非洲及中东渠道，价格优势明显。'},
-  {name:'泉州运动装备',initial:'泉',color:4,time:'昨天',leaf:'basket',imgs:['sneakers','boots','hiking'],price:{min:'58',max:'72'},moq:'800 双',content:'篮球鞋高弹缓震，工厂直销，支持 OEM/ODM，交期稳定，欢迎询盘拿样，批量优惠。'},
-  {name:'成都皮具定制',initial:'成',color:5,time:'2天前',leaf:'zhenkou',imgs:[],price:null,moq:'200 件',content:'真皮钱包、皮带全品类定制，头层皮料，针扣 / 自动扣均可，支持企业礼品定制与来图加工。'},
-  {name:'青岛户外用品',initial:'青',color:6,time:'3天前',leaf:'dengshan',imgs:['hiking','boots','sneakers','canvas','sandals','ski'],price:{min:'92'},moq:'500 双',content:'登山鞋、徒步鞋防滑大底，Vibram 同级，提供耐磨测试报告，长期合作优先，支持贴牌。'},
-  {name:'东莞服饰供应链',initial:'东',color:7,time:'刚刚',leaf:'tshirt',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{start:true,min:'9.8'},moq:'5000 件',content:'T 恤、衬衫基础款常年供货，精梳棉，支持印花绣花，快速打样，适合电商铺货与跨境分销。'}
+  {name:'Shenzhen Premium Supply Chain',initial:'S',color:0,rank:0,time:'Just now',leaf:'zidong',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{min:'18.5'},moq:'500 Pcs',content:'Factory-direct top-grain leather automatic buckle belts, support custom designs with 48-hour sampling. Steady supply to European and American supermarkets, OEM and neutral packaging available, welcome to inquire.'},
+  {name:'Wenzhou Footwear Alliance',initial:'W',color:1,rank:1,time:'10 min ago',leaf:'train',imgs:['sneakers','canvas','hiking','boots','ballet','sandals'],price:{min:'45',max:'68'},moq:'1000 Pairs',content:'Ready stock of running and training shoes, EVA midsole + breathable mesh, monthly capacity 300k pairs, support small-batch quick reorder and dropshipping, stable lead time.'},
+  {name:'Guangzhou Bags & Luggage Trade',initial:'G',color:2,rank:2,time:'1 hr ago',leaf:'yingke',imgs:['suitcase','belt','canvas','boots'],price:{min:'86'},moq:'300 Pcs',content:'ABS + PC hard-shell luggage, silent spinner wheels, 20/24/28 inch available, export quality, customizable logo and color, OEM/ODM supported.'},
+  {name:'Yiwu Commodity Sourcing',initial:'Y',color:3,rank:3,time:'3 hrs ago',leaf:'fanbu',imgs:['canvas','sneakers','sandals','boots','ballet','hiking','belt','suitcase','ski'],price:{start:true,min:'22'},moq:'2000 Pairs',content:'Canvas and casual shoes in multiple styles year-round, eco-friendly dyeing, support mixed batches, ideal for Africa and Middle East channels, strong price advantage.'},
+  {name:'Quanzhou Sports Gear',initial:'Q',color:4,rank:4,time:'Yesterday',leaf:'basket',imgs:['sneakers','boots','hiking'],price:{min:'58',max:'72'},moq:'800 Pairs',content:'Basketball shoes with high-rebound cushioning, factory-direct, OEM/ODM supported, stable lead time, welcome to inquire and request samples, volume discounts.'},
+  {name:'Chengdu Leather Custom',initial:'C',color:5,rank:5,time:'2 days ago',leaf:'zhenkou',imgs:[],price:null,moq:'200 Pcs',content:'Full-range custom genuine leather wallets and belts, top-grain material, pin buckle / automatic buckle both available, support corporate gift customization and custom drawings.'},
+  {name:'Qingdao Outdoor Goods',initial:'Q',color:6,rank:6,time:'3 hrs ago',leaf:'dengshan',imgs:['hiking','boots','sneakers','canvas','sandals','ski'],price:{min:'92'},moq:'500 Pairs',content:'Hiking and trekking shoes with anti-slip outsoles, Vibram-equivalent, wear-resistance test reports provided, priority for long-term partners, support OEM.'},
+  {name:'Dongguan Apparel Supply Chain',initial:'D',color:7,rank:0,time:'Just now',leaf:'tshirt',imgs:['sneakers','suitcase','belt','canvas','hiking','sandals','boots','ballet','ski'],price:{start:true,min:'9.8'},moq:'5000 Pcs',content:'Basic T-shirts and shirts year-round, combed cotton, support printing and embroidery, fast sampling, ideal for e-commerce and cross-border distribution.'}
 ];
 
 /* 给每条供应分配唯一 id,卡片点击直接进详情 */
@@ -134,14 +134,14 @@ function supplyCard(d){
   el.onclick = function(){ location.href = 's2_supply_detail.html?id=' + d._id + '&role=buyer'; };
   let priceHtml;
   if(d.price){
-    let val = '¥'+d.price.min+'元';
-    if(d.price.max) val += '-'+d.price.max+'元';
-    if(d.price.start) val += '/起';
-    priceHtml = '<span class="trade-label">价格</span><span class="trade-price">'+val+'</span>';
+    let val = '¥'+d.price.min;
+    if(d.price.max) val += '-'+d.price.max;
+    if(d.price.start) val += '/from';
+    priceHtml = '<span class="trade-label">Price</span><span class="trade-price">'+val+'</span>';
   } else {
-    priceHtml = '<span class="trade-price trade-mianyi">价格面议</span>';
+    priceHtml = '<span class="trade-price trade-mianyi">Negotiable</span>';
   }
-  const trade = '<div class="supply-trade"><div class="trade-left">'+priceHtml+'</div><span class="trade-moq">起订 '+d.moq+'</span></div>';
+  const trade = '<div class="supply-trade"><div class="trade-left">'+priceHtml+'</div><span class="trade-moq">MOQ '+d.moq+'</span></div>';
   let grid = '';
   if(d.imgs && d.imgs.length){
     grid = '<div class="supply-grid">'+ d.imgs.map(i=>'<img src="img/'+i+'.jpg" alt="">').join('') +'</div>';
@@ -158,8 +158,7 @@ function supplyCard(d){
 }
 
 /* 时间倒序 */
-var SUPPLY_RANK = {'刚刚':0,'10分钟前':1,'1小时前':2,'3小时前':3,'昨天':4,'2天前':5,'3天前':6};
-GONGYING.sort(function(a,b){ return (SUPPLY_RANK[a.time]!==undefined?SUPPLY_RANK[a.time]:99) - (SUPPLY_RANK[b.time]!==undefined?SUPPLY_RANK[b.time]:99); });
+GONGYING.sort(function(a,b){ return (a.rank||99) - (b.rank||99); });
 
 const listG = document.getElementById('list-gongying');
 GONGYING.forEach(d=> listG.appendChild(supplyCard(d)));

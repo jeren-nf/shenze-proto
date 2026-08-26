@@ -91,9 +91,9 @@
 <script>
   function img(h){ return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl('+h+',60%,72%)"/><stop offset="1" stop-color="hsl('+((h+40)%360)+',65%,55%)"/></linearGradient></defs><rect width="360" height="360" fill="url(%23g)"/></svg>'); }
   var MOCK = [
-    { id:'BQ_DEMO1', title:'急需500双跑步鞋 尼日利亚', category:'鞋类 > 运动鞋 > 跑步鞋', desc:'需黑色/白色混色，EU 40-44，接受 OEM 贴牌。\n要求 CFR 拉各斯，30% 预付款。', images:[img(200),img(215)], qty:'500 双', region:'尼日利亚', time:'2026-08-12 10:30' },
-    { id:'BQ_DEMO2', title:'采购男士纯棉T恤 1万件', category:'服装 > 男装 > T恤', desc:'180g 精梳棉，黑白灰三色各 1/3，支持来样。', images:[img(120)], qty:'10000 件', region:'肯尼亚', time:'2026-08-09 15:12' },
-    { id:'BQ_DEMO3', title:'求购商务双肩包 2000个', category:'箱包 > 双肩包 > 商务双肩包', desc:'15.6寸笔记本仓，防水面料，可定制 LOGO。', images:[img(260)], qty:'2000 个', region:'南非', time:'2026-08-06 11:48' }
+    { id:'BQ_DEMO1', title:'Urgent: 500 pairs running shoes — Nigeria', category:'Footwear > Sneakers > Running Shoes', desc:'Black/white mixed colors, EU 40-44, OEM branding accepted.\nCFR Lagos, 30% deposit required.', images:[img(200),img(215)], qty:'500 Pairs', region:'Nigeria', time:'2026-08-12 10:30' },
+    { id:'BQ_DEMO2', title:"Purchase 10k men's cotton T-shirts", category:"Apparel > Men's > T-Shirt", desc:'180g combed cotton, black/white/grey one third each, support custom samples.', images:[img(120)], qty:'10000 Pcs', region:'Kenya', time:'2026-08-09 15:12' },
+    { id:'BQ_DEMO3', title:'Request 2000 business backpacks', category:'Bags & Luggage > Backpacks > Business Backpack', desc:'15.6-inch laptop compartment, waterproof fabric, customizable LOGO.', images:[img(260)], qty:'2000 Pcs', region:'South Africa', time:'2026-08-06 11:48' }
   ];
 
   var id = new URLSearchParams(location.search).get('id');

@@ -60,12 +60,14 @@
 <script>
 (function(){
   var p=new URLSearchParams(location.search);
-  var from=p.get('from')||'s2_mine.html';
+  var from=p.get('from')||'s2_home.html';
+  var role=p.get('role')||'seller';
   var toastEl=document.getElementById('toast');
   function toast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); setTimeout(function(){toastEl.classList.remove('show')},1500); }
   document.getElementById('authPhone').onclick=function(){
     localStorage.setItem('loggedIn','1');
     localStorage.setItem('loggedPhone','186****1436');
+    localStorage.setItem('appRole',role);
     location.href=from;
   };
   document.getElementById('denyBtn').onclick=function(){

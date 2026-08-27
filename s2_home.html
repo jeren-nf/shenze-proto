@@ -20,8 +20,13 @@
   /* 顶部标题栏 */
   .topbar { height: 48px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #fff; }
   .topbar .loc { display: flex; align-items: center; gap: 2px; font-size: 15px; font-weight: 700; }
-  .topbar .search-mini { flex: 1; height: 34px; background: var(--bg-page); border-radius: var(--r-pill); display: flex; align-items: center; gap: 6px; padding: 0 12px; color: var(--ink-tertiary); font-size: 12px; }
+  .topbar .search-mini { flex: 1; height: 34px; background: var(--bg-page); border-radius: var(--r-pill); display: flex; align-items: center; gap: 6px; padding: 0 12px; color: var(--ink-tertiary); font-size: 12px; transition:flex .2s ease; }
+  .topbar.not-logged .search-mini { flex: 0 0 150px; }
   .icon-circle { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-page); display: flex; align-items: center; justify-content: center; position: relative; }
+  .role-toggle { display:none; align-items:center; gap:4px; padding:0 8px; height:34px; border-radius:var(--r-pill); background:var(--bg-page); color:var(--ink-secondary); font-size:11px; font-weight:600; cursor:pointer; flex:none; white-space:nowrap; }
+  .role-toggle .ic { width:16px;height:16px; stroke:var(--ink-secondary); }
+  .topbar.not-logged .role-toggle { display:flex; }
+  .topbar.not-logged .msg-entry { display:none; }
 
   /* 品牌区（logo + 名称） */
   .brand { display: flex; align-items: center; gap: 8px; flex: none; }
@@ -147,8 +152,12 @@
       <span id="blf" class="brand-logo-fallback" style="display:none">鞋</span>
       <span class="brand-name">鞋贸汇</span>
     </div>
-    <div class="search-mini"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>搜询盘 / 找买家</div>
-    <div class="icon-circle"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge-dot">2</span></div>
+    <div class="search-mini" id="searchMini"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>搜询盘 / 找买家</div>
+    <div class="role-toggle" id="roleToggle" onclick="goLogin()">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7h12M8 7l4-4M8 7l4 4M16 17H4M16 17l-4 4M16 17l-4-4"/></svg>
+      <span>我是卖家/买家</span>
+    </div>
+    <div class="icon-circle msg-entry" id="msgEntry"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge-dot">2</span></div>
   </div>
 
   <!-- 滚动内容 -->
@@ -595,6 +604,16 @@
     el.style.cursor = 'pointer';
     el.onclick = function(){ location.href = 'b2_inquiry_detail.html?id=' + id; };
   });
+})();
+</script>
+<script>
+(function(){
+  // 卖家端首页顶部：未登录时显示身份切换入口，登录后显示消息入口
+  var loggedIn = false;
+  try { loggedIn = localStorage.getItem('loggedIn') === '1'; } catch(e){}
+  var topbar = document.querySelector('.topbar');
+  if(topbar) topbar.classList.toggle('not-logged', !loggedIn);
+  window.goLogin = function(){ location.href = 'login.html?from=' + encodeURIComponent('s2_home.html'); };
 })();
 </script>
 <script src="i18n.js"></script>

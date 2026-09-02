@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>北明数贸 · 卖家端首页（任务一规范）</title>
+<style>
+:root{
+  /* 任务一规范：灰底 + 蓝点缀 */
+  --bg-page:#EDF7FF; --card:#FFFFFF; --subtle:#F5F9FF;
+  --primary:#146FEF; --primary-ink:#1369E2; --primary-bg:#E6F4FF;
+  --accent:#F5A623; --accent-ink:#1A1A1A;
+  --price:#C93C3E;
+  --ink-1:#1A1A1A; --ink-2:#595959; --ink-3:#6F6F6F;
+  --line:#EFEFEF; --line-2:#DCDCDC; --line-strong:#90949A;
+  --g1:#00C9A7; --g2:#146FEF;
+  --r-lg:16px; --r-md:8px; --r-sm:4px;
+  --pad:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#E9EDF2;display:flex;justify-content:center;padding:28px 0;
+  font-family:"PingFang SC","HarmonyOS Sans SC","Noto Sans SC",-apple-system,sans-serif;
+  color:var(--ink-1);-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+.phone{width:390px;height:844px;background:var(--bg-page);border-radius:44px;
+  box-shadow:0 24px 60px rgba(0,0,0,.18);overflow:hidden;position:relative;
+  border:10px solid #111;display:flex;flex-direction:column}
+
+.statusbar{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;font-size:13px;font-weight:600;color:var(--ink-1)}
+.sb-r{display:flex;gap:5px;align-items:center}
+.sb-r i{display:block;background:#111;border-radius:1px}
+.sb-sig{display:flex;gap:1.5px;align-items:flex-end}
+.sb-sig i{width:3px;background:#111}
+.sb-bat{width:22px;height:11px;border:1px solid #111;border-radius:2px;position:relative}
+.sb-bat::after{content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:#111;border-radius:0 1px 1px 0}
+.sb-bat i{position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:14px;background:#111;border-radius:1px}
+
+/* 顶栏 */
+.topbar{height:48px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:#fff}
+.brand{display:flex;align-items:center;gap:7px;flex:none}
+.brand img{width:30px;height:30px;object-fit:contain}
+.brand span{font-size:16px;font-weight:700;white-space:nowrap;letter-spacing:.2px}
+.search{flex:1;height:44px;background:var(--subtle);border-radius:999px;display:flex;
+  align-items:center;gap:6px;padding:0 14px;color:var(--ink-3);font-size:13px;
+  min-height:44px;transition:flex .2s ease}
+.search svg{width:17px;height:17px;stroke:var(--ink-3);stroke-width:2;fill:none;flex:none}
+.role-toggle{display:none;align-items:center;gap:5px;padding:0 10px;height:44px;min-height:44px;
+  border-radius:999px;background:var(--subtle);color:var(--ink-2);font-size:11px;font-weight:600;
+  cursor:pointer;flex:none;white-space:nowrap}
+.role-toggle svg{width:15px;height:15px;flex:none}
+.msg{width:44px;height:44px;min-height:44px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;position:relative;flex:none;cursor:pointer}
+.msg svg{width:21px;height:21px;stroke:var(--ink-2);stroke-width:2;fill:none}
+.dot{position:absolute;top:4px;right:6px;min-width:16px;height:16px;padding:0 4px;background:var(--price);
+  color:#fff;border-radius:999px;font-size:10px;font-weight:600;display:flex;align-items:center;
+  justify-content:center;border:2px solid #fff}
+.topbar.not-logged .search{flex:0 0 156px}
+.topbar.not-logged .role-toggle{display:flex}
+.topbar.not-logged .msg{display:none}
+
+.scroll{flex:1;overflow-y:auto;padding-bottom:8px}
+.scroll::-webkit-scrollbar{display:none}
+
+/* Banner */
+.banner{margin:12px 16px;height:104px;border-radius:var(--r-lg);
+  background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:16px 18px;
+  display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.banner .b-sub{font-size:14px;font-weight:500;opacity:.88;text-shadow:0 1px 4px rgba(0,0,0,.22)}
+.banner .b-main{margin-top:5px;font-size:21px;font-weight:800;line-height:1.25;
+  text-shadow:0 1px 6px rgba(0,0,0,.28)}
+.banner .deco{position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;
+  background:rgba(255,255,255,.12)}
+.banner .deco2{position:absolute;right:40px;bottom:-40px;width:80px;height:80px;border-radius:50%;
+  background:rgba(255,255,255,.10)}
+
+/* 金刚区（4 宫格，预留扩至 8） */
+.grid-card{margin:0 16px 12px;background:#fff;border-radius:var(--r-lg);padding:16px 8px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 0}
+.grid-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;
+  min-height:44px;padding:2px 0}
+.grid-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+.grid-ic svg{width:26px;height:26px;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.gi-orange{background:#FFF7E6}.gi-orange svg{stroke:#9C6607}
+.gi-blue{background:#E6F4FF}.gi-blue svg{stroke:#1369E2}
+.gi-green{background:#F6FFED}.gi-green svg{stroke:#2F860B}
+.gi-red{background:#FFF1F0}.gi-red svg{stroke:#C93C3E}
+.grid-item span{font-size:11px;color:var(--ink-2);font-weight:500}
+
+/* 区块标题 */
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:4px 16px;margin-top:4px}
+.sec-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:6px}
+.sec-title::before{content:"";width:4px;height:16px;background:var(--primary);border-radius:2px}
+.sec-more{font-size:12px;color:var(--ink-3);min-height:44px;display:flex;align-items:center;cursor:pointer}
+
+/* 热门求购 横滑 */
+.hot{display:flex;gap:10px;overflow-x:auto;padding:0 16px 4px;scroll-snap-type:x mandatory}
+.hot::-webkit-scrollbar{display:none}
+.hot-card{flex:0 0 236px;scroll-snap-align:start;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:12px;display:flex;gap:10px;cursor:pointer;transition:transform .1s}
+.hot-card:active{transform:scale(.98)}
+.hot-card .thumb{width:88px;border-radius:8px;background:#F0F0F0;flex:none;overflow:hidden}
+.hot-card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.hot-card .body{flex:1;min-width:0;display:flex;flex-direction:column}
+.hot-card h4{font-size:15px;font-weight:600;line-height:1.3;margin:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px}
+.time{flex:none;font-size:11px;color:var(--ink-3);white-space:nowrap}
+.cat{display:inline-block;font-size:11px;font-weight:500;color:var(--primary-ink);
+  background:var(--primary-bg);border-radius:4px;padding:1px 5px;margin-bottom:4px;width:fit-content}
+.desc{font-size:11px;color:var(--ink-2);line-height:1.35;margin:0 0 3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto}
+.qty{font-size:12px;color:var(--price);font-weight:600}
+.region{flex:none;display:flex;align-items:center;gap:4px;font-size:11px;color:var(--ink-2);white-space:nowrap}
+
+/* 全部求购 列表 */
+.list{padding:0 16px 8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:12px;
+  margin-bottom:12px;display:flex;gap:12px;cursor:pointer;transition:transform .1s}
+.card:active{transform:scale(.98)}
+.card .thumb{width:92px;height:92px;border-radius:8px;background:#F0F0F0;flex:none;overflow:hidden}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.card .body{flex:1;min-width:0;display:flex;flex-direction:column}
+.card h4{font-size:16px;font-weight:700;line-height:1.3;margin:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .cat{font-size:12px;margin-bottom:5px}
+.card .desc{font-size:12px;margin:0 0 5px}
+.card .meta{margin-top:auto}
+.card .qty{font-size:14px;font-weight:600}
+.card .region{font-size:12px}
+.card .time{font-size:12px}
+
+/* FAB */
+.fab{position:absolute;right:16px;bottom:132px;z-index:30}
+.fab-btn{width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--accent-ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  box-shadow:0 6px 16px rgba(245,166,35,.42);cursor:pointer;transition:transform .1s}
+.fab-btn:active{transform:scale(.95)}
+.fab-btn svg{width:17px;height:17px;stroke:var(--accent-ink);stroke-width:2.5;fill:none;stroke-linecap:round}
+.fab-text{font-size:9px;font-weight:700;line-height:1;letter-spacing:.5px}
+
+/* TabBar */
+.tabbar{height:56px;flex:none;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:6px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:var(--ink-3);font-size:10.5px;cursor:pointer;min-height:44px}
+.tab.active{color:var(--primary-ink)}
+.tab .ic{width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+.tab .icw{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center}
+.tab.active .icw{background:var(--primary-bg);border-radius:50%}
+.tab .badge{position:absolute;top:-1px;right:-2px;min-width:15px;height:15px;padding:0 4px;
+  background:var(--price);color:#fff;border-radius:999px;font-size:9px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="sb-r">
+      <span class="sb-sig"><i style="height:5px"></i><i style="height:8px"></i><i style="height:11px"></i><i style="height:14px;opacity:.35"></i></span>
+      <span class="sb-bat"><i></i></span>
+    </div>
+  </div>
+
+  <div class="topbar" id="topbar">
+    <div class="brand">
+      <img src="img/logo_bm.png" alt="北明数贸" />
+      <span>北明数贸</span>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      搜求购 / 找买家
+    </div>
+    <div class="role-toggle" onclick="goLogin()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7h12M8 7l4-4M8 7l4 4M16 17H4M16 17l-4 4M16 17l-4-4"/></svg>
+      <span>我是卖家/买家</span>
+    </div>
+    <div class="msg" aria-label="消息">
+      <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      <span class="dot num">2</span>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <div class="banner">
+      <div class="deco"></div><div class="deco2"></div>
+      <p class="b-sub">北明数贸 · 跨境贸易撮合</p>
+      <div class="b-main">对接全球采购方<br/>真实求购每日更新</div>
+    </div>
+
+    <div class="grid-card">
+      <div class="grid">
+        <div class="grid-item"><div class="grid-ic gi-orange"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg></div><span>外贸结汇</span></div>
+        <div class="grid-item"><div class="grid-ic gi-blue"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div><span>出海物流</span></div>
+        <div class="grid-item"><div class="grid-ic gi-green"><svg viewBox="0 0 24 24"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2-1.5Z"/></svg></div><span>跨境小学堂</span></div>
+        <div class="grid-item"><div class="grid-ic gi-red"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 4-5"/></svg></div><span>数智测品</span></div>
+      </div>
+    </div>
+
+    <div class="sec-head">
+      <div class="sec-title">热门求购</div>
+      <div class="sec-more">更多 ›</div>
+    </div>
+    <div class="hot" id="hot"></div>
+
+    <div class="sec-head">
+      <div class="sec-title">全部求购</div>
+    </div>
+    <div class="list" id="list"></div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab active">
+      <span class="icw"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg></span>首页
+    </div>
+    <div class="tab">
+      <span class="icw"><svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 11V6h-5"/></svg></span>商机
+    </div>
+    <div class="tab">
+      <span class="icw"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="badge num">1</span></span>我的
+    </div>
+  </div>
+
+  <div class="fab">
+    <div class="fab-btn" aria-label="发供应">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      <span class="fab-text">发供应</span>
+    </div>
+  </div>
+</div>
+
+<script>
+var DATA=[
+ {t:'运动鞋',c:'运动鞋',d:'透气网面运动鞋，适合南非及非洲电商渠道。',i:'sneakers',q:'30,000 双',r:'南非',time:'8-17'},
+ {t:'旅行箱',c:'箱包',d:'硬壳 ABS+PC 旅行箱，静音万向轮，销往西非。',i:'suitcase',q:'8,000 件',r:'尼日利亚',time:'8-16'},
+ {t:'男士正装皮带',c:'皮具配饰',d:'头层牛皮自动扣皮带，支持礼盒包装。',i:'belt',q:'15,000 条',r:'埃及',time:'8-15'},
+ {t:'地中海风凉鞋',c:'凉鞋',d:'轻量化 EVA，多色混批，适合旅游零售。',i:'sandals',q:'40,000 双',r:'突尼斯',time:'刚刚'},
+ {t:'沙漠徒步运动鞋',c:'运动鞋',d:'防沙透气，适合户外探险渠道。',i:'sneakers',q:'25,000 双',r:'纳米比亚',time:'刚刚'},
+ {t:'帆布鞋出口订单',c:'帆布鞋',d:'东非市场，需环保印染工艺，可接长期框架协议。',i:'canvas',q:'50,000 双',r:'肯尼亚',time:'刚刚'},
+ {t:'工装安全鞋',c:'劳保鞋',d:'钢头防砸，符合 CE EN20345，可贴牌生产。',i:'boots',q:'15,000 双',r:'坦桑尼亚',time:'8-16'},
+ {t:'基建项目工装靴',c:'劳保鞋',d:'钢头防砸，可贴牌生产，月产能稳定。',i:'boots',q:'14,000 双',r:'卢旺达',time:'8-16'},
+ {t:'登山徒步鞋',c:'户外鞋',d:'防滑大底，Vibram 同级，要求提供耐磨测试数据。',i:'hiking',q:'8,000 双',r:'埃塞俄比亚',time:'8-15'},
+ {t:'校园帆布鞋',c:'帆布鞋',d:'团购订单，环保印染，可接长期框架。',i:'canvas',q:'55,000 双',r:'博茨瓦纳',time:'8-15'},
+ {t:'滑雪靴配件',c:'雪靴',d:'寻找注塑厂商，长期合作，月产能稳定。',i:'ski',q:'10,000 套',r:'塞内加尔',time:'8-14'},
+ {t:'头层牛皮皮带',c:'皮具配饰',d:'自动扣，支持礼盒包装与贴牌。',i:'belt',q:'20,000 条',r:'安哥拉',time:'8-14'},
+ {t:'运动休闲鞋',c:'运动鞋',d:'中非电商热销款，透气网面，可混码。',i:'sneakers',q:'35,000 双',r:'喀麦隆',time:'8-13'},
+ {t:'拖鞋凉鞋夏季款',c:'凉鞋',d:'轻量化 EVA，反倾销合规，支持多色混批。',i:'sandals',q:'120,000 双',r:'摩洛哥',time:'8-12'},
+ {t:'舞蹈练功鞋',c:'舞蹈鞋',d:'弹性面料，支持定制尺码表与 LOGO。',i:'ballet',q:'4,000 双',r:'赞比亚',time:'8-12'},
+ {t:'日常防滑拖鞋',c:'凉鞋',d:'西非日常款，多色混批，支持小单试单。',i:'sandals',q:'90,000 双',r:'科特迪瓦',time:'8-11'},
+ {t:'芭蕾舞练功鞋',c:'舞蹈鞋',d:'弹性面料，支持定制 LOGO 与尺码表。',i:'ballet',q:'3,000 双',r:'加纳',time:'8-10'},
+ {t:'帆布鞋校园采购',c:'帆布鞋',d:'北非连锁渠道，支持贴牌与尺码定制。',i:'canvas',q:'60,000 双',r:'阿尔及利亚',time:'8-09'},
+ {t:'高原徒步鞋',c:'户外鞋',d:'防水透气，寻找长期合作框架厂商。',i:'hiking',q:'7,500 双',r:'马达加斯加',time:'8-09'},
+ {t:'商务拉杆箱',c:'箱包',d:'静音万向轮，可定制 LOGO 与内衬。',i:'suitcase',q:'6,000 件',r:'加蓬',time:'8-08'},
+ {t:'户外登山鞋',c:'户外鞋',d:'防滑大底，Vibram 同级，需耐磨测试数据。',i:'hiking',q:'9,000 双',r:'莫桑比克',time:'8-07'},
+ {t:'滑雪靴配件',c:'雪靴',d:'出口转口贸易，寻找稳定注塑厂商。',i:'ski',q:'8,000 套',r:'津巴布韦',time:'8-06'},
+ {t:'油田劳保工装靴',c:'劳保鞋',d:'钢头防砸防穿刺，符合出口认证。',i:'boots',q:'12,000 双',r:'利比亚',time:'8-05'},
+ {t:'雨季防滑凉鞋',c:'凉鞋',d:'深纹大底，轻量 EVA，支持多色混批。',i:'sandals',q:'70,000 双',r:'乌干达',time:'8-04'},
+ {t:'矿区分销皮带',c:'皮具配饰',d:'耐磨头层牛皮，支持小批量试单。',i:'belt',q:'18,000 条',r:'刚果（金）',time:'8-03'}
+];
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function hotCard(d){
+  return '<div class="hot-card" role="button" aria-label="'+esc(d.t)+'，采购数量 '+esc(d.q)+'，'+esc(d.r)+'" onclick="goDetail()">'
+   +'<div class="thumb"><img src="img/'+d.i+'.jpg" alt="'+esc(d.t)+'"/></div>'
+   +'<div class="body"><div class="card-head"><h4>'+esc(d.t)+'</h4><div class="time num">'+esc(d.time)+'</div></div>'
+   +'<span class="cat">'+esc(d.c)+'</span>'
+   +'<div class="desc">'+esc(d.d)+'</div>'
+   +'<div class="meta"><div class="qty num">'+esc(d.q)+'</div><div class="region">'+esc(d.r)+'</div></div>'
+   +'</div></div>';
+}
+function listCard(d){
+  return '<div class="card" role="button" aria-label="'+esc(d.t)+'，采购数量 '+esc(d.q)+'，'+esc(d.r)+'" onclick="goDetail()">'
+   +'<div class="thumb"><img src="img/'+d.i+'.jpg" alt="'+esc(d.t)+'"/></div>'
+   +'<div class="body"><div class="card-head"><h4>'+esc(d.t)+'</h4><div class="time num">'+esc(d.time)+'</div></div>'
+   +'<span class="cat">'+esc(d.c)+'</span>'
+   +'<div class="desc">'+esc(d.d)+'</div>'
+   +'<div class="meta"><div class="qty num">采购数量：'+esc(d.q)+'</div><div class="region">'+esc(d.r)+'</div></div>'
+   +'</div></div>';
+}
+document.getElementById('hot').innerHTML=DATA.slice(0,3).map(hotCard).join('');
+document.getElementById('list').innerHTML=DATA.slice(3).map(listCard).join('');
+
+var loggedIn=false;
+try{loggedIn=localStorage.getItem('loggedIn')==='1';}catch(e){}
+document.getElementById('topbar').classList.toggle('not-logged',!loggedIn);
+function goLogin(){location.href='login.html?from='+encodeURIComponent('s2_home_t1.html');}
+function goDetail(){}
+</script>
+</body>
+</html>
